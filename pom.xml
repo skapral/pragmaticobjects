@@ -57,6 +57,14 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.pragmaticobjects.oo.atom</groupId>
+            <artifactId>atom-basis</artifactId>
+            <version>0.0.15</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
     
     <build>
         <pluginManagement>
