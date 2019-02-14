@@ -168,13 +168,6 @@
                             <skip>${skipTests}</skip>
                             <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
                             <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
-                            <excludes>
-                                <!--
-                                 A hack which prevents JaCoCo instrumentation of some classes in tests,
-                                 since fields and methods, added by JaCoCo, impact tests semantics
-                                 -->
-                                <exclude>com.pragmaticobjects.oo.atom.codegen.bytebuddy.matchers.**Test$**</exclude>
-                            </excludes>
                         </configuration>
                         <executions>
                             <execution>
