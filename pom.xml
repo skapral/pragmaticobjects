@@ -72,7 +72,7 @@
                 <plugin>
                     <groupId>com.pragmaticobjects.oo.atom</groupId>
                     <artifactId>atom-maven-plugin</artifactId>
-                    <version>0.0.15</version>
+                    <version>0.0.16</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
