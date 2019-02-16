@@ -42,7 +42,8 @@ public class MemoryCHM implements Memory {
 
     /**
      * Ctor.
-     * @param memoizedObjects 
+     * 
+     * @param memoizedObjects hash map for memoized calculations
      */
     public MemoryCHM(ConcurrentHashMap<Object, Calculation> memoizedObjects) {
         this.memoizedObjects = memoizedObjects;
