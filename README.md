@@ -1,5 +1,9 @@
 # OO-Memoized
 
+[![Build Status (Travis)](https://travis-ci.org/pragmatic-objects/oo-memoized.svg?branch=master)](https://travis-ci.org/pragmatic-objects/oo-memoized)
+[![Build status (AppVeyor)](https://ci.appveyor.com/api/projects/status/wvoq20l4c8pn0sr9/branch/master?svg=true)](https://ci.appveyor.com/project/skapral/oo-memoized/branch/master)
+[![Codecov](https://codecov.io/gh/pragmatic-objects/oo-memoized/branch/master/graph/badge.svg)](https://codecov.io/gh/pragmatic-objects/oo-memoized)
+
 Objects for caching and memoization.
 
 ## How to install
