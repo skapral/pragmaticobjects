@@ -28,7 +28,6 @@ import com.pragmaticobjects.oo.memoized.core.Memory;
 import com.pragmaticobjects.oo.memoized.core.Calculation;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -57,7 +56,7 @@ public class MemoryCHM implements Memory {
     }
 
     @Override
-    public final <S, T> Calculation<T> memoizedCalculation(S that, Function<S, T> key, Supplier<T> methodBody) {
+    public final <S, T> Calculation<T> memoizedCalculation(S that, Object key, Supplier<T> methodBody) {
         return memoizedObjects.computeIfAbsent(
             Arrays.asList(that, key),
             mref -> new CalcDefault(that, key, methodBody)

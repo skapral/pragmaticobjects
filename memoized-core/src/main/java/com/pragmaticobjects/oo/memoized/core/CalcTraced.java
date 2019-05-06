@@ -23,7 +23,6 @@
  */
 package com.pragmaticobjects.oo.memoized.core;
 
-import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,25 +36,25 @@ import org.slf4j.LoggerFactory;
 public class CalcTraced<S, T> implements Calculation<T> {
     private static final Logger LOG = LoggerFactory.getLogger(CalcTraced.class);
     private final S that;
-    private final Function<S, T> method;
+    private final Object key;
     private final Calculation<T> delegate;
 
     /**
      * Ctor.
      * @param that Object
-     * @param method Object's method
+     * @param key Key
      * @param delegate Calculation
      */
-    public CalcTraced(S that, Function<S, T> method, Calculation<T> delegate) {
+    public CalcTraced(S that, Object key, Calculation<T> delegate) {
         this.that = that;
-        this.method = method;
+        this.key = key;
         this.delegate = delegate;
     }
 
     @Override
     public final T calculate() {
         if(LOG.isTraceEnabled()) {
-            LOG.trace("New calculation: {} {}", that.toString(), System.identityHashCode(method));
+            LOG.trace("New calculation: {} {}", that.toString(), key.toString());
         }
         return delegate.calculate();
     }

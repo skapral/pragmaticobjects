@@ -42,7 +42,7 @@ public class CalcDefaultTest extends TestsSuite {
                 new AssertCalculationTriggeredCertainNumberOfTimes<>(
                     s -> new CalcDefault(
                         new Object(),
-                        Object::toString,
+                        "toString",
                         s
                     ),
                     10,

@@ -23,7 +23,6 @@
  */
 package com.pragmaticobjects.oo.memoized.core;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -36,12 +35,12 @@ public interface Memory {
      * Obtain memoized calculation instance
      * @param <S> object type
      * @param <T> method reference return value
-     * @param that key object
-     * @param key method reference
+     * @param that context object
+     * @param key memoization key
      * @param methodBody method logic to execute
      * @return result
      */
-    <S, T> Calculation<T> memoizedCalculation(S that, Function<S, T> key, Supplier<T> methodBody);
+    <S, T> Calculation<T> memoizedCalculation(S that, Object key, Supplier<T> methodBody);
     /**
      * Drop all memoized calculations
      */

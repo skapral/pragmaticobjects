@@ -23,7 +23,6 @@
  */
 package com.pragmaticobjects.oo.memoized.core;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -38,14 +37,14 @@ public class CalcDefault<S, T> extends CalcMemoized<T> {
      * Ctor.
      * 
      * @param object Object
-     * @param method Method
+     * @param key Key
      * @param body Body
      */
-    public CalcDefault(S object, Function<S, T> method, Supplier<T> body) {
+    public CalcDefault(S object, Object key, Supplier<T> body) {
         super(
             new CalcTraced<>(
                 object,
-                method,
+                key,
                 new CalcFromSupplier<>(
                     body
                 )
