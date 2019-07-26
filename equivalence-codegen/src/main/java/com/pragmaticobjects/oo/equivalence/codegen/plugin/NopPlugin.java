@@ -23,37 +23,19 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.plugin;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-
-import java.nio.file.Paths;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
 
 /**
- * Mojo that instruments production code
+ * Plugin which does nothing.
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
-
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
-
+public class NopPlugin implements Plugin {
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
-        );
+    public final DynamicType.Builder<?> apply(final DynamicType.Builder<?> builder, final TypeDescription typeDescription) {
+        return builder;
     }
 }

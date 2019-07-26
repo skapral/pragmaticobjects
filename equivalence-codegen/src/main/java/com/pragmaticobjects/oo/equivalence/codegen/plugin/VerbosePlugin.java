@@ -23,37 +23,34 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.plugin;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-
-import java.nio.file.Paths;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Mojo that instruments production code
+ * Verbose {@link Plugin}.
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
+public class VerbosePlugin implements Plugin {
+    private static final Logger LOG = LoggerFactory.getLogger(VerbosePlugin.class);
+    private final Plugin plugin;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
+    /**
+     * Ctor.
+     *
+     * @param plugin Delegating {@link Plugin}
+     */
+    public VerbosePlugin(final Plugin plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
-        );
+    public final DynamicType.Builder<?> apply(final DynamicType.Builder<?> builder, final TypeDescription typeDescription) {
+        LOG.info(plugin.getClass().getName() + ": Transforming type " + typeDescription.getName());
+        return plugin.apply(builder, typeDescription);
     }
 }

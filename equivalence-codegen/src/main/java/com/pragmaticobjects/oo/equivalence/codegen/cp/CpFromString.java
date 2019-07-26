@@ -23,37 +23,35 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.cp;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
+import io.vavr.collection.List;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 /**
- * Mojo that instruments production code
+ * Class path, parsed from Java -cp string.
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
+public class CpFromString implements ClassPath {
+    private final String string;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
+    /**
+     * Ctor.
+     * @param string -cp-like string, containing a set of paths, separated by a colon.
+     */
+    public CpFromString(final String string) {
+        this.string = string;
+    }
 
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
-        );
+    public final List<Path> paths() {
+        return List
+            .of(string.split(":"))
+            .filter(Objects::nonNull)
+            .map(Paths::get);
     }
 }

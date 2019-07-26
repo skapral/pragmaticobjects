@@ -23,37 +23,64 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.cfls;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
+import net.bytebuddy.dynamic.ClassFileLocator;
 
-import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
- * Mojo that instruments production code
+ * {@link CflsFromPath} inference
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
+class CflsFromPathInference implements ClassFileLocatorSource.Inference {
+    private final Path path;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
+    /**
+     * Ctor.
+     *
+     * @param path Path
+     */
+    public CflsFromPathInference(final Path path) {
+        this.path = path;
+    }
 
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
+    public final ClassFileLocatorSource classFileLocatorSource() {
+        if(!Files.exists(path)) {
+            return new CflsExplicit(
+                ClassFileLocator.NoOp.INSTANCE
+            );
+        }
+        if(Files.isDirectory(path)) {
+            return new CflsDirectory(path);
+        } else {
+            return new CflsJar(path);
+        }
+    }
+}
+
+/**
+ * Source for {@link net.bytebuddy.dynamic.ClassFileLocator}, made from specified path.
+ * It automatically determines the nature of path provided (a directory or a jar file)
+ * and chooses suitable locator for it.
+ *
+ * @author Kapralov Sergey
+ */
+public class CflsFromPath extends CflsInferred implements ClassFileLocatorSource {
+
+    /**
+     * Ctor.
+     *
+     * @param path Path
+     */
+    public CflsFromPath(final Path path) {
+        super(
+            new CflsFromPathInference(
+                path
+            )
         );
     }
 }

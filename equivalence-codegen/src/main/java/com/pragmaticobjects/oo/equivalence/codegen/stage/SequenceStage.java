@@ -23,37 +23,44 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.stage;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
+import com.pragmaticobjects.oo.equivalence.codegen.cn.ClassNames;
+import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
+import io.vavr.collection.List;
 
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 /**
- * Mojo that instruments production code
+ * Complex stage, consisting of several steps, executed sequentially.
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
+public class SequenceStage implements Stage {
+    private final List<Stage> substages;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
+    /**
+     * Ctor.
+     *
+     * @param substages Stages in sequence.
+     */
+    public SequenceStage(List<Stage> substages) {
+        this.substages = substages;
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param substages Stages in sequence.
+     */
+    public SequenceStage(Stage... substages) {
+        this(List.of(substages));
+    }
 
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
-        );
+    public final void apply(ClassPath classPath, ClassNames classNames, Path workingDirectory) {
+        for(Stage stage : substages) {
+            stage.apply(classPath, classNames, workingDirectory);
+        }
     }
 }

@@ -23,37 +23,65 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.cfls;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-
-import java.nio.file.Paths;
+import io.vavr.collection.List;
+import net.bytebuddy.dynamic.ClassFileLocator;
 
 /**
- * Mojo that instruments production code
+ * {@link CflsCompound} inference;
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
+class CflsCompoundInference implements ClassFileLocatorSource.Inference {
+    private final List<ClassFileLocatorSource> parts;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
+    /**
+     * Ctor.
+     *
+     * @param parts Parts to combine
+     */
+    public CflsCompoundInference(final List<ClassFileLocatorSource> parts) {
+        this.parts = parts;
+    }
 
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
+    public final ClassFileLocatorSource classFileLocatorSource() {
+        return new CflsExplicit(
+            parts
+                .map(ClassFileLocatorSource::classFileLocator)
+                .transform(cflsl -> new ClassFileLocator.Compound(cflsl.toJavaList()))
+        );
+    }
+}
+
+/**
+ * Source for a combined {@link ClassFileLocator}, consisting of provided parts
+ *
+ * @author Kapralov Sergey
+ */
+public class CflsCompound extends CflsInferred implements ClassFileLocatorSource {
+    /**
+     * Ctor.
+     *
+     * @param parts Parts to combine
+     */
+    public CflsCompound(List<ClassFileLocatorSource> parts) {
+        super(
+            new CflsCompoundInference(
+                parts
+            )
+        );
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param parts Parts to combine
+     */
+    public CflsCompound(final ClassFileLocatorSource... parts) {
+        this(
+            List.of(parts)
         );
     }
 }

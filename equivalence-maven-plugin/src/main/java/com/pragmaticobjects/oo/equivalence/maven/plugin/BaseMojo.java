@@ -25,24 +25,24 @@
  */
 package com.pragmaticobjects.oo.equivalence.maven.plugin;
 
-import com.pragmaticobjects.oo.atom.codegen.cn.CnExcludingPackages;
-import com.pragmaticobjects.oo.atom.codegen.cn.CnFromPath;
-import com.pragmaticobjects.oo.atom.codegen.cp.ClassPath;
-import com.pragmaticobjects.oo.atom.codegen.cp.CpFromString;
-import com.pragmaticobjects.oo.atom.codegen.stage.Stage;
-import com.pragmaticobjects.oo.atom.instrumentation.ApplyStages;
+import com.pragmaticobjects.oo.equivalence.codegen.cn.CnExcludingPackages;
+import com.pragmaticobjects.oo.equivalence.codegen.cn.CnFromPath;
+import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
+import com.pragmaticobjects.oo.equivalence.codegen.cp.CpFromString;
+import com.pragmaticobjects.oo.equivalence.codegen.stage.Stage;
+import com.pragmaticobjects.oo.equivalence.codegen.instrumentation.ApplyStages;
 import io.vavr.collection.HashSet;
-import org.apache.maven.artifact.Artifact;
+import java.io.File;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 
 /**

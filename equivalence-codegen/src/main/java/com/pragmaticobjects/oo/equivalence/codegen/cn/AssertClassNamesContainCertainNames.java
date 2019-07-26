@@ -23,37 +23,47 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.cn;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-
-import java.nio.file.Paths;
+import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
+import io.vavr.collection.HashSet;
+import io.vavr.collection.List;
+import io.vavr.collection.Set;
+import org.assertj.core.api.Assertions;
 
 /**
- * Mojo that instruments production code
+ * Assertion that passes if {@link ClassNames} contain certain class names
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
+public class AssertClassNamesContainCertainNames implements Assertion {
+    private final ClassNames classNames;
+    private final Set<String> namesToCheck;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
+    /**
+     * Ctor.
+     *
+     * @param classNames {@link ClassNames} under test
+     * @param namesToCheck expected names
+     */
+    public AssertClassNamesContainCertainNames(ClassNames classNames, Set<String> namesToCheck) {
+        this.classNames = classNames;
+        this.namesToCheck = namesToCheck;
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param classNames {@link ClassNames} under test
+     * @param namesToCheck expected names
+     */
+    public AssertClassNamesContainCertainNames(ClassNames classNames, String... namesToCheck) {
+        this(classNames, HashSet.of(namesToCheck));
+    }
 
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
-        );
+    public final void check() throws Exception {
+        List<String> extractedNames = classNames.classNames();
+        Assertions.assertThat(namesToCheck).containsAll(extractedNames);
     }
 }

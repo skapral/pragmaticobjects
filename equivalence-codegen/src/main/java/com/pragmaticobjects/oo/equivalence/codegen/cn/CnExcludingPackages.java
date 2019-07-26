@@ -23,37 +23,49 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.cn;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-
-import java.nio.file.Paths;
+import io.vavr.collection.List;
 
 /**
- * Mojo that instruments production code
+ * Class names list, excluding classes from certain packages
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
+public class CnExcludingPackages implements ClassNames {
+    private final ClassNames delegate;
+    private final List<String> packages;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
+    /**
+     * Ctor.
+     *
+     * @param delegate Source class names
+     * @param packages Packages to exclude
+     */
+    public CnExcludingPackages(ClassNames delegate, List<String> packages) {
+        this.delegate = delegate;
+        this.packages = packages;
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param delegate Source class names
+     * @param packages Packages to exclude
+     */
+    public CnExcludingPackages(ClassNames delegate, String... packages) {
+        this(
+            delegate,
+            List.of(packages)
+        );
+    }
 
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
-        );
+    public final List<String> classNames() {
+        List<String> names = this.delegate.classNames();
+        for(String pkg : packages) {
+            names = names.filter(cn -> !cn.startsWith(pkg + "."));
+        }
+        return names;
     }
 }

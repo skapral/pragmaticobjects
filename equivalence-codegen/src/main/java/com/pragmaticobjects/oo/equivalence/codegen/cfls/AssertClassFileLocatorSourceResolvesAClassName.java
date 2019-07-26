@@ -23,37 +23,37 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.cfls;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
+import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
+import net.bytebuddy.dynamic.ClassFileLocator;
 
-import java.nio.file.Paths;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Mojo that instruments production code
+ * Assertion that checks that {@link ClassFileLocator}, produced by {@link ClassFileLocatorSource} under test,
+ * resolves certain class name.
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
+public class AssertClassFileLocatorSourceResolvesAClassName implements Assertion {
+    private final ClassFileLocatorSource cfls;
+    private final String className;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
+    /**
+     * Ctor.
+     *
+     * @param cfls {@link ClassFileLocatorSource} under test.
+     * @param className Expected class name.
+     */
+    public AssertClassFileLocatorSourceResolvesAClassName(ClassFileLocatorSource cfls, String className) {
+        this.cfls = cfls;
+        this.className = className;
+    }
 
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
-        );
+    public final void check() throws Exception {
+        final ClassFileLocator.Resolution resolution = cfls.classFileLocator().locate(className);
+        assertThat(resolution.isResolved()).isTrue();
     }
 }

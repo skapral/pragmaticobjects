@@ -23,37 +23,53 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.cfls;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
+import io.vavr.collection.List;
 
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 /**
- * Mojo that instruments production code
+ * {@link CflsFromPaths} inference.
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
+class CflsFromPathsInference implements ClassFileLocatorSource.Inference {
+    private final List<Path> paths;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
+    /**
+     * Ctor.
+     *
+     * @param paths Paths
+     */
+    public CflsFromPathsInference(final List<Path> paths) {
+        this.paths = paths;
+    }
 
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
+    public final ClassFileLocatorSource classFileLocatorSource() {
+        return paths
+            .<ClassFileLocatorSource>map(CflsFromPath::new)
+            .transform(CflsCompound::new);
+    }
+}
+
+/**
+ * Source from {@link net.bytebuddy.dynamic.ClassFileLocator}, made from provided paths.
+ *
+ * @author Kapralov Sergey
+ */
+public class CflsFromPaths extends CflsInferred implements ClassFileLocatorSource {
+    /**
+     * Ctor.
+     *
+     * @param paths Paths
+     */
+    public CflsFromPaths(final List<Path> paths) {
+        super(
+            new CflsFromPathsInference(
+                paths
+            )
         );
     }
 }

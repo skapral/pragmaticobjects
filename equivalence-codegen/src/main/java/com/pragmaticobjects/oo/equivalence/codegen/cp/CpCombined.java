@@ -23,37 +23,42 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.cp;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
+import io.vavr.collection.List;
 
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 /**
- * Mojo that instruments production code
+ * Class path, merged from several {@link ClassPath} instances.
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
+public class CpCombined implements ClassPath {
+    private final List<ClassPath> classPaths;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
+    /**
+     * Ctor.
+     *
+     * @param classPaths Class paths to combine
+     */
+    public CpCombined(final List<ClassPath> classPaths) {
+        this.classPaths = classPaths;
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param classPaths Class paths to combine
+     */
+    public CpCombined(final ClassPath... classPaths) {
+        this(
+            List.of(classPaths)
+        );
+    }
 
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
-        );
+    public final List<Path> paths() {
+        return classPaths.flatMap(ClassPath::paths);
     }
 }

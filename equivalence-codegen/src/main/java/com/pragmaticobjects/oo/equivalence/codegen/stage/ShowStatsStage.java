@@ -23,37 +23,29 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.stage;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
+import com.pragmaticobjects.oo.equivalence.codegen.cn.ClassNames;
+import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
 
-import java.nio.file.Paths;
+import java.nio.file.Path;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Mojo that instruments production code
+ * Prints statistics to the log
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
-
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
-
+public class ShowStatsStage implements Stage {
+    private static final Logger LOG = LoggerFactory.getLogger(ShowStatsStage.class);
+    
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
-        );
+    public final void apply(final ClassPath classPath, final ClassNames classNames, final Path workingDirectory) {
+        LOG.info("");
+        LOG.info("java.home: " + System.getProperty("java.home"));
+        LOG.info("java.class.path:");
+        classPath.paths().forEach(p -> LOG.info(" " + p));
+        LOG.info("");
     }
 }

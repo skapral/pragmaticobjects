@@ -23,37 +23,37 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.plugin;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-
-import java.nio.file.Paths;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.matcher.ElementMatcher;
 
 /**
- * Mojo that instruments production code
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
+public class ConditionalPlugin implements Plugin {
+    private final ElementMatcher<TypeDescription> matcher;
+    private final Plugin trueBranch;
+    private final Plugin falseBranch;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
-
+    public ConditionalPlugin(ElementMatcher<TypeDescription> matcher, Plugin trueBranch, Plugin falseBranch) {
+        this.matcher = matcher;
+        this.trueBranch = trueBranch;
+        this.falseBranch = falseBranch;
+    }
+    
+    public ConditionalPlugin(ElementMatcher<TypeDescription> matcher, Plugin trueBranch) {
+        this(matcher, trueBranch, new NopPlugin());
+    }
+    
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
-        );
+    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
+        if(matcher.matches(typeDescription)) {
+            return trueBranch.apply(builder, typeDescription);
+        } else {
+            return falseBranch.apply(builder, typeDescription);
+        }
     }
 }

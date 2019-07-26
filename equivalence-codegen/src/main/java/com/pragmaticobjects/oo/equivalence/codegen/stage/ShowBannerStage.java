@@ -23,37 +23,36 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.maven.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.stage;
 
-import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
+import com.pragmaticobjects.oo.equivalence.codegen.banner.Banner;
+import com.pragmaticobjects.oo.equivalence.codegen.cn.ClassNames;
+import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
 
-import java.nio.file.Paths;
+import java.nio.file.Path;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Mojo that instruments production code
+ * Prints a banner to the log
  *
  * @author Kapralov Sergey
  */
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
-public class InstrumentMojo extends BaseMojo {
-    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
-    protected String outputDirectory;
+public class ShowBannerStage implements Stage {
+    private static final Logger LOG = LoggerFactory.getLogger(ShowBannerStage.class);
+    private final Banner banner;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
+    /**
+     * Ctor.
+     *
+     * @param banner Banner to show.
+     */
+    public ShowBannerStage(final Banner banner) {
+        this.banner = banner;
+    }
 
     @Override
-    public final void execute() throws MojoExecutionException, MojoFailureException {
-        doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
-            buildClassPath(),
-            Paths.get(outputDirectory)
-        );
+    public final void apply(final ClassPath classPath, final ClassNames classNames, final Path workingDirectory) {
+        banner.print(LOG::info);
     }
 }

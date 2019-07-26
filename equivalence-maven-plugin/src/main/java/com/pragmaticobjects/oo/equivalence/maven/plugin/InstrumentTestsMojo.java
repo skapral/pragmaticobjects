@@ -25,9 +25,9 @@
  */
 package com.pragmaticobjects.oo.equivalence.maven.plugin;
 
-import com.pragmaticobjects.oo.atom.codegen.cp.CpCombined;
-import com.pragmaticobjects.oo.atom.codegen.cp.CpFromString;
-import com.pragmaticobjects.oo.atom.codegen.stage.StandardInstrumentationStage;
+import com.pragmaticobjects.oo.equivalence.codegen.cp.CpCombined;
+import com.pragmaticobjects.oo.equivalence.codegen.cp.CpFromString;
+import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
