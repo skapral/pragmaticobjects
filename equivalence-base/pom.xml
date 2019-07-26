@@ -8,6 +8,4 @@
     </parent>
     <artifactId>equivalence-base</artifactId>
     <packaging>jar</packaging>
-    
-    
 </project>
