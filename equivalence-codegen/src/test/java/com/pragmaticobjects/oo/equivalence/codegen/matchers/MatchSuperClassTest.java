@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,75 +23,71 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.assertions.AssertCombined;
-import com.pragmaticobjects.oo.equivalence.assertions.AssertTwoObjectsEquality;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
-import com.pragmaticobjects.oo.equivalence.base.testobjects.ETuple;
-import com.pragmaticobjects.oo.equivalence.base.testobjects.ETuple24;
-import com.pragmaticobjects.oo.equivalence.base.testobjects.ETuple42;
-import com.pragmaticobjects.oo.equivalence.base.testobjects.ETuple42_2;
-import com.pragmaticobjects.oo.equivalence.base.testobjects.ETuple_2;
+import java.io.Serializable;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
+
 
 /**
  *
  * @author skapral
  */
-public class EObjectSubtypesTest extends TestsSuite {
-    public EObjectSubtypesTest() {
+public class MatchSuperClassTest extends TestsSuite {
+    public MatchSuperClassTest() {
         super(
             new TestCase(
-                "subtype vs equivalent base type",
-                new AssertCombined(
-                    new AssertTwoObjectsEquality(
-                        new ETuple42(),
-                        new ETuple(42),
-                        true
+                "match object's direct subclass",
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Integer.class),
+                    new MatchSuperClass(
+                        new MatchClass(Number.class)
                     )
                 )
             ),
             new TestCase(
-                "subtype vs non-equivalent base type",
-                new AssertCombined(
-                    new AssertTwoObjectsEquality(
-                        new ETuple42(),
-                        new ETuple(24),
-                        false
+                "mismatch object's indirect subclass",
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(Integer.class),
+                    new MatchSuperClass(
+                        new MatchClass(Object.class)
                     )
                 )
             ),
             new TestCase(
-                "two equivalent subtypes",
-                new AssertCombined(
-                    new AssertTwoObjectsEquality(
-                        new ETuple42(),
-                        new ETuple42_2(),
-                        true
+                "mismatch interface",
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(Serializable.class),
+                    new MatchSuperClass(
+                        new MatchClass(Object.class)
                     )
                 )
             ),
             new TestCase(
-                "two non-equivalent subtypes",
-                new AssertCombined(
-                    new AssertTwoObjectsEquality(
-                        new ETuple42(),
-                        new ETuple24(),
-                        false
-                    )
-                )
-            ),
-            new TestCase(
-                "two non-subtypes",
-                new AssertCombined(
-                    new AssertTwoObjectsEquality(
-                        new ETuple(42),
-                        new ETuple_2(42),
-                        false
+                "mismatch object",
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(Object.class),
+                    new MatchSuperClass(
+                        new MatchClass(Object.class)
                     )
                 )
             )
         );
+    }
+}
+
+class MatchClass implements ElementMatcher<TypeDescription> {
+    private final Class<?> clazz;
+
+    public MatchClass(Class<?> clazz) {
+        this.clazz = clazz;
+    }
+    
+    @Override
+    public final boolean matches(TypeDescription td) {
+        return td.represents(clazz);
     }
 }

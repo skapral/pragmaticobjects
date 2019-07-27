@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-assertions
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,18 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.assertions;
-
-/**
- *
- * @author skapral
- */
-public class AssertObjectHashCode extends AssertCombined {
-    public AssertObjectHashCode(Object obj, int hashCode) {
-        super(
-            new AssertHashCodeResult(obj, hashCode),
-            new AssertHashCodeConsistent(obj)
-        );
-    }
-    
-}
+package com.pragmaticobjects.oo.equivalence.codegen.matchers;

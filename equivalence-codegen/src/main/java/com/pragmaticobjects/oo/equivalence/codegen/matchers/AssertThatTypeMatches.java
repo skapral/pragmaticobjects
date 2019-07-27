@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-assertions
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,18 +23,44 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.assertions;
+package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+
+import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- *
+ * Assertion which passes if the {@link ElementMatcher} under the test matches
+ * the provided {@link TypeDescription}
+ * 
  * @author skapral
  */
-public class AssertObjectHashCode extends AssertCombined {
-    public AssertObjectHashCode(Object obj, int hashCode) {
-        super(
-            new AssertHashCodeResult(obj, hashCode),
-            new AssertHashCodeConsistent(obj)
+public class AssertThatTypeMatches implements Assertion {
+    private final TypeDescription typeDescription;
+    private final ElementMatcher<TypeDescription> matcher;
+
+    /**
+     * Ctor.
+     *
+     * @param typeDescription Type description
+     * @param matcher Matcher
+     */
+    public AssertThatTypeMatches(TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
+        this.typeDescription = typeDescription;
+        this.matcher = matcher;
+    }
+
+    public AssertThatTypeMatches(Class<?> clazz, ElementMatcher<TypeDescription> matcher) {
+        this(
+            new TypeDescription.ForLoadedType(clazz),
+            matcher
         );
     }
     
+    @Override
+    public final void check() throws Exception {
+        assertThat(matcher.matches(typeDescription)).isTrue();
+    }
 }

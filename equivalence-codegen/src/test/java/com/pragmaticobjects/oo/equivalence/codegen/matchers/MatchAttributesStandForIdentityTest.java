@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-assertions
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,18 +23,33 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.assertions;
+package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 
 /**
  *
  * @author skapral
  */
-public class AssertObjectHashCode extends AssertCombined {
-    public AssertObjectHashCode(Object obj, int hashCode) {
+public class MatchAttributesStandForIdentityTest extends TestsSuite {
+    public MatchAttributesStandForIdentityTest() {
         super(
-            new AssertHashCodeResult(obj, hashCode),
-            new AssertHashCodeConsistent(obj)
+            new TestCase(
+                "match class with final attributes",
+                new AssertThatTypeMatches(
+                    EClass.class,
+                    new MatchAttributesStandForIdentity()
+                )
+            )
         );
     }
-    
+}
+
+class EClass {
+    private final Object id;
+
+    public EClass(Object id) {
+        this.id = id;
+    }
 }

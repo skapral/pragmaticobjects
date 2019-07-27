@@ -25,27 +25,45 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import java.util.Optional;
+import com.pragmaticobjects.oo.equivalence.assertions.AssertAssertionFails;
+import com.pragmaticobjects.oo.equivalence.assertions.AssertAssertionPasses;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
- *
- * @author skapral
+ * Tests suite for {@link AssertThatTypeDoesNotMatch}
+ * @author Kapralov Sergey
  */
-public class MatchSuperClass implements ElementMatcher<TypeDescription> {
-    private final ElementMatcher<TypeDescription> superClassMatcher;
+public class AssertThatTypeDoesNotMatchTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
+    public AssertThatTypeDoesNotMatchTest() {
+        super(
+            new TestCase(
+                "Positive case",
+                new AssertAssertionPasses(
+                    new AssertThatTypeDoesNotMatch(
+                        new TypeDescription.ForLoadedType(Foo.class),
+                        ElementMatchers.named("foo.bar.WrongClassName")
+                    )
+                )
+            ),
+            new TestCase(
+                "Negative case",
+                new AssertAssertionFails(
+                    new AssertThatTypeDoesNotMatch(
+                        new TypeDescription.ForLoadedType(Foo.class),
+                        ElementMatchers.named(FOO_CLASS_NAME)
+                    )
+                )
+            )
+        );
+    }
 
-    public MatchSuperClass(ElementMatcher<TypeDescription> superClassMatcher) {
-        this.superClassMatcher = superClassMatcher;
-    }
-    
-    @Override
-    public boolean matches(TypeDescription td) {
-        return Optional.of(td)
-                .map(TypeDescription::getSuperClass)
-                .map(TypeDescription.Generic::asErasure)
-                .map(superClassMatcher::matches)
-                .orElse(Boolean.FALSE);
-    }
+    //CHECKSTYLE:OFF
+    private static class Foo {}
+    private static String FOO_CLASS_NAME = Foo.class.getName();
 }

@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-assertions
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,18 +23,47 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.assertions;
+package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+
+import com.pragmaticobjects.oo.equivalence.assertions.AssertAssertionFails;
+import com.pragmaticobjects.oo.equivalence.assertions.AssertAssertionPasses;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
- *
- * @author skapral
+ * Tests suite for {@link AssertThatTypeMatches}
+ * @author Kapralov Sergey
  */
-public class AssertObjectHashCode extends AssertCombined {
-    public AssertObjectHashCode(Object obj, int hashCode) {
+public class AssertThatTypeMatchesTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
+    public AssertThatTypeMatchesTest() {
         super(
-            new AssertHashCodeResult(obj, hashCode),
-            new AssertHashCodeConsistent(obj)
+            new TestCase(
+                "Positive case",
+                new AssertAssertionPasses(
+                    new AssertThatTypeMatches(
+                        new TypeDescription.ForLoadedType(Foo.class),
+                        ElementMatchers.named(FOO_CLASS_NAME)
+                    )
+                )
+            ),
+            new TestCase(
+                "Negative case",
+                new AssertAssertionFails(
+                    new AssertThatTypeMatches(
+                        new TypeDescription.ForLoadedType(Foo.class),
+                        ElementMatchers.named("foo.bar.WrongClassName")
+                    )
+                )
+            )
         );
     }
-    
+
+    //CHECKSTYLE:OFF
+    private static class Foo {}
+    private static String FOO_CLASS_NAME = Foo.class.getName();
 }
