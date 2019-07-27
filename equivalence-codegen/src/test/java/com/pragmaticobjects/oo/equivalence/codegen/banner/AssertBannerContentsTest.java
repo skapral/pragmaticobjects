@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-assertions
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,30 +23,43 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.assertions;
+package com.pragmaticobjects.oo.equivalence.codegen.banner;
 
-import java.util.Optional;
-import org.assertj.core.api.Assertions;
+import com.pragmaticobjects.oo.equivalence.assertions.AssertAssertionFails;
+import com.pragmaticobjects.oo.equivalence.assertions.AssertAssertionPasses;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+
 
 /**
+ * Tests suite for {@link AssertBannerContents}
  *
- * @author skapral
+ * @author Kapralov Sergey
  */
-public class AssertEqualsSymmetric implements Assertion {
-    private final Object obj1;
-    private final Object obj2;
-
-    public AssertEqualsSymmetric(Object obj1, Object obj2) {
-        this.obj1 = obj1;
-        this.obj2 = obj2;
-    }
-
-    @Override
-    public final void check() throws Exception {
-        boolean check1 = Optional.ofNullable(obj1).map(obj -> obj.equals(obj2)).orElse(obj1 == obj2);
-        boolean check2 = Optional.ofNullable(obj2).map(obj -> obj.equals(obj1)).orElse(obj1 == obj2);
-        Assertions.assertThat(check1)
-                .withFailMessage("Assert equality result to be symmetric:\r\n obj1 <%s>\r\n obj2 <%s>", obj1, obj2)
-                .isEqualTo(check2);
+public class AssertBannerContentsTest extends TestsSuite {
+    /**
+     * Ctor.
+     */
+    public AssertBannerContentsTest() {
+        super(
+            new TestCase(
+                "assertion failure",
+                new AssertAssertionFails(
+                    new AssertBannerContents(
+                        new BnnrExplicit("Just cause"),
+                        "Wrong way!"
+                    )
+                )
+            ),
+            new TestCase(
+                "assertion success",
+                new AssertAssertionPasses(
+                    new AssertBannerContents(
+                        new BnnrExplicit("Just cause"),
+                        "Just cause"
+                    )
+                )
+            )
+        );
     }
 }

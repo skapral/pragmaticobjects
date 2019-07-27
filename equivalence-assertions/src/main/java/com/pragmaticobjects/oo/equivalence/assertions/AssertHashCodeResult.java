@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-assertions
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,28 +25,26 @@
  */
 package com.pragmaticobjects.oo.equivalence.assertions;
 
-import java.util.Optional;
 import org.assertj.core.api.Assertions;
 
 /**
  *
  * @author skapral
  */
-public class AssertEqualsSymmetric implements Assertion {
-    private final Object obj1;
-    private final Object obj2;
+public class AssertHashCodeResult implements Assertion {
+    private final Object obj;
+    private final int hashCode;
 
-    public AssertEqualsSymmetric(Object obj1, Object obj2) {
-        this.obj1 = obj1;
-        this.obj2 = obj2;
+    public AssertHashCodeResult(Object obj, int hashCode) {
+        this.obj = obj;
+        this.hashCode = hashCode;
     }
 
     @Override
     public final void check() throws Exception {
-        boolean check1 = Optional.ofNullable(obj1).map(obj -> obj.equals(obj2)).orElse(obj1 == obj2);
-        boolean check2 = Optional.ofNullable(obj2).map(obj -> obj.equals(obj1)).orElse(obj1 == obj2);
-        Assertions.assertThat(check1)
-                .withFailMessage("Assert equality result to be symmetric:\r\n obj1 <%s>\r\n obj2 <%s>", obj1, obj2)
-                .isEqualTo(check2);
+        int hash = obj.hashCode();
+        Assertions.assertThat(obj.hashCode())
+                .withFailMessage("Expected object's hashCode to be equal to <%s>\r\n obj <%s>", hash, obj)
+                .isEqualTo(hashCode);
     }
 }

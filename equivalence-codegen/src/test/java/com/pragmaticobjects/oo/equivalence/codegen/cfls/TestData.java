@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-assertions
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,30 +23,34 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.assertions;
+package com.pragmaticobjects.oo.equivalence.codegen.cfls;
 
-import java.util.Optional;
-import org.assertj.core.api.Assertions;
+import net.bytebuddy.dynamic.ClassFileLocator;
+import org.apache.commons.io.IOUtils;
 
-/**
- *
- * @author skapral
- */
-public class AssertEqualsSymmetric implements Assertion {
-    private final Object obj1;
-    private final Object obj2;
+import java.util.HashMap;
 
-    public AssertEqualsSymmetric(Object obj1, Object obj2) {
-        this.obj1 = obj1;
-        this.obj2 = obj2;
+//CHECKSTYLE:OFF
+final class TestData {
+    public static final ClassFileLocator CFL_FOO;
+
+    static {
+        try {
+            final HashMap<String, byte[]> bcMap = new HashMap<>();
+            final String fooName = Foo.class.getName();
+            final String fooPath = fooName.replace(".", "/") + ".class";
+            bcMap.put(fooName, IOUtils.resourceToByteArray(
+                    fooPath,
+                    AssertClassFileLocatorSourceDoesntResolveAClassNameTest.class.getClassLoader()
+            ));
+            CFL_FOO = new ClassFileLocator.Simple(bcMap);
+        } catch(Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
-    @Override
-    public final void check() throws Exception {
-        boolean check1 = Optional.ofNullable(obj1).map(obj -> obj.equals(obj2)).orElse(obj1 == obj2);
-        boolean check2 = Optional.ofNullable(obj2).map(obj -> obj.equals(obj1)).orElse(obj1 == obj2);
-        Assertions.assertThat(check1)
-                .withFailMessage("Assert equality result to be symmetric:\r\n obj1 <%s>\r\n obj2 <%s>", obj1, obj2)
-                .isEqualTo(check2);
-    }
+    public static final class Foo {}
+    public static final String FOO_NAME = Foo.class.getName();
+    public static final class Bar {}
+    public static final String BAR_NAME = Bar.class.getName();
 }

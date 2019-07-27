@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-assertions
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,28 +25,26 @@
  */
 package com.pragmaticobjects.oo.equivalence.assertions;
 
-import java.util.Optional;
 import org.assertj.core.api.Assertions;
 
 /**
  *
  * @author skapral
  */
-public class AssertEqualsSymmetric implements Assertion {
-    private final Object obj1;
-    private final Object obj2;
+public class AssertHashCodeConsistent implements Assertion {
+    private final Object obj;
 
-    public AssertEqualsSymmetric(Object obj1, Object obj2) {
-        this.obj1 = obj1;
-        this.obj2 = obj2;
+    public AssertHashCodeConsistent(Object obj) {
+        this.obj = obj;
     }
 
     @Override
     public final void check() throws Exception {
-        boolean check1 = Optional.ofNullable(obj1).map(obj -> obj.equals(obj2)).orElse(obj1 == obj2);
-        boolean check2 = Optional.ofNullable(obj2).map(obj -> obj.equals(obj1)).orElse(obj1 == obj2);
+        int check1 = obj.hashCode();
+        int check2 = obj.hashCode();
+        
         Assertions.assertThat(check1)
-                .withFailMessage("Assert equality result to be symmetric:\r\n obj1 <%s>\r\n obj2 <%s>", obj1, obj2)
+                .withFailMessage("Expected hash code result to be consistent:\r\n obj <%s>", obj)
                 .isEqualTo(check2);
     }
 }
