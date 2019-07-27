@@ -52,5 +52,4 @@ public class ETuple extends EObject {
     protected final Class<? extends EObject> baseType() {
         return ETuple.class;
     }
-
 }

@@ -31,6 +31,14 @@ import com.pragmaticobjects.oo.equivalence.codegen.plugin.ImplementEObjectAttrib
 import com.pragmaticobjects.oo.equivalence.codegen.plugin.MarkAsEObjectPlugin;
 import com.pragmaticobjects.oo.equivalence.codegen.plugin.VerbosePlugin;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.ConjunctionMatcher;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchAttributesStandForIdentity;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchSuperClass;
+import com.pragmaticobjects.oo.equivalence.codegen.plugin.ImplementEObjectBaseTypePlugin;
+import com.pragmaticobjects.oo.equivalence.codegen.plugin.ImplementEObjectHashSeedPlugin;
+import com.pragmaticobjects.oo.equivalence.codegen.plugin.SequentialPlugin;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
  * Standard instrumentation scenario
@@ -40,13 +48,9 @@ import com.pragmaticobjects.oo.equivalence.base.EObject;
 public class StandardInstrumentationStage extends SequenceStage {
     /**
      * Ctor.
-     *
-     * @param stubbedInstrumentation generates stubbed implementations of
-     * certain calls. Useful for testing.
      */
-    public StandardInstrumentationStage(boolean stubbedInstrumentation) {
-        super(
-            new ShowBannerStage(
+    public StandardInstrumentationStage() {
+        super(new ShowBannerStage(
                 new BnnrFromResource(
                     "banner"
                 )
@@ -54,27 +58,37 @@ public class StandardInstrumentationStage extends SequenceStage {
             new ShowStatsStage(),
             new ByteBuddyStage(
                 new ConditionalPlugin(
-                    type -> !type.isInterface() && type.getSuperClass().represents(Object.class),
+                    new ConjunctionMatcher<TypeDescription>(
+                        new MatchSuperClass(
+                            ElementMatchers.is(Object.class)
+                        ),
+                        new MatchAttributesStandForIdentity()
+                    ),
                     new VerbosePlugin(
-                            new MarkAsEObjectPlugin()
+                        new MarkAsEObjectPlugin()
                     )
                 )
             ),
             new ByteBuddyStage(
                 new ConditionalPlugin(
-                    type -> !type.isInterface() && type.getSuperClass().represents(EObject.class),
-                    new VerbosePlugin(
-                        new ImplementEObjectAttributesPlugin()
+                    new ConjunctionMatcher<TypeDescription>(
+                        new MatchSuperClass(
+                            ElementMatchers.is(EObject.class)
+                        )
+                    ),
+                    new SequentialPlugin(
+                        new VerbosePlugin(
+                            new ImplementEObjectAttributesPlugin()
+                        ),
+                        new VerbosePlugin(
+                            new ImplementEObjectBaseTypePlugin()
+                        ),
+                        new VerbosePlugin(
+                            new ImplementEObjectHashSeedPlugin()
+                        )
                     )
                 )
             )
         );
-    }
-
-    /**
-     * Default ctor.
-     */
-    public StandardInstrumentationStage() {
-        this(false);
     }
 }

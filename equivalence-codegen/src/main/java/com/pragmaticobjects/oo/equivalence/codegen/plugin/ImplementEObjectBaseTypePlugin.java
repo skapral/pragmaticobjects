@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * project-name
+ * equivalence-maven-plugin
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,34 +23,29 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base.testobjects;
+package com.pragmaticobjects.oo.equivalence.codegen.plugin;
 
-import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.codegen.plugin.bb.Implementation;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.implementation.bytecode.constant.ClassConstant;
+import net.bytebuddy.implementation.bytecode.member.MethodReturn;
+import net.bytebuddy.jar.asm.Opcodes;
 
 /**
  *
  * @author skapral
  */
-public class ETuple_2 extends EObject {
-    private final Object[] identity;
-
-    public ETuple_2(Object... identity) {
-        this.identity = identity;
-    }
-
+public class ImplementEObjectBaseTypePlugin implements Plugin {
     @Override
-    protected final Object[] attributes() {
-        return identity;
+    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
+        StackManipulation baseTypeImpl = new StackManipulation.Compound(
+            ClassConstant.of(typeDescription),
+            MethodReturn.REFERENCE
+        );
+        return builder
+                .defineMethod("baseType", Class.class, Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL)
+                .intercept(new Implementation(baseTypeImpl));
     }
-
-    @Override
-    protected final int hashSeed() {
-        return 67890;
-    }
-
-    @Override
-    protected final Class<? extends EObject> baseType() {
-        return ETuple_2.class;
-    }
-
 }

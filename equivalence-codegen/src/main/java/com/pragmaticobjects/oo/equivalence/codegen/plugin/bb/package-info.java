@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * project-name
+ * equivalence-maven-plugin
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,34 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base.testobjects;
-
-import com.pragmaticobjects.oo.equivalence.base.EObject;
-
-/**
- *
- * @author skapral
- */
-public class ETuple_2 extends EObject {
-    private final Object[] identity;
-
-    public ETuple_2(Object... identity) {
-        this.identity = identity;
-    }
-
-    @Override
-    protected final Object[] attributes() {
-        return identity;
-    }
-
-    @Override
-    protected final int hashSeed() {
-        return 67890;
-    }
-
-    @Override
-    protected final Class<? extends EObject> baseType() {
-        return ETuple_2.class;
-    }
-
-}
+package com.pragmaticobjects.oo.equivalence.codegen.plugin.bb;

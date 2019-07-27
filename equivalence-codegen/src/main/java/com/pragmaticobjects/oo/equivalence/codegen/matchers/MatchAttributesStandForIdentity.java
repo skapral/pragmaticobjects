@@ -23,34 +23,33 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base.testobjects;
+package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.base.EObject;
+import java.util.stream.Collectors;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
  *
  * @author skapral
  */
-public class ETuple_2 extends EObject {
-    private final Object[] identity;
-
-    public ETuple_2(Object... identity) {
-        this.identity = identity;
-    }
-
+public class MatchAttributesStandForIdentity implements ElementMatcher<TypeDescription> {
     @Override
-    protected final Object[] attributes() {
-        return identity;
+    public boolean matches(TypeDescription td) {
+        return td.getDeclaredFields().stream()
+                .filter(ElementMatchers.not(
+                        ElementMatchers.isSynthetic()
+                )::matches)
+                .filter(ElementMatchers.not(
+                        ElementMatchers.isStatic()
+                )::matches)
+                .map(
+                    new ConjunctionMatcher<>(
+                        ElementMatchers.isPrivate(),
+                        ElementMatchers.isFinal()
+                    )::matches
+                )
+                .collect(Collectors.reducing(true, Boolean::logicalAnd));
     }
-
-    @Override
-    protected final int hashSeed() {
-        return 67890;
-    }
-
-    @Override
-    protected final Class<? extends EObject> baseType() {
-        return ETuple_2.class;
-    }
-
 }

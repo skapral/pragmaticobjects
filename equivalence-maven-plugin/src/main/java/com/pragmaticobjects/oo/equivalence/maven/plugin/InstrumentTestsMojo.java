@@ -48,14 +48,11 @@ public class InstrumentTestsMojo extends BaseMojo {
     protected String outputDirectory;
     @Parameter(defaultValue = "${project.build.testOutputDirectory}", required = true, readonly = true)
     protected String testOutputDirectory;
-
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
     
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
+            new StandardInstrumentationStage(),
             new CpCombined(
                 buildClassPath(),
                 new CpFromString(

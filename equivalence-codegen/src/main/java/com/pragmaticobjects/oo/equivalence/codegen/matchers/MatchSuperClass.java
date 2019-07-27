@@ -23,34 +23,26 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base.testobjects;
+package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.base.EObject;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
 
 /**
  *
  * @author skapral
  */
-public class ETuple_2 extends EObject {
-    private final Object[] identity;
+public class MatchSuperClass implements ElementMatcher<TypeDescription> {
+    private final ElementMatcher<TypeDescription> superClassMatcher;
 
-    public ETuple_2(Object... identity) {
-        this.identity = identity;
+    public MatchSuperClass(ElementMatcher<TypeDescription> superClassMatcher) {
+        this.superClassMatcher = superClassMatcher;
     }
-
+    
     @Override
-    protected final Object[] attributes() {
-        return identity;
+    public boolean matches(TypeDescription td) {
+        return superClassMatcher.matches(
+            td.getSuperClass().asErasure()
+        );
     }
-
-    @Override
-    protected final int hashSeed() {
-        return 67890;
-    }
-
-    @Override
-    protected final Class<? extends EObject> baseType() {
-        return ETuple_2.class;
-    }
-
 }

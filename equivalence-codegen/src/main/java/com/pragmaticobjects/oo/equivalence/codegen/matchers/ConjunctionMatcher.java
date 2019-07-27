@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * project-name
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,34 +23,38 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base.testobjects;
+package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.base.EObject;
+import io.vavr.collection.List;
+import net.bytebuddy.matcher.ElementMatcher;
 
 /**
+ * Conjunction matcher: matches a type if it is matched by all provided matchers.
  *
- * @author skapral
+ * @author Kapralov Sergey
+ * @param <T> matcher's type
  */
-public class ETuple_2 extends EObject {
-    private final Object[] identity;
+public class ConjunctionMatcher<T> implements ElementMatcher<T> {
+    private final List<ElementMatcher<T>> matchers;
 
-    public ETuple_2(Object... identity) {
-        this.identity = identity;
+    /**
+     * Ctor.
+     * @param matchers Matchers to conjunct
+     */
+    public ConjunctionMatcher(ElementMatcher<T>... matchers) {
+        this(List.of(matchers));
+    }
+
+    /**
+     * Ctor.
+     * @param matchers Matchers to conjunct
+     */
+    public ConjunctionMatcher(List<ElementMatcher<T>> matchers) {
+        this.matchers = matchers;
     }
 
     @Override
-    protected final Object[] attributes() {
-        return identity;
+    public final boolean matches(T target) {
+        return matchers.foldLeft(true, (v, m) -> v && m.matches(target));
     }
-
-    @Override
-    protected final int hashSeed() {
-        return 67890;
-    }
-
-    @Override
-    protected final Class<? extends EObject> baseType() {
-        return ETuple_2.class;
-    }
-
 }

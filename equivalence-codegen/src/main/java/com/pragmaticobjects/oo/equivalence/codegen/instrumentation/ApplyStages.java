@@ -80,14 +80,14 @@ public class ApplyStages implements Instrumentation {
 
     @Override
     public final void apply() {
-        final ClassPath classPath = new CpCombined(
+        final ClassPath cp = new CpCombined(
             this.classPath,
             new CpExplicit(
                 workingDirectory
             )
         );
         for(Stage stage : stages) {
-            stage.apply(classPath, classNames, workingDirectory);
+            stage.apply(cp, classNames, workingDirectory);
         }
     }
 }

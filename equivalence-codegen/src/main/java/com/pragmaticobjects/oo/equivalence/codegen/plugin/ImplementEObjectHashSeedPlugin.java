@@ -23,40 +23,29 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.stage;
+package com.pragmaticobjects.oo.equivalence.codegen.plugin;
 
-import com.pragmaticobjects.oo.equivalence.codegen.cn.ClassNames;
-import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import com.pragmaticobjects.oo.equivalence.codegen.plugin.bb.Implementation;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.implementation.bytecode.StackManipulation;
+import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
+import net.bytebuddy.implementation.bytecode.member.MethodReturn;
+import net.bytebuddy.jar.asm.Opcodes;
 
 /**
- * Applies stage only to non-empty woking directory
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public class DoOnNonEmptyWorkingDirectoryStage implements Stage {
-    private final Stage stage;
-
-    /**
-     * Ctor.
-     *
-     * @param stage {@link Stage}
-     */
-    public DoOnNonEmptyWorkingDirectoryStage(final Stage stage) {
-        this.stage = stage;
-    }
-
+public class ImplementEObjectHashSeedPlugin implements Plugin {
     @Override
-    public final void apply(final ClassPath classPath, final ClassNames classNames, final Path workingDirectory) {
-        try {
-            if (Files.list(workingDirectory).findAny().isPresent()) {
-                stage.apply(classPath, classNames, workingDirectory);
-            }
-        } catch(IOException ex) {
-            throw new RuntimeException("Failed attempt to access path " + workingDirectory.toString(), ex);
-        }
+    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
+        StackManipulation baseTypeImpl = new StackManipulation.Compound(
+            IntegerConstant.forValue(1),
+            MethodReturn.INTEGER
+        );
+        return builder
+                .defineMethod("hashSeed", int.class, Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL)
+                .intercept(new Implementation(baseTypeImpl));
     }
 }
