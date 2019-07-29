@@ -61,17 +61,17 @@ public class ByteBuddyStage implements Stage {
 
     @Override
     public final void apply(final ClassPath classPath, final ClassNames classNames, final Path workingDirectory) {
-        try {
-            final ClassFileLocator cfl = new CflsCompound(
-                new CflsFromClassPath(
-                    classPath
-                ),
-                new CflsExplicit(
-                    ClassFileLocator.ForClassLoader.ofSystemLoader()
-                )
-            ).classFileLocator();
-            final TypePool tps = TypePool.Default.of(cfl);
-            for (String className : classNames.classNames()) {
+        final ClassFileLocator cfl = new CflsCompound(
+            new CflsFromClassPath(
+                classPath
+            ),
+            new CflsExplicit(
+                ClassFileLocator.ForClassLoader.ofSystemLoader()
+            )
+        ).classFileLocator();
+        final TypePool tps = TypePool.Default.of(cfl);
+        for (String className : classNames.classNames()) {
+            try {
                 LOG.debug(" -> " + className);
                 final TypePool.Resolution resolution = tps.describe(className);
                 if (resolution.isResolved()) {
@@ -82,9 +82,10 @@ public class ByteBuddyStage implements Stage {
                 } else {
                     throw new RuntimeException("Class " + className + " cannot be resolved");
                 }
+            } catch(Exception ex) {
+                LOG.error("Exception at transforming {} with {}", className, task.getClass().getSimpleName(), ex);
+                throw new RuntimeException(ex);
             }
-        } catch(Exception ex) {
-            throw new RuntimeException(ex);
         }
     }
 }

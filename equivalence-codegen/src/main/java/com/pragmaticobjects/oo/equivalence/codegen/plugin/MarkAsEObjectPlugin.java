@@ -33,6 +33,9 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.jar.asm.ClassVisitor;
 import net.bytebuddy.jar.asm.MethodVisitor;
+import net.bytebuddy.jar.asm.signature.SignatureReader;
+import net.bytebuddy.jar.asm.signature.SignatureVisitor;
+import net.bytebuddy.jar.asm.signature.SignatureWriter;
 import net.bytebuddy.pool.TypePool;
 import net.bytebuddy.utility.OpenedClassReader;
 
@@ -42,8 +45,23 @@ import net.bytebuddy.utility.OpenedClassReader;
  */
 public class MarkAsEObjectPlugin implements Plugin {
 
+    private static String patchSignature(String origin) {
+        String[] split = origin.split("<.*>");
+        if (split.length > 1) {
+            split[1].replace("java/lang/Object", "java/lang/EObject");
+        }
+        return null;
+    }
+
+    public static void main(String... args) {
+        System.out.println(
+                patchSignature("<T:Ljava/lang/Object;>Ljava/lang/Object;Ljava/io/Serializable;")
+        );
+    }
+
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
+
         return builder.visit(
             new AsmVisitorWrapper() {
                 @Override
@@ -58,32 +76,60 @@ public class MarkAsEObjectPlugin implements Plugin {
 
                 @Override
                 public ClassVisitor wrap(TypeDescription instrumentedType,
-                                         ClassVisitor classVisitor,
-                                         net.bytebuddy.implementation.Implementation.Context implementationContext,
-                                         TypePool typePool,
-                                         FieldList<FieldDescription.InDefinedShape> fields,
-                                         MethodList<?> methods,
-                                         int writerFlags,
-                                         int readerFlags) {
+                        ClassVisitor classVisitor,
+                        net.bytebuddy.implementation.Implementation.Context implementationContext,
+                        TypePool typePool,
+                        FieldList<FieldDescription.InDefinedShape> fields,
+                        MethodList<?> methods,
+                        int writerFlags,
+                        int readerFlags) {
                     return new ClassVisitor(OpenedClassReader.ASM_API, classVisitor) {
                         private boolean wasMarked = false;
-                        
+
                         @Override
                         public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-                            if("java/lang/Object".equals(superName)) {
+                            if ("java/lang/Object".equals(superName)) {
                                 superName = "com/pragmaticobjects/oo/equivalence/base/EObject";
-                                wasMarked = true;
+                                if (signature != null) {
+                                    SignatureWriter sw = new SignatureWriter() {
+                                        private boolean typeArg = false;
+
+                                        @Override
+                                        public void visitFormalTypeParameter(String name) {
+                                            typeArg = true;
+                                            super.visitFormalTypeParameter(name);
+                                        }
+
+                                        @Override
+                                        public SignatureVisitor visitSuperclass() {
+                                            typeArg = false;
+                                            return super.visitSuperclass();
+                                        }
+
+                                        @Override
+                                        public void visitClassType(String name) {
+                                            if (!typeArg && "java/lang/Object".equals(name)) {
+                                                name = "com/pragmaticobjects/oo/equivalence/base/EObject";
+                                            }
+                                            super.visitClassType(name);
+                                        }
+                                    };
+                                    new SignatureReader(signature).accept(sw);
+                                    signature = sw.toString();
+                                    wasMarked = true;
+                                }
                             }
+                            System.out.println(signature);
                             super.visit(version, access, name, signature, superName, interfaces);
                         }
 
                         @Override
                         public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
-                            if(wasMarked && "<init>".equals(name)) {
+                            if (wasMarked && "<init>".equals(name)) {
                                 return new MethodVisitor(OpenedClassReader.ASM_API, super.visitMethod(access, name, descriptor, signature, exceptions)) {
                                     @Override
                                     public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-                                        if("java/lang/Object".equals(owner)) {
+                                        if ("java/lang/Object".equals(owner)) {
                                             owner = "com/pragmaticobjects/oo/equivalence/base/EObject";
                                         }
                                         super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
