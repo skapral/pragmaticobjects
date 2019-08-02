@@ -27,6 +27,7 @@ package com.pragmaticobjects.oo.equivalence.base;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -114,6 +115,7 @@ public abstract class EObject {
             add(Float.class);
             add(Double.class);
             add(UUID.class);
+            add(Optional.class);
         }
     };
 

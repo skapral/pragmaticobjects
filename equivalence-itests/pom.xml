@@ -16,6 +16,10 @@
             <artifactId>equivalence-base</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.pragmaticobjects.oo.equivalence</groupId>
+            <artifactId>equivalence-assertions</artifactId>
+        </dependency>
+        <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
         </dependency>

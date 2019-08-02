@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,48 +23,32 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.cn;
+package com.pragmaticobjects.oo.equivalence.itests.classes;
 
-import io.vavr.collection.List;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
- * Class names, extracted from all .class files from certain directory.
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public class CnFromPath implements ClassNames {
-    private final Path path;
+public class Counter {
+    private static final Map<String, Integer> STATE = new HashMap<>();
+    
+    private final String identity;
 
-    /**
-     * Ctor.
-     *
-     * @param path Path to scan for class names.
-     */
-    public CnFromPath(final Path path) {
-        this.path = path;
+    public Counter(String identity) {
+        this.identity = identity;
     }
-
-    @Override
-    public final List<String> classNames() {
-        try {
-            if(Files.notExists(path)) {
-                return List.empty();
+    
+    public final Integer next() {
+        return STATE.compute(identity, (key, value) -> {
+            if(Objects.isNull(value)) {
+                return 0;
+            } else {
+                return value++;
             }
-            final List<String> classes = Files.find(path, Integer.MAX_VALUE, (p, bf) -> p.toString().endsWith(".class"))
-                .map(path::relativize)
-                .map(p -> List.ofAll(StreamSupport.stream(p.spliterator(), false)))
-                .map(pl -> pl.map(Object::toString).collect(Collectors.joining(".")))
-                .map(s -> s.replaceFirst(".class$", ""))
-                .filter(s -> !"module-info".equals(s))
-                .collect(List.collector());
-            return classes;
-        } catch(Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        });
     }
 }

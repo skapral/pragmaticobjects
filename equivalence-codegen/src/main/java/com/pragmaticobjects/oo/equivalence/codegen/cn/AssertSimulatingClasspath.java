@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,46 +25,45 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.cn;
 
+import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
 import io.vavr.collection.List;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.function.Function;
 
 /**
- * Class names, extracted from all .class files from certain directory.
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public class CnFromPath implements ClassNames {
-    private final Path path;
+public class AssertSimulatingClasspath implements Assertion {
+    private final Function<Path, Assertion> assertionFn;
+    private final List<Path> classes;
 
-    /**
-     * Ctor.
-     *
-     * @param path Path to scan for class names.
-     */
-    public CnFromPath(final Path path) {
-        this.path = path;
+    public AssertSimulatingClasspath(Function<Path, Assertion> assertionFn, List<Path> classes) {
+        this.assertionFn = assertionFn;
+        this.classes = classes;
     }
 
+    public AssertSimulatingClasspath(Function<Path, Assertion> assertionFn, Path... classes) {
+        this(assertionFn, List.of(classes));
+    }
+    
     @Override
-    public final List<String> classNames() {
-        try {
-            if(Files.notExists(path)) {
-                return List.empty();
+    public final void check() throws Exception {
+        Path tmpDir = Files.createTempDirectory("SimulatingClassPath");
+        for(Path clazz : classes) {
+            if(clazz.isAbsolute()) {
+                throw new RuntimeException(
+                    String.format("Expected non-absolute paths, found %s", clazz)
+                );
             }
-            final List<String> classes = Files.find(path, Integer.MAX_VALUE, (p, bf) -> p.toString().endsWith(".class"))
-                .map(path::relativize)
-                .map(p -> List.ofAll(StreamSupport.stream(p.spliterator(), false)))
-                .map(pl -> pl.map(Object::toString).collect(Collectors.joining(".")))
-                .map(s -> s.replaceFirst(".class$", ""))
-                .filter(s -> !"module-info".equals(s))
-                .collect(List.collector());
-            return classes;
-        } catch(Exception ex) {
-            throw new RuntimeException(ex);
+            try {
+                Files.createDirectories(tmpDir.resolve(clazz).getParent());
+                Files.createFile(tmpDir.resolve(clazz));
+            } catch(Exception ex) {
+                throw new RuntimeException(ex);
+            }
         }
+        assertionFn.apply(tmpDir).check();
     }
 }

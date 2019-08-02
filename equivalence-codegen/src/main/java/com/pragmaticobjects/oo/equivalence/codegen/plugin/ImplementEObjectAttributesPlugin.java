@@ -37,6 +37,7 @@ import net.bytebuddy.implementation.bytecode.member.FieldAccess;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
 import net.bytebuddy.jar.asm.Opcodes;
+import net.bytebuddy.matcher.ElementMatchers;
 
 
 
@@ -49,6 +50,8 @@ public class ImplementEObjectAttributesPlugin implements Plugin {
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
         StackManipulation attributesImpl = new StackManipulation.Compound(
             List.ofAll(typeDescription.getDeclaredFields())
+                .filter(ElementMatchers.not(ElementMatchers.isSynthetic())::matches)
+                .filter(ElementMatchers.not(ElementMatchers.isStatic())::matches)
                 .map(field -> loadAttribute(field))
                 .transform(list -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(list.asJava())),
             MethodReturn.REFERENCE

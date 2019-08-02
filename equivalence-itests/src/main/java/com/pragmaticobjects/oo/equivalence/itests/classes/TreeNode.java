@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-itests
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,9 +23,31 @@
  * THE SOFTWARE.
  * ============================================================================
  */
+package com.pragmaticobjects.oo.equivalence.itests.classes;
+
+import java.util.Optional;
+
 /**
- * A basis for equivalence logic.
  *
- * @author Kapralov Sergey
+ * @author skapral
+ * @param <T>
  */
-package com.pragmaticobjects.oo.equivalence.itests.assertions;
+public class TreeNode<T> {
+    private final T value;
+    private final Optional<TreeNode<T>> left;
+    private final Optional<TreeNode<T>> right;
+
+    public TreeNode(T value, Optional<TreeNode<T>> left, Optional<TreeNode<T>> right) {
+        this.value = value;
+        this.left = left;
+        this.right = right;
+    }
+
+    public TreeNode(T value, TreeNode<T> left, TreeNode<T> right) {
+        this(value, Optional.of(left), Optional.of(right));
+    }
+
+    public TreeNode(T value) {
+        this(value, Optional.empty(), Optional.empty());
+    }
+}

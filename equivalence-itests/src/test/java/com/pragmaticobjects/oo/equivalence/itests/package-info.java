@@ -23,36 +23,9 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.itests.assertions;
-
-class B extends A {
-    public B() {
-        super(42);
-    }
-}
-
-class С extends A {
-    public С() {
-        super(42);
-    }
-}
-
 /**
+ * A basis for equivalence logic.
  *
- * @author skapral
+ * @author Kapralov Sergey
  */
-public class A {
-    private final int a;
-
-    public A(int a) {
-        this.a = a;
-    }
-
-    public static void main(String... args) throws Exception {
-        
-        System.out.println(new С().equals(new B()));
-        //System.out.println(new B().equals(new A(42)));
-        //System.out.println(new A(42).equals(new A(42)));
-        //System.out.println(new B().equals(new B()));
-    }
-}
+package com.pragmaticobjects.oo.equivalence.itests;

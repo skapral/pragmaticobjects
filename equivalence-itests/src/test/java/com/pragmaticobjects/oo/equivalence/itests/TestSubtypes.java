@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,48 +23,37 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.cn;
+package com.pragmaticobjects.oo.equivalence.itests;
 
-import io.vavr.collection.List;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import com.pragmaticobjects.oo.equivalence.assertions.AssertTwoObjectsEquality;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import com.pragmaticobjects.oo.equivalence.itests.classes.Counter;
+import com.pragmaticobjects.oo.equivalence.itests.classes.CounterA;
 
 /**
- * Class names, extracted from all .class files from certain directory.
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public class CnFromPath implements ClassNames {
-    private final Path path;
-
-    /**
-     * Ctor.
-     *
-     * @param path Path to scan for class names.
-     */
-    public CnFromPath(final Path path) {
-        this.path = path;
-    }
-
-    @Override
-    public final List<String> classNames() {
-        try {
-            if(Files.notExists(path)) {
-                return List.empty();
-            }
-            final List<String> classes = Files.find(path, Integer.MAX_VALUE, (p, bf) -> p.toString().endsWith(".class"))
-                .map(path::relativize)
-                .map(p -> List.ofAll(StreamSupport.stream(p.spliterator(), false)))
-                .map(pl -> pl.map(Object::toString).collect(Collectors.joining(".")))
-                .map(s -> s.replaceFirst(".class$", ""))
-                .filter(s -> !"module-info".equals(s))
-                .collect(List.collector());
-            return classes;
-        } catch(Exception ex) {
-            throw new RuntimeException(ex);
-        }
+public class TestSubtypes extends TestsSuite {
+    public TestSubtypes() {
+        super(
+            new TestCase(
+                "CounterA == Counter(A)",
+                new AssertTwoObjectsEquality(
+                    new CounterA(),
+                    new Counter("A"),
+                    true
+                )
+            ),
+            new TestCase(
+                "CounterA != Counter(B)",
+                new AssertTwoObjectsEquality(
+                    new CounterA(),
+                    new Counter("B"),
+                    false
+                )
+            )
+        );
     }
 }

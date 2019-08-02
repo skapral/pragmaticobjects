@@ -44,21 +44,6 @@ import net.bytebuddy.utility.OpenedClassReader;
  * @author skapral
  */
 public class MarkAsEObjectPlugin implements Plugin {
-
-    private static String patchSignature(String origin) {
-        String[] split = origin.split("<.*>");
-        if (split.length > 1) {
-            split[1].replace("java/lang/Object", "java/lang/EObject");
-        }
-        return null;
-    }
-
-    public static void main(String... args) {
-        System.out.println(
-                patchSignature("<T:Ljava/lang/Object;>Ljava/lang/Object;Ljava/io/Serializable;")
-        );
-    }
-
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
 
@@ -116,10 +101,9 @@ public class MarkAsEObjectPlugin implements Plugin {
                                     };
                                     new SignatureReader(signature).accept(sw);
                                     signature = sw.toString();
-                                    wasMarked = true;
                                 }
+                                wasMarked = true;
                             }
-                            System.out.println(signature);
                             super.visit(version, access, name, signature, superName, interfaces);
                         }
 

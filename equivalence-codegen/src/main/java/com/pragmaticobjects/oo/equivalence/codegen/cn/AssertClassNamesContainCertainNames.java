@@ -64,6 +64,6 @@ public class AssertClassNamesContainCertainNames implements Assertion {
     @Override
     public final void check() throws Exception {
         List<String> extractedNames = classNames.classNames();
-        Assertions.assertThat(namesToCheck).containsAll(extractedNames);
+        Assertions.assertThat(extractedNames).containsAll(namesToCheck);
     }
 }
