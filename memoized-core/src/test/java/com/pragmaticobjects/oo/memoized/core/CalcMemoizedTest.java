@@ -27,27 +27,23 @@ package com.pragmaticobjects.oo.memoized.core;
 
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Tests suite for {@link CalcDefault}.
- * 
+ *
  * @author skapral
  */
-public class CalcDefaultTest extends TestsSuite {
-    /**
-     * Ctor
-     */
-    public CalcDefaultTest() {
+public class CalcMemoizedTest extends TestsSuite {
+    public CalcMemoizedTest() {
         super(
             new TestCase(
-                "calculation memoized",
+                "memoized calculation called only once",
                 new AssertCalculationTriggeredCertainNumberOfTimes(
-                    s -> new CalcDefault(
-                        new Object(),
-                        "toString",
-                        s
+                    supplier -> new CalcMemoized(
+                        new AtomicReference(),
+                        new CalcFromSupplier(supplier)
                     ),
-                    10,
+                    10, 
                     1
                 )
             )

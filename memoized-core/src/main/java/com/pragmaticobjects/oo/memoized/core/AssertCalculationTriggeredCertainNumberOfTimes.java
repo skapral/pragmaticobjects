@@ -1,18 +1,19 @@
-/*
- * The MIT License
- *
- * Copyright 2019 skapral.
- *
+/*-
+ * ===========================================================================
+ * memoized-core
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * Copyright (C) 2019 Kapralov Sergey
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,6 +21,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ * ============================================================================
  */
 package com.pragmaticobjects.oo.memoized.core;
 
@@ -31,10 +33,9 @@ import static org.mockito.Mockito.*;
 /**
  * Asserts that calculation under test is executed certain number of times.
  * @author skapral
- * @param <T> calculation type
  */
-public class AssertCalculationTriggeredCertainNumberOfTimes<T> implements Assertion {
-    private final Function<Supplier<T>, Calculation<T>> calculationFn;
+public class AssertCalculationTriggeredCertainNumberOfTimes implements Assertion {
+    private final Function<Supplier, Calculation> calculationFn;
     private final int timesToCall;
     private final int timesCalculated;
 
@@ -45,7 +46,7 @@ public class AssertCalculationTriggeredCertainNumberOfTimes<T> implements Assert
      * @param timesToCall times to call calculation under test
      * @param timesCalculated expected number of actual calculation execution
      */
-    public AssertCalculationTriggeredCertainNumberOfTimes(Function<Supplier<T>, Calculation<T>> calculationFn, int timesToCall, int timesCalculated) {
+    public AssertCalculationTriggeredCertainNumberOfTimes(Function<Supplier, Calculation> calculationFn, int timesToCall, int timesCalculated) {
         this.calculationFn = calculationFn;
         this.timesToCall = timesToCall;
         this.timesCalculated = timesCalculated;
@@ -53,8 +54,9 @@ public class AssertCalculationTriggeredCertainNumberOfTimes<T> implements Assert
 
     @Override
     public final void check() throws Exception {
-        final Supplier<T> mock = mock(Supplier.class);
-        final Calculation<T> calculationUnderTest = calculationFn.apply(mock);
+        final Supplier mock = mock(Supplier.class);
+        when(mock.get()).thenReturn(new Object());
+        final Calculation calculationUnderTest = calculationFn.apply(mock);
         for(int i = 0; i < timesToCall; i++) {
             calculationUnderTest.calculate();
         }

@@ -13,7 +13,6 @@
         <dependency>
             <groupId>com.pragmaticobjects.oo.memoized</groupId>
             <artifactId>memoized-core</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
