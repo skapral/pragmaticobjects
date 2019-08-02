@@ -4,7 +4,7 @@
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/op5b7tpb6phxh862?svg=true)](https://ci.appveyor.com/project/skapral/oo-equivalence)
 [![Codecov](https://codecov.io/gh/pragmatic-objects/oo-equivalence/branch/master/graph/badge.svg)](https://codecov.io/gh/pragmatic-objects/oo-equivalence)
 
-Equivalence logic generator for [elegantly-designed]() Java objects. For information about what equivalence is and how it is calculated, proceed here.
+Equivalence logic generator for [elegantly-designed]() Java objects. For information about what equivalence is and how it is calculated, read [this]() post.
 
 ## Installation
 
