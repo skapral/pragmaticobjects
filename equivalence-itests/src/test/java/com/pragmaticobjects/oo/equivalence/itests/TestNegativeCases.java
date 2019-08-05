@@ -25,9 +25,10 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests;
 
-import com.pragmaticobjects.oo.equivalence.assertions.AssertNotEObject;
+import com.pragmaticobjects.oo.equivalence.assertions.AssertNotInstanceOf;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.itests.classes.Point2D;
 import com.pragmaticobjects.oo.equivalence.itests.classes.Point3D;
 
@@ -37,17 +38,18 @@ import com.pragmaticobjects.oo.equivalence.itests.classes.Point3D;
  */
 public class TestNegativeCases extends TestsSuite {
     public TestNegativeCases() {
-        super(
-            new TestCase(
+        super(new TestCase(
                 "objects with mutable fields are not instrumented", 
-                new AssertNotEObject(
-                    new Point2D(0, 0)
+                new AssertNotInstanceOf(
+                    new Point2D(0, 0),
+                    EObject.class
                 )
             ),
             new TestCase(
                 "non-EObject subclasses are either non-EObjects", 
-                new AssertNotEObject(
-                    new Point3D(0, 0, 0)
+                new AssertNotInstanceOf(
+                    new Point3D(0, 0, 0),
+                    EObject.class
                 )
             )
         );

@@ -25,24 +25,25 @@
  */
 package com.pragmaticobjects.oo.equivalence.assertions;
 
-import com.pragmaticobjects.oo.equivalence.base.EObject;
 import static org.assertj.core.api.Assertions.*;
 
 /**
  *
  * @author skapral
  */
-public class AssertEObject implements Assertion {
+public class AssertNotInstanceOf implements Assertion {
     private final Object obj;
+    private final Class clazz;
 
-    public AssertEObject(Object obj) {
+    public AssertNotInstanceOf(Object obj, Class clazz) {
         this.obj = obj;
+        this.clazz = clazz;
     }
 
     @Override
     public final void check() throws Exception {
         assertThat(obj)
-                .withFailMessage("Expected obj to be instance of EObject\r\n  obj: %s", obj)
-                .isInstanceOf(EObject.class);
+                .withFailMessage("Expected obj to be not instance of EObject\r\n  obj: %s", obj)
+                .isNotInstanceOf(clazz);
     }
 }
