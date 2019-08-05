@@ -23,31 +23,33 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.itests.classes;
+package com.pragmaticobjects.oo.equivalence.itests;
 
-import java.util.Optional;
+import com.pragmaticobjects.oo.equivalence.assertions.AssertNotEObject;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import com.pragmaticobjects.oo.equivalence.itests.classes.Point2D;
+import com.pragmaticobjects.oo.equivalence.itests.classes.Point3D;
 
 /**
  *
  * @author skapral
- * @param <T> type
  */
-public class TreeNode<T> {
-    private final T value;
-    private final Optional<TreeNode<T>> left;
-    private final Optional<TreeNode<T>> right;
-
-    public TreeNode(T value, Optional<TreeNode<T>> left, Optional<TreeNode<T>> right) {
-        this.value = value;
-        this.left = left;
-        this.right = right;
-    }
-
-    public TreeNode(T value, TreeNode<T> left, TreeNode<T> right) {
-        this(value, Optional.of(left), Optional.of(right));
-    }
-
-    public TreeNode(T value) {
-        this(value, Optional.empty(), Optional.empty());
+public class TestNegativeCases extends TestsSuite {
+    public TestNegativeCases() {
+        super(
+            new TestCase(
+                "objects with mutable fields are not instrumented", 
+                new AssertNotEObject(
+                    new Point2D(0, 0)
+                )
+            ),
+            new TestCase(
+                "non-EObject subclasses are either non-EObjects", 
+                new AssertNotEObject(
+                    new Point3D(0, 0, 0)
+                )
+            )
+        );
     }
 }

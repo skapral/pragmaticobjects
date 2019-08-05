@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * project-name
+ * equivalence-assertions
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,31 +23,26 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.itests.classes;
+package com.pragmaticobjects.oo.equivalence.assertions;
 
-import java.util.Optional;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  *
  * @author skapral
- * @param <T> type
  */
-public class TreeNode<T> {
-    private final T value;
-    private final Optional<TreeNode<T>> left;
-    private final Optional<TreeNode<T>> right;
+public class AssertEObject implements Assertion {
+    private final Object obj;
 
-    public TreeNode(T value, Optional<TreeNode<T>> left, Optional<TreeNode<T>> right) {
-        this.value = value;
-        this.left = left;
-        this.right = right;
+    public AssertEObject(Object obj) {
+        this.obj = obj;
     }
 
-    public TreeNode(T value, TreeNode<T> left, TreeNode<T> right) {
-        this(value, Optional.of(left), Optional.of(right));
-    }
-
-    public TreeNode(T value) {
-        this(value, Optional.empty(), Optional.empty());
+    @Override
+    public final void check() throws Exception {
+        assertThat(obj)
+                .withFailMessage("Expected obj to be instance of EObject\r\n  obj: %s", obj)
+                .isInstanceOf(EObject.class);
     }
 }

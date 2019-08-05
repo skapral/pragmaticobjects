@@ -11,6 +11,10 @@
     
     <dependencies>
         <dependency>
+            <groupId>com.pragmaticobjects.oo.equivalence</groupId>
+            <artifactId>equivalence-base</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
         </dependency>

@@ -25,29 +25,23 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests.classes;
 
-import java.util.Optional;
-
 /**
  *
  * @author skapral
- * @param <T> type
  */
-public class TreeNode<T> {
-    private final T value;
-    private final Optional<TreeNode<T>> left;
-    private final Optional<TreeNode<T>> right;
+public class Point3D extends Point2D {
+    private int z;
 
-    public TreeNode(T value, Optional<TreeNode<T>> left, Optional<TreeNode<T>> right) {
-        this.value = value;
-        this.left = left;
-        this.right = right;
+    public Point3D(int x, int y, int z) {
+        super(x, y);
+        this.z = z;
     }
 
-    public TreeNode(T value, TreeNode<T> left, TreeNode<T> right) {
-        this(value, Optional.of(left), Optional.of(right));
+    public int getZ() {
+        return z;
     }
 
-    public TreeNode(T value) {
-        this(value, Optional.empty(), Optional.empty());
+    public void setZ(int z) {
+        this.z = z;
     }
 }
