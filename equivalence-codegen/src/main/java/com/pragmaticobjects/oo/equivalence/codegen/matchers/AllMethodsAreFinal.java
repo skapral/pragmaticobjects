@@ -31,6 +31,8 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 import static net.bytebuddy.matcher.ElementMatchers.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Matcher which matches types, methods of which are final.
@@ -38,6 +40,8 @@ import static net.bytebuddy.matcher.ElementMatchers.*;
  * @author Kapralov Sergey
  */
 public class AllMethodsAreFinal implements ElementMatcher<TypeDescription> {
+    private static final Logger LOG = LoggerFactory.getLogger(AllMethodsAreFinal.class);
+    
     @Override
     public final boolean matches(TypeDescription target) {
         MethodList<MethodDescription.InDefinedShape> methodsToCheck = target.getDeclaredMethods()
@@ -50,10 +54,13 @@ public class AllMethodsAreFinal implements ElementMatcher<TypeDescription> {
                 .filter(not(named("toString")));
         
         for(MethodDescription md : methodsToCheck) {
+            LOG.debug(md.getDeclaringType().getActualName() + "::" + md.getName());
             if(!md.isFinal()) {
+                LOG.debug("false");
                 return false;
             }
         }
+        LOG.debug("true");
         return true;
     }
 }

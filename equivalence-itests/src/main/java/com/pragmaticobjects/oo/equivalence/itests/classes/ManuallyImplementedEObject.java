@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * project-name
+ * equivalence-itests
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,27 +26,30 @@
 package com.pragmaticobjects.oo.equivalence.itests.classes;
 
 import com.pragmaticobjects.oo.equivalence.base.EObject;
-import java.util.Objects;
 
 /**
  *
  * @author skapral
  */
 public class ManuallyImplementedEObject extends EObject {
-    private int a;
+    private final int a;
+
+    public ManuallyImplementedEObject(int a) {
+        this.a = a;
+    }
 
     @Override
-    protected Object[] attributes() {
+    protected final Object[] attributes() {
         return new Object[] {a};
     }
 
     @Override
-    protected int hashSeed() {
+    protected final int hashSeed() {
         return 42;
     }
 
     @Override
-    protected Class<? extends EObject> baseType() {
+    protected final Class<? extends EObject> baseType() {
         return ManuallyImplementedEObject.class;
     }
 }

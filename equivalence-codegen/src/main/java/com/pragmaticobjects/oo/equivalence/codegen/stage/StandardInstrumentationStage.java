@@ -39,6 +39,7 @@ import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectHashSeed
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IISequential;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AllFieldsArePrivateFinal;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AllMethodsAreFinal;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.VerboseMatcher;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
 
@@ -94,19 +95,19 @@ public class StandardInstrumentationStage extends SequenceStage {
             // Post-Checks
             new ByteBuddyValidationStage(
                 "All methods of EObject must be final if not abstract",
-                new ConjunctionMatcher<TypeDescription>(
-                    new MatchSuperClass(
-                        ElementMatchers.is(EObject.class)
-                    ),
+                new MatchSuperClass(
+                    ElementMatchers.is(EObject.class)
+                ),
+                new VerboseMatcher<>(
                     new AllMethodsAreFinal()
                 )
             ),
             new ByteBuddyValidationStage(
                 "All fields of EObject must be final",
-                new ConjunctionMatcher<TypeDescription>(
-                    new MatchSuperClass(
-                        ElementMatchers.is(EObject.class)
-                    ),
+                new MatchSuperClass(
+                    ElementMatchers.is(EObject.class)
+                ),
+                new VerboseMatcher<>(
                     new AllFieldsArePrivateFinal()
                 )
             )

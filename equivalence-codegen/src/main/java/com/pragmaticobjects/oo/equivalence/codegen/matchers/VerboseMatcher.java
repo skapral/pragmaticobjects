@@ -23,25 +23,29 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.stage;
+package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author skapral
+ * @param <T> type
  */
-public class ByteBuddyValidationStage extends ByteBuddyStage {
-    public ByteBuddyValidationStage(String description, ElementMatcher<TypeDescription> filter, ElementMatcher<TypeDescription> validation) {
-        super(
-            (td, cfl, workingDirectory, errors) -> {
-                if(filter.matches(td) && !validation.matches(td)) {
-                    errors.add(
-                        String.format("%s: %s", td.getName(), description)
-                    );
-                }
-            }
-        );
+public class VerboseMatcher<T> implements ElementMatcher<T> {
+    private static final Logger LOG = LoggerFactory.getLogger(VerboseMatcher.class);
+    private final ElementMatcher<T> delegate;
+
+    public VerboseMatcher(ElementMatcher<T> delegate) {
+        this.delegate = delegate;
+    }
+
+    @Override
+    public final boolean matches(T arg0) {
+        boolean result = delegate.matches(arg0);
+        LOG.info(delegate.getClass().getName() + ": Verification of " + arg0 + ": " + result);
+        return result;
     }
 }
