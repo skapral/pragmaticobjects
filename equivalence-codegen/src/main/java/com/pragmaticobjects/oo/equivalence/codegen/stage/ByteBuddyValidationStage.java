@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,29 +23,25 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.stage;
 
-import com.pragmaticobjects.oo.equivalence.codegen.plugin.bb.Implementation;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.constant.ClassConstant;
-import net.bytebuddy.implementation.bytecode.member.MethodReturn;
-import net.bytebuddy.jar.asm.Opcodes;
+import net.bytebuddy.matcher.ElementMatcher;
 
 /**
  *
  * @author skapral
  */
-public class ImplementEObjectBaseTypePlugin implements Plugin {
-    @Override
-    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
-        StackManipulation baseTypeImpl = new StackManipulation.Compound(
-            ClassConstant.of(typeDescription),
-            MethodReturn.REFERENCE
+public class ByteBuddyValidationStage extends ByteBuddyStage {
+    public ByteBuddyValidationStage(String description, ElementMatcher<TypeDescription> filter, ElementMatcher<TypeDescription> validation) {
+        super(
+            (td, cfl, workingDirectory, errors) -> {
+                if(filter.matches(td) && !validation.matches(td)) {
+                    errors.add(
+                        String.format("%s: %s", td.getName(), description)
+                    );
+                }
+            }
         );
-        return builder
-                .defineMethod("baseType", Class.class, Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL)
-                .intercept(new Implementation(baseTypeImpl));
     }
 }

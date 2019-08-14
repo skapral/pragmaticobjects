@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,34 +23,40 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
+import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.matcher.ElementMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Verbose {@link Plugin}.
+ * Matcher which matches types, all declared fields of which are private final
  *
  * @author Kapralov Sergey
  */
-public class VerbosePlugin implements Plugin {
-    private static final Logger LOG = LoggerFactory.getLogger(VerbosePlugin.class);
-    private final Plugin plugin;
-
-    /**
-     * Ctor.
-     *
-     * @param plugin Delegating {@link Plugin}
-     */
-    public VerbosePlugin(final Plugin plugin) {
-        this.plugin = plugin;
-    }
-
+public class AllFieldsArePrivateFinal implements ElementMatcher<TypeDescription> {
+    private static final Logger LOG = LoggerFactory.getLogger(AllFieldsArePrivateFinal.class);
+    
     @Override
-    public final DynamicType.Builder<?> apply(final DynamicType.Builder<?> builder, final TypeDescription typeDescription) {
-        LOG.info(plugin.getClass().getName() + ": Transforming type " + typeDescription.getName());
-        return plugin.apply(builder, typeDescription);
+    public final boolean matches(TypeDescription target) {
+        for(FieldDescription fd : target.getDeclaredFields()) {
+            LOG.debug(fd.getDeclaringType().getActualName() + "::" + fd.getName());
+            if(fd.isEnum()) {
+                LOG.debug("enum");
+                continue;
+            }
+            if(fd.isSynthetic()) {
+                LOG.debug("synthetic");
+                continue;
+            }
+            if(!fd.isPrivate() || !fd.isFinal()) {
+                LOG.debug("false");
+                return false;
+            }
+        }
+        LOG.debug("true");
+        return true;
     }
 }

@@ -23,10 +23,10 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import com.pragmaticobjects.oo.equivalence.codegen.plugin.bb.Box;
-import com.pragmaticobjects.oo.equivalence.codegen.plugin.bb.Implementation;
+import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Box;
+import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Implementation;
 import io.vavr.collection.List;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
@@ -45,9 +45,14 @@ import net.bytebuddy.matcher.ElementMatchers;
  *
  * @author skapral
  */
-public class ImplementEObjectAttributesPlugin implements Plugin {
+public class IIImplementEObjectAttributes implements InstrumentationIteration {
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
+        if(!typeDescription.getDeclaredMethods()
+                .filter(ElementMatchers.named("attributes"))
+                .isEmpty()) {
+            return builder;
+        }
         StackManipulation attributesImpl = new StackManipulation.Compound(
             List.ofAll(typeDescription.getDeclaredFields())
                 .filter(ElementMatchers.not(ElementMatchers.isSynthetic())::matches)

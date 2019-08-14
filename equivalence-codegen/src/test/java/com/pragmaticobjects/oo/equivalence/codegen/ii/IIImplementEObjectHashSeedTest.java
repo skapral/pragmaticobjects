@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,37 +23,39 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.matcher.ElementMatcher;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
  *
  * @author skapral
  */
-public class ConditionalPlugin implements Plugin {
-    private final ElementMatcher<TypeDescription> matcher;
-    private final Plugin trueBranch;
-    private final Plugin falseBranch;
-
-    public ConditionalPlugin(ElementMatcher<TypeDescription> matcher, Plugin trueBranch, Plugin falseBranch) {
-        this.matcher = matcher;
-        this.trueBranch = trueBranch;
-        this.falseBranch = falseBranch;
-    }
-    
-    public ConditionalPlugin(ElementMatcher<TypeDescription> matcher, Plugin trueBranch) {
-        this(matcher, trueBranch, new NopPlugin());
-    }
-    
-    @Override
-    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
-        if(matcher.matches(typeDescription)) {
-            return trueBranch.apply(builder, typeDescription);
-        } else {
-            return falseBranch.apply(builder, typeDescription);
-        }
+public class IIImplementEObjectHashSeedTest extends TestsSuite {
+    public IIImplementEObjectHashSeedTest() {
+        super(
+            new TestCase(
+                "declares the method",
+                new AssertClassAfterInstrumentation(
+                    new IIImplementEObjectHashSeed(),
+                    Foo.class,
+                    ElementMatchers.declaresMethod(
+                        ElementMatchers.hasMethodName("hashSeed")
+                    )
+                )
+            ),
+            new TestCase(
+                "explicitly implemented method is not regenerated",
+                new AssertClassAfterInstrumentation(
+                    new IIImplementEObjectHashSeed(),
+                    Point2D.class,
+                    ElementMatchers.declaresMethod(
+                        ElementMatchers.hasMethodName("hashSeed")
+                    )
+                )
+            )
+        );
     }
 }

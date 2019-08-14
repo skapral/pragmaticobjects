@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,23 +23,37 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.stage;
 
-import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.dynamic.DynamicType;
+import com.pragmaticobjects.oo.equivalence.codegen.ii.InstrumentationIteration;
 
 /**
- * Pluggable ByteBuddy instrumentation.
+ * Bytebuddy-powered stage
  *
  * @author Kapralov Sergey
  */
-public interface Plugin {
+public class ByteBuddyTransformationStage extends ByteBuddyStage {
     /**
-     * Apply instrumentation.
+     * Ctor.
      *
-     * @param builder ByteBuddy's {@link net.bytebuddy.dynamic.DynamicType.Builder}
-     * @param typeDescription ByteBuddy's {@link TypeDescription}
-     * @return {@link net.bytebuddy.dynamic.DynamicType.Builder} instance after applied transformantions.
+     * @param task Task.
      */
-    DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription);
+    public ByteBuddyTransformationStage(final InstrumentationIteration task) {
+        super(
+            (td, cfl, workingDirectory, errors) -> {
+                try {
+                    final DynamicType.Builder<?> builder = new ByteBuddy().redefine(td, cfl);
+                    final DynamicType.Unloaded<?> unloaded = task.apply(builder, td).make();
+                    unloaded.saveIn(workingDirectory.toFile());
+                } catch(Exception ex) {
+                    throw new RuntimeException(
+                        String.format("Exception while transforming class %s with %s", td, task.getClass().getName()),
+                        ex
+                    );
+                }
+            }
+        );
+    }
 }
