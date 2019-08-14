@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,4 +23,30 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.plugin;
+package com.pragmaticobjects.oo.equivalence.itests.classes;
+
+import com.pragmaticobjects.oo.equivalence.base.EObject;
+import java.util.Objects;
+
+/**
+ *
+ * @author skapral
+ */
+public class ManuallyImplementedEObject extends EObject {
+    private int a;
+
+    @Override
+    protected Object[] attributes() {
+        return new Object[] {a};
+    }
+
+    @Override
+    protected int hashSeed() {
+        return 42;
+    }
+
+    @Override
+    protected Class<? extends EObject> baseType() {
+        return ManuallyImplementedEObject.class;
+    }
+}

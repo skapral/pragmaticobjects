@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,4 +23,37 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.plugin.bb;
+package com.pragmaticobjects.oo.equivalence.codegen.stage;
+
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.dynamic.DynamicType;
+import com.pragmaticobjects.oo.equivalence.codegen.ii.InstrumentationIteration;
+
+/**
+ * Bytebuddy-powered stage
+ *
+ * @author Kapralov Sergey
+ */
+public class ByteBuddyTransformationStage extends ByteBuddyStage {
+    /**
+     * Ctor.
+     *
+     * @param task Task.
+     */
+    public ByteBuddyTransformationStage(final InstrumentationIteration task) {
+        super(
+            (td, cfl, workingDirectory, errors) -> {
+                try {
+                    final DynamicType.Builder<?> builder = new ByteBuddy().redefine(td, cfl);
+                    final DynamicType.Unloaded<?> unloaded = task.apply(builder, td).make();
+                    unloaded.saveIn(workingDirectory.toFile());
+                } catch(Exception ex) {
+                    throw new RuntimeException(
+                        String.format("Exception while transforming class %s with %s", td, task.getClass().getName()),
+                        ex
+                    );
+                }
+            }
+        );
+    }
+}

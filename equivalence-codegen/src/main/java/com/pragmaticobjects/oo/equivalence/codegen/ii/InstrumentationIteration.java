@@ -23,29 +23,23 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import com.pragmaticobjects.oo.equivalence.codegen.plugin.bb.Implementation;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.constant.ClassConstant;
-import net.bytebuddy.implementation.bytecode.member.MethodReturn;
-import net.bytebuddy.jar.asm.Opcodes;
 
 /**
+ * Pluggable ByteBuddy instrumentation.
  *
- * @author skapral
+ * @author Kapralov Sergey
  */
-public class ImplementEObjectBaseTypePlugin implements Plugin {
-    @Override
-    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
-        StackManipulation baseTypeImpl = new StackManipulation.Compound(
-            ClassConstant.of(typeDescription),
-            MethodReturn.REFERENCE
-        );
-        return builder
-                .defineMethod("baseType", Class.class, Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL)
-                .intercept(new Implementation(baseTypeImpl));
-    }
+public interface InstrumentationIteration {
+    /**
+     * Apply instrumentation.
+     *
+     * @param builder ByteBuddy's {@link net.bytebuddy.dynamic.DynamicType.Builder}
+     * @param typeDescription ByteBuddy's {@link TypeDescription}
+     * @return {@link net.bytebuddy.dynamic.DynamicType.Builder} instance after applied transformantions.
+     */
+    DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription);
 }

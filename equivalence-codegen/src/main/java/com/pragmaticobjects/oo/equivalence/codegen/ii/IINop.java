@@ -23,32 +23,19 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 
 /**
+ * Plugin which does nothing.
  *
- * @author skapral
+ * @author Kapralov Sergey
  */
-public class SequentialPlugin implements Plugin {
-    private final List<Plugin> sequence;
-
-    public SequentialPlugin(List<Plugin> sequence) {
-        this.sequence = sequence;
-    }
-    
-    public SequentialPlugin(Plugin... sequence) {
-        this(List.of(sequence));
-    }
-
+public class IINop implements InstrumentationIteration {
     @Override
-    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
-        for(Plugin plugin : sequence) {
-            builder = plugin.apply(builder, typeDescription);
-        }
+    public final DynamicType.Builder<?> apply(final DynamicType.Builder<?> builder, final TypeDescription typeDescription) {
         return builder;
     }
 }

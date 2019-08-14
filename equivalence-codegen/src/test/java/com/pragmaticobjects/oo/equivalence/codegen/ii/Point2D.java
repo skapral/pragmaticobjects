@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,29 +23,35 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import com.pragmaticobjects.oo.equivalence.codegen.plugin.bb.Implementation;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
-import net.bytebuddy.implementation.bytecode.member.MethodReturn;
-import net.bytebuddy.jar.asm.Opcodes;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 
 /**
  *
  * @author skapral
  */
-public class ImplementEObjectHashSeedPlugin implements Plugin {
+public class Point2D extends EObject {
+    private final int x;
+    private final int y;
+
+    public Point2D(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     @Override
-    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
-        StackManipulation baseTypeImpl = new StackManipulation.Compound(
-            IntegerConstant.forValue(1),
-            MethodReturn.INTEGER
-        );
-        return builder
-                .defineMethod("hashSeed", int.class, Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL)
-                .intercept(new Implementation(baseTypeImpl));
+    protected final Object[] attributes() {
+        return new Object[] {x, y};
+    }
+
+    @Override
+    protected final int hashSeed() {
+        return 42;
+    }
+
+    @Override
+    protected final Class<? extends EObject> baseType() {
+        return Point2D.class;
     }
 }

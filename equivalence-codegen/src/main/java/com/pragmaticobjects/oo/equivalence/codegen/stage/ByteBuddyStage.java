@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,16 +28,15 @@ package com.pragmaticobjects.oo.equivalence.codegen.stage;
 import com.pragmaticobjects.oo.equivalence.codegen.cfls.CflsCompound;
 import com.pragmaticobjects.oo.equivalence.codegen.cfls.CflsExplicit;
 import com.pragmaticobjects.oo.equivalence.codegen.cfls.CflsFromClassPath;
-import com.pragmaticobjects.oo.equivalence.codegen.plugin.Plugin;
 import com.pragmaticobjects.oo.equivalence.codegen.cn.ClassNames;
 import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
-import net.bytebuddy.ByteBuddy;
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.ClassFileLocator;
-import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.pool.TypePool;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,16 +46,21 @@ import org.slf4j.LoggerFactory;
  * @author Kapralov Sergey
  */
 public class ByteBuddyStage implements Stage {
+    interface ClassHandler {
+        void handle(TypeDescription td, ClassFileLocator cfl, Path workingDirectory, java.util.List<String> errors);
+    }
+    
     private static final Logger LOG = LoggerFactory.getLogger(ByteBuddyStage.class);
-    private final Plugin task;
+    
+    private final ClassHandler classHandler;
 
     /**
      * Ctor.
      *
-     * @param task Task.
+     * @param classHandler handler that is called for each processed class
      */
-    public ByteBuddyStage(final Plugin task) {
-        this.task = task;
+    public ByteBuddyStage(ClassHandler classHandler) {
+        this.classHandler = classHandler;
     }
 
     @Override
@@ -70,22 +74,22 @@ public class ByteBuddyStage implements Stage {
             )
         ).classFileLocator();
         final TypePool tps = TypePool.Default.of(cfl);
+        java.util.List<String> allErrors = new ArrayList<>();
         for (String className : classNames.classNames()) {
-            try {
-                LOG.debug(" -> " + className);
-                final TypePool.Resolution resolution = tps.describe(className);
-                if (resolution.isResolved()) {
-                    final TypeDescription td = resolution.resolve();
-                    final DynamicType.Builder<?> builder = new ByteBuddy().redefine(td, cfl);
-                    final DynamicType.Unloaded<?> unloaded = task.apply(builder, td).make();
-                    unloaded.saveIn(workingDirectory.toFile());
-                } else {
-                    throw new RuntimeException("Class " + className + " cannot be resolved");
-                }
-            } catch(Exception ex) {
-                LOG.error("Exception at transforming {} with {}", className, task.getClass().getSimpleName(), ex);
-                throw new RuntimeException(ex);
+            LOG.debug(" -> " + className);
+            final TypePool.Resolution resolution = tps.describe(className);
+            if (resolution.isResolved()) {
+                final TypeDescription td = resolution.resolve();
+                java.util.List<String> errors = new ArrayList<>();
+                classHandler.handle(td, cfl, workingDirectory, errors);
+                allErrors.addAll(errors);
+            } else {
+                throw new RuntimeException("Class " + className + " cannot be resolved");
             }
+        }
+        if(!allErrors.isEmpty()) {
+            allErrors.forEach(LOG::error);
+            throw new RuntimeException("Errors detected at ByteBuddyStage");
         }
     }
 }

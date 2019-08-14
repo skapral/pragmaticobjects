@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,34 +23,11 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.plugin;
-
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
 /**
- * Verbose {@link Plugin}.
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public class VerbosePlugin implements Plugin {
-    private static final Logger LOG = LoggerFactory.getLogger(VerbosePlugin.class);
-    private final Plugin plugin;
-
-    /**
-     * Ctor.
-     *
-     * @param plugin Delegating {@link Plugin}
-     */
-    public VerbosePlugin(final Plugin plugin) {
-        this.plugin = plugin;
-    }
-
-    @Override
-    public final DynamicType.Builder<?> apply(final DynamicType.Builder<?> builder, final TypeDescription typeDescription) {
-        LOG.info(plugin.getClass().getName() + ": Transforming type " + typeDescription.getName());
-        return plugin.apply(builder, typeDescription);
-    }
+public class Foo {
 }

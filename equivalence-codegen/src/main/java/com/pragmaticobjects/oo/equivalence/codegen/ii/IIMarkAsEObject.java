@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.plugin;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
 import net.bytebuddy.asm.AsmVisitorWrapper;
 import net.bytebuddy.description.field.FieldDescription;
@@ -43,7 +43,7 @@ import net.bytebuddy.utility.OpenedClassReader;
  *
  * @author skapral
  */
-public class MarkAsEObjectPlugin implements Plugin {
+public class IIMarkAsEObject implements InstrumentationIteration {
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
 
