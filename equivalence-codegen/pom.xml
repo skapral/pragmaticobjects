@@ -11,8 +11,25 @@
     
     <dependencies>
         <dependency>
+            <groupId>com.pragmaticobjects.oo.equivalence</groupId>
+            <artifactId>equivalence-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.pragmaticobjects.oo.equivalence</groupId>
+            <artifactId>equivalence-assertions</artifactId>
+        </dependency>
+        <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

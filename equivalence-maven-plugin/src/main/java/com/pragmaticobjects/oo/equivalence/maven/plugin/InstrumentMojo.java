@@ -1,8 +1,9 @@
-/*
- * MIT License
- *
- * Copyright (c) 2019 Kapralov Sergey
- * 
+/*-
+ * ===========================================================================
+ * equivalence-maven-plugin
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * Copyright (C) 2019 Kapralov Sergey
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -10,20 +11,21 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * ============================================================================
  */
 package com.pragmaticobjects.oo.equivalence.maven.plugin;
 
-import com.pragmaticobjects.oo.atom.codegen.stage.StandardInstrumentationStage;
+import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -43,13 +45,10 @@ public class InstrumentMojo extends BaseMojo {
     @Parameter(defaultValue = "${project.build.outputDirectory}", required = true, readonly = true)
     protected String outputDirectory;
 
-    @Parameter(defaultValue = "false", required = true, readonly = true)
-    protected boolean stubbedInstrumentation;
-
     @Override
     public final void execute() throws MojoExecutionException, MojoFailureException {
         doInstrumentation(
-            new StandardInstrumentationStage(stubbedInstrumentation),
+            new StandardInstrumentationStage(),
             buildClassPath(),
             Paths.get(outputDirectory)
         );

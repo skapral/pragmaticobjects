@@ -1,8 +1,9 @@
-/*
- * MIT License
- *
- * Copyright (c) 2019 Kapralov Sergey
- * 
+/*-
+ * ===========================================================================
+ * equivalence-base
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * Copyright (C) 2019 Kapralov Sergey
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -10,22 +11,23 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * ============================================================================
  */
 package com.pragmaticobjects.oo.equivalence.base;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -41,13 +43,16 @@ public abstract class EObject {
      * @return Object's attributes
      */
     protected abstract Object[] attributes();
-
+    
     /**
-     * @return Object's attributes as {@link Map}
+     * @return Object's hash seed
      */
-    protected Map<String, Object> attributesMap() {
-        return new HashMap<>();
-    }
+    protected abstract int hashSeed();
+    
+    /**
+     * @return Object's name
+     */
+    protected abstract Class<? extends EObject> baseType();
 
     @Override
     public final boolean equals(Object obj) {
@@ -57,7 +62,7 @@ public abstract class EObject {
         if (obj == null) {
             return false;
         }
-        if (hasIdentity(obj) && (this.getClass().isAssignableFrom(obj.getClass()) || obj.getClass().isAssignableFrom(this.getClass()))) {
+        if (obj instanceof EObject && (this.baseType() == ((EObject)obj).baseType())) {
             final Object[] thisAttrs = attributes();
             final Object[] objAttrs = ((EObject) obj).attributes();
             int length = thisAttrs.length == objAttrs.length ? thisAttrs.length : -1;
@@ -69,36 +74,33 @@ public abstract class EObject {
                     return false;
                 }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
     public final int hashCode() {
         final Object[] attrs = attributes();
-        final int length = attrs.length;
-        if(length < 1) {
-            return 0;
-        }
-        int result = hash(attrs[0]);
-        for(int i = 1; i < length; i++) {
-            result = 31 * result + hash(attrs[i]);
+        int result = hash(hashSeed());
+        for (Object attr : attrs) {
+            result = 31 * result + hash(attr);
         }
         return result;
     }
 
     @Override
     public final String toString() {
-        Map<String, Object> attrs = attributesMap();
+        final Object[] attrs = attributes();
         StringBuilder sb = new StringBuilder();
-        sb.append("{");
+        sb.append(baseType().getSimpleName());
+        sb.append("(");
         sb.append(
-            attrs.entrySet()
-                .stream()
-                .map(es -> toString(es.getKey(), es.getValue()))
+                Arrays.stream(attrs)
+                .map(EObject::toString)
                 .collect(Collectors.joining(", "))
         );
-        sb.append("}");
+        sb.append(")");
         return sb.toString();
     }
 
@@ -113,19 +115,20 @@ public abstract class EObject {
             add(Float.class);
             add(Double.class);
             add(UUID.class);
+            add(Optional.class);
         }
     };
 
     protected static boolean hasIdentity(Object obj) {
-        return obj instanceof EObject || NATURALLY_EQUIVALENT.contains(obj.getClass());
+        return obj == null || obj instanceof EObject || NATURALLY_EQUIVALENT.contains(obj.getClass());
     }
     
     protected static boolean equal(Object object1, Object object2) {
-        if (object1 == object2) {
-            return true;
-        }
         if (object1 == null) {
             return object2 == null;
+        }
+        if (object1 == object2) {
+            return true;
         }
         if(hasIdentity(object1)) {
             return object1.equals(object2);
@@ -145,17 +148,17 @@ public abstract class EObject {
 
     protected static int systemIdentity(Object element) {
         if(FIXED_STATIC_IDENTITY) {
-            return System.identityHashCode(element);
-        } else {
             return element.getClass().getName().hashCode();
+        } else {
+            return System.identityHashCode(element);
         }
     }
 
-    protected static String toString(String name, Object value) {
+    protected static String toString(Object value) {
         if(hasIdentity(value)) {
-            return "\"" + name + "\": " + value.toString();
+            return value == null ? "null" : value.toString();
         } else {
-            return "\"" + name + "\": \"" + value.getClass().getName() + "#" + systemIdentity(value) + "\"";
+            return value.getClass().getName() + "#" + systemIdentity(value);
         }
     }
 }

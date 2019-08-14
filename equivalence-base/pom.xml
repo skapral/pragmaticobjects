@@ -9,5 +9,26 @@
     <artifactId>equivalence-base</artifactId>
     <packaging>jar</packaging>
     
+    <dependencies>
+        <dependency>
+            <groupId>com.pragmaticobjects.oo.equivalence</groupId>
+            <artifactId>equivalence-assertions</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                         <fixedStaticIdentity>true</fixedStaticIdentity>
+                    </systemPropertyVariables>
+                    <trimStackTrace>false</trimStackTrace>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
