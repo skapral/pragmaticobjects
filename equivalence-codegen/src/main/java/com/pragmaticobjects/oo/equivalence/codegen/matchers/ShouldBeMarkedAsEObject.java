@@ -25,48 +25,41 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
+import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
- * Assertion which passes if the {@link ElementMatcher} under the test mismatches
- * the provided {@link TypeDescription}
- * 
+ *
  * @author skapral
  */
-public class AssertThatTypeDoesNotMatch implements Assertion {
-    private final TypeDescription typeDescription;
-    private final ElementMatcher<TypeDescription> matcher;
-
-    /**
-     * Ctor.
-     *
-     * @param typeDescription Type description
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
-        this.typeDescription = typeDescription;
-        this.matcher = matcher;
-    }
-
-    /**
-     * Ctor.
-     *
-     * @param clazz Type
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(Class<?> clazz, ElementMatcher<TypeDescription> matcher) {
-        this(
-            new TypeDescription.ForLoadedType(clazz),
-            matcher
+public class ShouldBeMarkedAsEObject extends ConjunctionMatcher<TypeDescription> {
+    public ShouldBeMarkedAsEObject() {
+        super(
+            new ObjectSubtypeAttributesOfWhichAreIdentity(),
+            new HintedClassIfAbstract()
         );
     }
     
-    @Override
-    public final void check() throws Exception {
-        assertThat(matcher.matches(typeDescription)).isFalse();
+    private static class ObjectSubtypeAttributesOfWhichAreIdentity extends ConjunctionMatcher<TypeDescription> {
+        public ObjectSubtypeAttributesOfWhichAreIdentity() {
+            super(
+                new MatchSuperClass(
+                    ElementMatchers.is(Object.class)
+                ),
+                new AttributesStandForIdentity()
+            );
+        }
+    }
+    
+    private static class HintedClassIfAbstract extends DisjunctionMatcher<TypeDescription> {
+        public HintedClassIfAbstract() {
+            super(
+                ElementMatchers.not(    
+                    ElementMatchers.isAbstract()
+                ),
+                new Annotated(EObjectHint.class)
+            );
+        }
     }
 }

@@ -25,48 +25,32 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.lang.annotation.Annotation;
+
+import static net.bytebuddy.matcher.ElementMatchers.annotationType;
+import static net.bytebuddy.matcher.ElementMatchers.hasAnnotation;
 
 /**
- * Assertion which passes if the {@link ElementMatcher} under the test mismatches
- * the provided {@link TypeDescription}
- * 
- * @author skapral
+ * Matches classes, annotated with certain annotation.
+ *
+ * @author Kapralov Sergey
  */
-public class AssertThatTypeDoesNotMatch implements Assertion {
-    private final TypeDescription typeDescription;
-    private final ElementMatcher<TypeDescription> matcher;
+public class Annotated implements ElementMatcher<TypeDescription> {
+    private final Class<? extends Annotation> annotation;
 
     /**
      * Ctor.
-     *
-     * @param typeDescription Type description
-     * @param matcher Matcher
+     * @param annotation Annotation
      */
-    public AssertThatTypeDoesNotMatch(TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
-        this.typeDescription = typeDescription;
-        this.matcher = matcher;
+    public Annotated(final Class<? extends Annotation> annotation) {
+        this.annotation = annotation;
     }
 
-    /**
-     * Ctor.
-     *
-     * @param clazz Type
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(Class<?> clazz, ElementMatcher<TypeDescription> matcher) {
-        this(
-            new TypeDescription.ForLoadedType(clazz),
-            matcher
-        );
-    }
-    
     @Override
-    public final void check() throws Exception {
-        assertThat(matcher.matches(typeDescription)).isFalse();
+    public final boolean matches(final TypeDescription target) {
+        return hasAnnotation(annotationType(annotation)).matches(target);
     }
 }

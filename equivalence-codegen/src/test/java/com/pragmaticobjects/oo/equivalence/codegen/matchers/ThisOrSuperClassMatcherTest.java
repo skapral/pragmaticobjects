@@ -25,48 +25,61 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
- * Assertion which passes if the {@link ElementMatcher} under the test mismatches
- * the provided {@link TypeDescription}
- * 
- * @author skapral
+ * Tests suite for {@link ThisOrSuperClassMatcher}
+ *
+ * @author Kapralov Sergey
  */
-public class AssertThatTypeDoesNotMatch implements Assertion {
-    private final TypeDescription typeDescription;
-    private final ElementMatcher<TypeDescription> matcher;
-
+public class ThisOrSuperClassMatcherTest extends TestsSuite {
     /**
      * Ctor.
-     *
-     * @param typeDescription Type description
-     * @param matcher Matcher
      */
-    public AssertThatTypeDoesNotMatch(TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
-        this.typeDescription = typeDescription;
-        this.matcher = matcher;
-    }
-
-    /**
-     * Ctor.
-     *
-     * @param clazz Type
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(Class<?> clazz, ElementMatcher<TypeDescription> matcher) {
-        this(
-            new TypeDescription.ForLoadedType(clazz),
-            matcher
+    public ThisOrSuperClassMatcherTest() {
+        super(
+            new TestCase(
+                "matches on current class",
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Foo.class),
+                    new ThisOrSuperClassMatcher(
+                        new FooMatcher()
+                    )
+                )
+            ),
+            new TestCase(
+                "matches on super class",
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Foo2.class),
+                    new ThisOrSuperClassMatcher(
+                        new FooMatcher()
+                    )
+                )
+            ),
+            new TestCase(
+                "mismatches on current class",
+                new AssertThatTypeDoesNotMatch(
+                    new TypeDescription.ForLoadedType(Bar.class),
+                    new ThisOrSuperClassMatcher(
+                        new FooMatcher()
+                    )
+                )
+            )
         );
     }
-    
-    @Override
-    public final void check() throws Exception {
-        assertThat(matcher.matches(typeDescription)).isFalse();
+
+    //CHECKSTYLE:OFF
+    private static class Foo {}
+    private static class Bar {}
+    private static class Foo2 extends Foo {}
+
+    private static final class FooMatcher implements ElementMatcher<TypeDescription> {
+        @Override
+        public boolean matches(final TypeDescription target) {
+            return target.represents(Foo.class);
+        }
     }
 }

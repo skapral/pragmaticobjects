@@ -25,31 +25,36 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import java.util.stream.Collectors;
+import io.vavr.control.Option;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-import net.bytebuddy.matcher.ElementMatchers;
 
 /**
+ * Recursively checks the class and all its parents till the hierarchy root, using provided matcher.
  *
- * @author skapral
+ * @author Kapralov Sergey
  */
-public class MatchAttributesStandForIdentity implements ElementMatcher<TypeDescription> {
+public class ThisOrSuperClassMatcher implements ElementMatcher<TypeDescription> {
+    private final ElementMatcher<TypeDescription> matcher;
+
+    /**
+     * Ctor.
+     *
+     * @param matcher Matcher
+     */
+    public ThisOrSuperClassMatcher(final ElementMatcher<TypeDescription> matcher) {
+        this.matcher = matcher;
+    }
+
     @Override
-    public boolean matches(TypeDescription td) {
-        return td.getDeclaredFields().stream()
-                .filter(ElementMatchers.not(
-                        ElementMatchers.isSynthetic()
-                )::matches)
-                .filter(ElementMatchers.not(
-                        ElementMatchers.isStatic()
-                )::matches)
-                .map(
-                    new ConjunctionMatcher<>(
-                        ElementMatchers.isPrivate(),
-                        ElementMatchers.isFinal()
-                    )::matches
-                )
-                .collect(Collectors.reducing(true, Boolean::logicalAnd));
+    public final boolean matches(final TypeDescription target) {
+        boolean truth = matcher.matches(target);
+        if(!truth) {
+            truth = Option.of(target.getSuperClass())
+                .map(TypeDescription.Generic::asErasure)
+                .map(this::matches)
+                .getOrElse(false);
+        }
+        return truth;
     }
 }

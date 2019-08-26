@@ -31,16 +31,15 @@ import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectAttribut
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIMarkAsEObject;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIVerbose;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
-import com.pragmaticobjects.oo.equivalence.codegen.matchers.ConjunctionMatcher;
-import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchAttributesStandForIdentity;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchSuperClass;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectBaseType;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectHashSeed;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IISequential;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AllFieldsArePrivateFinal;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AllMethodsAreFinal;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.ShouldBeMarkedAsEObject;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.ShouldImplementEObjectMethods;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.VerboseMatcher;
-import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
 
 /**
@@ -61,12 +60,7 @@ public class StandardInstrumentationStage extends SequenceStage {
             new ShowStatsStage(),
             new ByteBuddyTransformationStage(
                 new IIConditional(
-                    new ConjunctionMatcher<TypeDescription>(
-                        new MatchSuperClass(
-                            ElementMatchers.is(Object.class)
-                        ),
-                        new MatchAttributesStandForIdentity()
-                    ),
+                    new ShouldBeMarkedAsEObject(),
                     new IIVerbose(
                         new IIMarkAsEObject()
                     )
@@ -74,11 +68,7 @@ public class StandardInstrumentationStage extends SequenceStage {
             ),
             new ByteBuddyTransformationStage(
                 new IIConditional(
-                    new ConjunctionMatcher<TypeDescription>(
-                        new MatchSuperClass(
-                            ElementMatchers.is(EObject.class)
-                        )
-                    ),
+                    new ShouldImplementEObjectMethods(),
                     new IISequential(
                         new IIVerbose(
                             new IIImplementEObjectAttributes()

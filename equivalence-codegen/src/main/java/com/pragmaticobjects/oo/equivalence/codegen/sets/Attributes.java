@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,33 +23,15 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+package com.pragmaticobjects.oo.equivalence.codegen.sets;
 
-import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
-import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import io.vavr.collection.List;
+import net.bytebuddy.description.field.FieldDescription;
 
 /**
  *
  * @author skapral
  */
-public class MatchAttributesStandForIdentityTest extends TestsSuite {
-    public MatchAttributesStandForIdentityTest() {
-        super(
-            new TestCase(
-                "match class with final attributes",
-                new AssertThatTypeMatches(
-                    EClass.class,
-                    new MatchAttributesStandForIdentity()
-                )
-            )
-        );
-    }
-}
-
-class EClass {
-    private final Object id;
-
-    public EClass(Object id) {
-        this.id = id;
-    }
+public interface Attributes {
+    List<FieldDescription> asList();
 }
