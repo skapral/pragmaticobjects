@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * project-name
+ * equivalence-itests
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -34,6 +34,7 @@ import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.itests.classes.AbstractNode;
 import com.pragmaticobjects.oo.equivalence.itests.classes.BaseNode;
 import com.pragmaticobjects.oo.equivalence.itests.classes.LeafNode;
+import com.pragmaticobjects.oo.equivalence.itests.classes.NonHintedAbstractClass;
 
 /**
  *
@@ -56,6 +57,10 @@ public class TestAbstractClasses extends TestsSuite {
                     new AssertSubtypeOf(
                         LeafNode.class,
                         AbstractNode.class
+                    ),
+                    new AssertSubtypeOf(
+                        NonHintedAbstractClass.class,
+                        Object.class
                     )
                 )
             ),

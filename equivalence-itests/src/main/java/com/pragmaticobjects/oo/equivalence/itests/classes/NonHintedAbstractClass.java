@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-assertions
+ * equivalence-itests
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,27 +23,12 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.assertions;
-
-import static org.assertj.core.api.Assertions.*;
+package com.pragmaticobjects.oo.equivalence.itests.classes;
 
 /**
  *
  * @author skapral
  */
-public class AssertSubtypeOf implements Assertion {
-    private final Class subtype;
-    private final Class type;
-
-    public AssertSubtypeOf(Class subtype, Class type) {
-        this.subtype = subtype;
-        this.type = type;
-    }
-
-    @Override
-    public final void check() throws Exception {
-        assertThat(subtype.getSuperclass())
-                .withFailMessage("Expected %s to be subtype of %s", subtype.getName(), type.getName())
-                .isEqualTo(type);
-    }
+public abstract class NonHintedAbstractClass {
+    
 }

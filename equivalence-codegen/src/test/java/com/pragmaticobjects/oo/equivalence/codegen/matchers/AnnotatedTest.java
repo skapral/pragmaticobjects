@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,51 +25,40 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
-import java.lang.annotation.Annotation;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatchers;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
  * @author skapral
  */
-public class ShouldBeMarkedAsEObject extends ConjunctionMatcher<TypeDescription> {
-    public ShouldBeMarkedAsEObject(Class<? extends Annotation> eobjectHint) {
+public class AnnotatedTest extends TestsSuite {
+    public AnnotatedTest() {
         super(
-            new SubtypeOfObjectAttributesOfWhichAreIdentity(),
-            new HintedClassIfAbstract(eobjectHint)
+            new TestCase(
+                "match hinted",
+                new AssertThatTypeMatches(
+                    Type1.class,
+                    new Annotated(TestAnnotation.class)
+                )
+            ),
+            new TestCase(
+                "mismatch non-hinted",
+                new AssertThatTypeDoesNotMatch(
+                    Type2.class,
+                    new Annotated(TestAnnotation.class)
+                )
+            )
         );
     }
     
-    public ShouldBeMarkedAsEObject() {
-        this(EObjectHint.class);
-    }
-    
-    private static class SubtypeOfObjectAttributesOfWhichAreIdentity extends ConjunctionMatcher<TypeDescription> {
-        public SubtypeOfObjectAttributesOfWhichAreIdentity() {
-            super(
-                new MatchSuperClass(
-                    ElementMatchers.is(Object.class)
-                ),
-                new AttributesStandForIdentity()
-            );
-        }
-    }
-    
-    private static class HintedClassIfAbstract extends DisjunctionMatcher<TypeDescription> {
-        public HintedClassIfAbstract(Class<? extends Annotation> eobjectHint) {
-            super(
-                ElementMatchers.not(    
-                    ElementMatchers.isAbstract()
-                ),
-                new ConjunctionMatcher<>(
-                    new MatchSuperClass(
-                        ElementMatchers.is(Object.class)
-                    ),
-                    new Annotated(eobjectHint)
-                )
-            );
-        }
-    }
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    private static @interface TestAnnotation {}
+    private static @TestAnnotation class Type1 {}
+    private static class Type2 {}
 }
