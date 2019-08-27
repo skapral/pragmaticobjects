@@ -58,6 +58,9 @@ public class ShouldBeMarkedAsEObject extends ConjunctionMatcher<TypeDescription>
                 ElementMatchers.not(    
                     ElementMatchers.isAbstract()
                 ),
+                new MatchSuperClass(
+                    ElementMatchers.is(Object.class)
+                ),
                 new Annotated(EObjectHint.class)
             );
         }

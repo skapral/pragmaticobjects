@@ -31,7 +31,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A hint, telling instrumentor that the class should be subtype of EObject.
+ * A hint, telling instrumentor that the abstract class should be subtype of EObject.
+ * If the class is not an abstract class that is extended directly from 
+ * {@link java.lang.Object}, the annotation is ignored. Otherwise, its base class is replaced
+ * {@link EObject}, and instrumentor handles its non-abstract subtypes as EObjects.
+ * 
+ * The abstract EObject class must fit these requirements:
+ * <ul>
+ * <li>All its non-abstract methods should be final</li>
+ * <li>All its non-static properties should be protected final</li>
+ * </ul>
+ * 
+ * Instrumentation
+ * post-checks will fail the instrumentation process, if any violation found.
  * 
  * @author skapral
  */
