@@ -28,8 +28,13 @@ package com.pragmaticobjects.oo.equivalence.itests.classes;
 /**
  *
  * @author skapral
+ * @param <T> type
  */
 public class LeafNode<T> extends AbstractNode<T> {
+    /**
+     * Ctor.
+     * @param value 
+     */
     public LeafNode(T value) {
         super(value);
     }

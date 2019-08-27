@@ -36,15 +36,15 @@ public class AttributesStandForIdentityTest extends TestsSuite {
     public AttributesStandForIdentityTest() {
         super(
             new TestCase(
-                "match class with final attributes",
+                "match class with private final attributes",
                 new AssertThatTypeMatches(
                     Type1.class,
                     new AttributesStandForIdentity()
                 )
             ),
             new TestCase(
-                "match abstract class with final attributes",
-                new AssertThatTypeMatches(
+                "mismatch abstract class with private final attributes",
+                new AssertThatTypeDoesNotMatch(
                     Type2.class,
                     new AttributesStandForIdentity()
                 )
@@ -53,6 +53,13 @@ public class AttributesStandForIdentityTest extends TestsSuite {
                 "mismatch class with non-final attributes",
                 new AssertThatTypeDoesNotMatch(
                     Type3.class,
+                    new AttributesStandForIdentity()
+                )
+            ),
+            new TestCase(
+                "match abstract class with protected final attributes",
+                new AssertThatTypeMatches(
+                    Type4.class,
                     new AttributesStandForIdentity()
                 )
             )
@@ -81,6 +88,14 @@ public class AttributesStandForIdentityTest extends TestsSuite {
         private Object state;
 
         public Type3(Object id) {
+            this.id = id;
+        }
+    }
+    
+    private static abstract class Type4 {
+        protected final Object id;
+
+        public Type4(Object id) {
             this.id = id;
         }
     }

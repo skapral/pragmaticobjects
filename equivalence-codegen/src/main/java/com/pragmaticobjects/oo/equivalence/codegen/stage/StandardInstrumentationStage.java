@@ -35,8 +35,8 @@ import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchSuperClass;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectBaseType;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectHashSeed;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IISequential;
-import com.pragmaticobjects.oo.equivalence.codegen.matchers.AllFieldsArePrivateFinal;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AllMethodsAreFinal;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.AttributesStandForIdentity;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.ShouldBeMarkedAsEObject;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.ShouldImplementEObjectMethods;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.VerboseMatcher;
@@ -98,7 +98,7 @@ public class StandardInstrumentationStage extends SequenceStage {
                     ElementMatchers.is(EObject.class)
                 ),
                 new VerboseMatcher<>(
-                    new AllFieldsArePrivateFinal()
+                    new AttributesStandForIdentity()
                 )
             )
         );

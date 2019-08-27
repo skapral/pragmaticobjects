@@ -33,7 +33,7 @@ import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
  * @param <T> type
  */
 public @EObjectHint abstract class AbstractNode<T> implements Node<T> {
-    private final T value;
+    protected final T value;
 
     public AbstractNode(T value) {
         this.value = value;
