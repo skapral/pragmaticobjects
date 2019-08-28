@@ -57,6 +57,16 @@ public class IIMarkAsEObjectTest extends TestsSuite {
                         ElementMatchers.is(EObject.class)
                     )
                 )
+            ),
+            new TestCase(
+                "mark a class with generics",
+                new AssertClassAfterInstrumentation(
+                    new IIMarkAsEObject(),
+                    Type3.class,
+                    new MatchSuperClass(
+                        ElementMatchers.is(EObject.class)
+                    )
+                )
             )
         );
     }
@@ -67,14 +77,33 @@ public class IIMarkAsEObjectTest extends TestsSuite {
         public Type1(int x) {
             this.x = x;
         }
-        
-        
-    }
-    private static abstract class Type2 {
-        protected final int y;
 
-        public Type2(int y) {
-            this.y = y;
+        public int getX() {
+            return x;
+        }
+    }
+    
+    private static abstract class Type2 {
+        protected final int x;
+
+        public Type2(int x) {
+            this.x = x;
+        }
+        
+        public int getX() {
+            return x;
+        }
+    }
+    
+    private static class Type3<T> {
+        private final T x;
+
+        public Type3(T x) {
+            this.x = x;
+        }
+
+        public T getX() {
+            return x;
         }
     }
 }
