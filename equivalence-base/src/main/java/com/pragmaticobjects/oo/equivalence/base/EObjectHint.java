@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * equivalence-base
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,50 +23,30 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+package com.pragmaticobjects.oo.equivalence.base;
 
-import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Assertion which passes if the {@link ElementMatcher} under the test mismatches
- * the provided {@link TypeDescription}
+ * A hint, telling instrumentor that the abstract class should be subtype of EObject.
+ * If the class is not an abstract class that is extended directly from 
+ * {@link java.lang.Object}, the annotation is ignored. Otherwise, its base class is replaced
+ * {@link EObject}, and instrumentor handles its non-abstract subtypes as EObjects.
+ * 
+ * The abstract EObject class must fit these requirements:
+ * <ul>
+ * <li>All its non-abstract methods should be final</li>
+ * <li>All its non-static properties should be protected final</li>
+ * </ul>
+ * 
+ * Instrumentation
+ * post-checks will fail the instrumentation process, if any violation found.
  * 
  * @author skapral
  */
-public class AssertThatTypeDoesNotMatch implements Assertion {
-    private final TypeDescription typeDescription;
-    private final ElementMatcher<TypeDescription> matcher;
-
-    /**
-     * Ctor.
-     *
-     * @param typeDescription Type description
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
-        this.typeDescription = typeDescription;
-        this.matcher = matcher;
-    }
-
-    /**
-     * Ctor.
-     *
-     * @param clazz Type
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(Class<?> clazz, ElementMatcher<TypeDescription> matcher) {
-        this(
-            new TypeDescription.ForLoadedType(clazz),
-            matcher
-        );
-    }
-    
-    @Override
-    public final void check() throws Exception {
-        assertThat(matcher.matches(typeDescription)).isFalse();
-    }
-}
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.CLASS)
+public @interface EObjectHint {}

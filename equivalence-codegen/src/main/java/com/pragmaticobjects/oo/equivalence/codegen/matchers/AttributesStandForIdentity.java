@@ -25,48 +25,40 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
+import java.util.stream.Collectors;
+import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
- * Assertion which passes if the {@link ElementMatcher} under the test mismatches
- * the provided {@link TypeDescription}
- * 
+ *
  * @author skapral
  */
-public class AssertThatTypeDoesNotMatch implements Assertion {
-    private final TypeDescription typeDescription;
-    private final ElementMatcher<TypeDescription> matcher;
+public class AttributesStandForIdentity implements ElementMatcher<TypeDescription> {
 
-    /**
-     * Ctor.
-     *
-     * @param typeDescription Type description
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
-        this.typeDescription = typeDescription;
-        this.matcher = matcher;
-    }
-
-    /**
-     * Ctor.
-     *
-     * @param clazz Type
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(Class<?> clazz, ElementMatcher<TypeDescription> matcher) {
-        this(
-            new TypeDescription.ForLoadedType(clazz),
-            matcher
-        );
-    }
-    
     @Override
-    public final void check() throws Exception {
-        assertThat(matcher.matches(typeDescription)).isFalse();
+    public boolean matches(TypeDescription td) {
+        final ElementMatcher<FieldDescription> visibilityMatcher = td.isAbstract() ?
+                ElementMatchers.isProtected() :
+                ElementMatchers.isPrivate();
+        return td.getDeclaredFields().stream()
+                .filter(
+                    ElementMatchers.not(
+                        ElementMatchers.isSynthetic()
+                    )::matches
+                )
+                .filter(
+                    ElementMatchers.not(
+                        ElementMatchers.isStatic()
+                    )::matches
+                )
+                .map(
+                    new ConjunctionMatcher<>(
+                        visibilityMatcher,
+                        ElementMatchers.isFinal()
+                    )::matches
+                )
+                .collect(Collectors.reducing(true, Boolean::logicalAnd));
     }
 }

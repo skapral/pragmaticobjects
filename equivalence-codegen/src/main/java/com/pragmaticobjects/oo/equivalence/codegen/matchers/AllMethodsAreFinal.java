@@ -48,6 +48,7 @@ public class AllMethodsAreFinal implements ElementMatcher<TypeDescription> {
                 .filter(not(isConstructor()))
                 .filter(isPublic())
                 .filter(not(isStatic()))
+                .filter(not(isAbstract()))
                 .filter(not(isBridge()))
                 .filter(not(named("equals")))
                 .filter(not(named("hashCode")))

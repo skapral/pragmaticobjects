@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,50 +23,43 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+package com.pragmaticobjects.oo.equivalence.codegen.sets;
 
 import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
-import net.bytebuddy.description.type.TypeDescription;
+import io.vavr.Tuple2;
+import io.vavr.collection.List;
+import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import net.bytebuddy.matcher.ElementMatchers;
+import org.assertj.core.api.Assertions;
 
 /**
- * Assertion which passes if the {@link ElementMatcher} under the test mismatches
- * the provided {@link TypeDescription}
- * 
+ *
  * @author skapral
  */
-public class AssertThatTypeDoesNotMatch implements Assertion {
-    private final TypeDescription typeDescription;
-    private final ElementMatcher<TypeDescription> matcher;
+public class AssertAttributesMatch implements Assertion {
+    private final Attributes attrs;
+    private final List<ElementMatcher<FieldDescription>> fieldMatchers;
 
-    /**
-     * Ctor.
-     *
-     * @param typeDescription Type description
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
-        this.typeDescription = typeDescription;
-        this.matcher = matcher;
-    }
-
-    /**
-     * Ctor.
-     *
-     * @param clazz Type
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(Class<?> clazz, ElementMatcher<TypeDescription> matcher) {
-        this(
-            new TypeDescription.ForLoadedType(clazz),
-            matcher
-        );
+    public AssertAttributesMatch(Attributes attrs, List<ElementMatcher<FieldDescription>> fieldMatchers) {
+        this.attrs = attrs;
+        this.fieldMatchers = fieldMatchers;
     }
     
+    public AssertAttributesMatch(Attributes attrs, ElementMatcher<FieldDescription>... fieldMatchers) {
+        this(attrs, List.of(fieldMatchers));
+    }
+
     @Override
     public final void check() throws Exception {
-        assertThat(matcher.matches(typeDescription)).isFalse();
+        fieldMatchers.zipAll(attrs.asList(), ElementMatchers.none(), null)
+                .forEachWithIndex((Tuple2<ElementMatcher<FieldDescription>, FieldDescription> tuple, int index) -> {
+                    ElementMatcher<FieldDescription> matcher = tuple._1;
+                    FieldDescription field = tuple._2;
+                    Assertions
+                        .assertThat(field != null && matcher.matches(field))
+                        .withFailMessage("Field #%s mismatched: %s", index, field.getType().getActualName(), field.getActualName())
+                        .isTrue();
+                });
     }
 }

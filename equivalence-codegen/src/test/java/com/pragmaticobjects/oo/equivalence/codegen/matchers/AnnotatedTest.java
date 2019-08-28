@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,48 +25,40 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Assertion which passes if the {@link ElementMatcher} under the test mismatches
- * the provided {@link TypeDescription}
- * 
+ *
  * @author skapral
  */
-public class AssertThatTypeDoesNotMatch implements Assertion {
-    private final TypeDescription typeDescription;
-    private final ElementMatcher<TypeDescription> matcher;
-
-    /**
-     * Ctor.
-     *
-     * @param typeDescription Type description
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
-        this.typeDescription = typeDescription;
-        this.matcher = matcher;
-    }
-
-    /**
-     * Ctor.
-     *
-     * @param clazz Type
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(Class<?> clazz, ElementMatcher<TypeDescription> matcher) {
-        this(
-            new TypeDescription.ForLoadedType(clazz),
-            matcher
+public class AnnotatedTest extends TestsSuite {
+    public AnnotatedTest() {
+        super(
+            new TestCase(
+                "match hinted",
+                new AssertThatTypeMatches(
+                    Type1.class,
+                    new Annotated(TestAnnotation.class)
+                )
+            ),
+            new TestCase(
+                "mismatch non-hinted",
+                new AssertThatTypeDoesNotMatch(
+                    Type2.class,
+                    new Annotated(TestAnnotation.class)
+                )
+            )
         );
     }
     
-    @Override
-    public final void check() throws Exception {
-        assertThat(matcher.matches(typeDescription)).isFalse();
-    }
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    private static @interface TestAnnotation {}
+    private static @TestAnnotation class Type1 {}
+    private static class Type2 {}
 }

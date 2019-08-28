@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * equivalence-itests
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,50 +23,12 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
-
-import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-
-import static org.assertj.core.api.Assertions.assertThat;
+package com.pragmaticobjects.oo.equivalence.itests.classes;
 
 /**
- * Assertion which passes if the {@link ElementMatcher} under the test mismatches
- * the provided {@link TypeDescription}
- * 
+ *
  * @author skapral
  */
-public class AssertThatTypeDoesNotMatch implements Assertion {
-    private final TypeDescription typeDescription;
-    private final ElementMatcher<TypeDescription> matcher;
-
-    /**
-     * Ctor.
-     *
-     * @param typeDescription Type description
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(TypeDescription typeDescription, ElementMatcher<TypeDescription> matcher) {
-        this.typeDescription = typeDescription;
-        this.matcher = matcher;
-    }
-
-    /**
-     * Ctor.
-     *
-     * @param clazz Type
-     * @param matcher Matcher
-     */
-    public AssertThatTypeDoesNotMatch(Class<?> clazz, ElementMatcher<TypeDescription> matcher) {
-        this(
-            new TypeDescription.ForLoadedType(clazz),
-            matcher
-        );
-    }
+public abstract class NonHintedAbstractClass {
     
-    @Override
-    public final void check() throws Exception {
-        assertThat(matcher.matches(typeDescription)).isFalse();
-    }
 }

@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,40 +23,15 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+package com.pragmaticobjects.oo.equivalence.codegen.sets;
 
+import io.vavr.collection.List;
 import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * Matcher which matches types, all declared fields of which are private final
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public class AllFieldsArePrivateFinal implements ElementMatcher<TypeDescription> {
-    private static final Logger LOG = LoggerFactory.getLogger(AllFieldsArePrivateFinal.class);
-    
-    @Override
-    public final boolean matches(TypeDescription target) {
-        for(FieldDescription fd : target.getDeclaredFields()) {
-            LOG.debug(fd.getDeclaringType().getActualName() + "::" + fd.getName());
-            if(fd.isEnum()) {
-                LOG.debug("enum");
-                continue;
-            }
-            if(fd.isSynthetic()) {
-                LOG.debug("synthetic");
-                continue;
-            }
-            if(!fd.isPrivate() || !fd.isFinal()) {
-                LOG.debug("false");
-                return false;
-            }
-        }
-        LOG.debug("true");
-        return true;
-    }
+public interface Attributes {
+    List<FieldDescription> asList();
 }

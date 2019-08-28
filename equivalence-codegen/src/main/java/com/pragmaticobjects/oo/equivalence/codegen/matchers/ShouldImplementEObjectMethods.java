@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,31 +25,31 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import java.util.stream.Collectors;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
 
 /**
  *
  * @author skapral
  */
-public class MatchAttributesStandForIdentity implements ElementMatcher<TypeDescription> {
-    @Override
-    public boolean matches(TypeDescription td) {
-        return td.getDeclaredFields().stream()
-                .filter(ElementMatchers.not(
-                        ElementMatchers.isSynthetic()
-                )::matches)
-                .filter(ElementMatchers.not(
-                        ElementMatchers.isStatic()
-                )::matches)
-                .map(
+public class ShouldImplementEObjectMethods extends ConjunctionMatcher<TypeDescription> {
+    public ShouldImplementEObjectMethods() {
+        super(
+            ElementMatchers.not(
+                ElementMatchers.isAbstract()
+            ),
+            new MatchSuperClass(
+                new DisjunctionMatcher<TypeDescription>(
+                    ElementMatchers.is(EObject.class),
                     new ConjunctionMatcher<>(
-                        ElementMatchers.isPrivate(),
-                        ElementMatchers.isFinal()
-                    )::matches
+                        ElementMatchers.isAbstract(),
+                        new ThisOrSuperClassMatcher(
+                            ElementMatchers.is(EObject.class)
+                        )
+                    )
                 )
-                .collect(Collectors.reducing(true, Boolean::logicalAnd));
+            )
+        );
     }
 }

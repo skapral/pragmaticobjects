@@ -45,7 +45,7 @@ import static org.assertj.core.api.Assertions.*;
 public class AssertClassAfterInstrumentation implements Assertion {
     private final InstrumentationIteration ii;
     private final Class<?> type;
-    private final ElementMatcher.Junction<TypeDescription> matcher;
+    private final ElementMatcher<TypeDescription> matcher;
 
     /**
      * Ctor.
@@ -54,7 +54,7 @@ public class AssertClassAfterInstrumentation implements Assertion {
      * @param type A type to instrument.
      * @param matcher A matcher
      */
-    public AssertClassAfterInstrumentation(InstrumentationIteration ii, Class<?> type, ElementMatcher.Junction<TypeDescription> matcher) {
+    public AssertClassAfterInstrumentation(InstrumentationIteration ii, Class<?> type, ElementMatcher<TypeDescription> matcher) {
         this.ii = ii;
         this.type = type;
         this.matcher = matcher;
