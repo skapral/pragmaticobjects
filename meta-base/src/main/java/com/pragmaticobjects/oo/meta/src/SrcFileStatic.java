@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * meta-base
+ * data-core
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,52 +25,40 @@
  */
 package com.pragmaticobjects.oo.meta.src;
 
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
-
-import javax.annotation.processing.ProcessingEnvironment;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
- * <a href="https://github.com/square/javapoet">Java poet</a> based source file. 
+ * Static source file for tests
+ *
  * @author skapral
  */
-public class SrcFileJavaPoet implements SourceFile {
-    private final String packageName;
-    private final JavaPoetDefinition typeSpec;
-    private final Destination dest;
+public class SrcFileStatic implements SourceFile {
+
+    private final Path path;
+    private final String contents;
 
     /**
      * Ctor.
-     * @param packageName package name
-     * @param typeSpec {@link TypeSpec} source
-     * @param dest File destination
+     * @param path File path
+     * @param contents File contents
      */
-    public SrcFileJavaPoet(String packageName, JavaPoetDefinition typeSpec, Destination dest) {
-        this.packageName = packageName;
-        this.typeSpec = typeSpec;
-        this.dest = dest;
+    public SrcFileStatic(Path path, String contents) {
+        this.path = path;
+        this.contents = contents;
     }
 
-    /**
-     * Ctor.
-     * @param packageName package name
-     * @param typeSpec {@link TypeSpec} source
-     * @param env Processing environment
-     */
-    public SrcFileJavaPoet(String packageName, JavaPoetDefinition typeSpec, ProcessingEnvironment env) {
-        this(
-            packageName,
-            typeSpec,
-            new DestFromProcessingEnvironment(env)
-        );
-    }
-    
     @Override
     public final void generate() {
-        JavaFile javaFile = JavaFile.builder(
-            packageName,
-            typeSpec.javaPoetSpec()
-        ).build();
-        dest.persist(javaFile);
+        if (!path.isAbsolute()) {
+            throw new RuntimeException(
+                String.format("Non-absolute file paths are not allowed in SrcFileStatic instances: %s", path.toString())
+            );
+        }
+        try {
+            Files.write(path, contents.getBytes());
+        } catch (Exception ex) {
+            throw new RuntimeException("Attempt to write file failed", ex);
+        }
     }
 }

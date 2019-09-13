@@ -23,54 +23,47 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.meta.src;
+package com.pragmaticobjects.oo.meta.base.ifaces;
 
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
-
-import javax.annotation.processing.ProcessingEnvironment;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.TypeName;
+import java.util.Optional;
 
 /**
- * <a href="https://github.com/square/javapoet">Java poet</a> based source file. 
+ *
  * @author skapral
  */
-public class SrcFileJavaPoet implements SourceFile {
-    private final String packageName;
-    private final JavaPoetDefinition typeSpec;
-    private final Destination dest;
+public class StateFixed implements StateAttribute {
+    private final Type type;
+    private final String name;
+    private final Optional<CodeBlock> codeBlock;
 
-    /**
-     * Ctor.
-     * @param packageName package name
-     * @param typeSpec {@link TypeSpec} source
-     * @param dest File destination
-     */
-    public SrcFileJavaPoet(String packageName, JavaPoetDefinition typeSpec, Destination dest) {
-        this.packageName = packageName;
-        this.typeSpec = typeSpec;
-        this.dest = dest;
+    private StateFixed(Type type, String name, Optional<CodeBlock> codeBlock) {
+        this.type = type;
+        this.name = name;
+        this.codeBlock = codeBlock;
     }
 
-    /**
-     * Ctor.
-     * @param packageName package name
-     * @param typeSpec {@link TypeSpec} source
-     * @param env Processing environment
-     */
-    public SrcFileJavaPoet(String packageName, JavaPoetDefinition typeSpec, ProcessingEnvironment env) {
-        this(
-            packageName,
-            typeSpec,
-            new DestFromProcessingEnvironment(env)
-        );
+    public StateFixed(Type type, String name) {
+        this(type, name, Optional.empty());
     }
     
+    public StateFixed(Type type, String name, CodeBlock initializer) {
+        this(type, name, Optional.of(initializer));
+    }
+
     @Override
-    public final void generate() {
-        JavaFile javaFile = JavaFile.builder(
-            packageName,
-            typeSpec.javaPoetSpec()
-        ).build();
-        dest.persist(javaFile);
+    public final TypeName type() {
+        return type.type();
+    }
+
+    @Override
+    public final String name() {
+        return name;
+    }
+
+    @Override
+    public final Optional<CodeBlock> initializer() {
+        return codeBlock;
     }
 }

@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * project-name
+ * meta-base
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,54 +23,51 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.meta.base;
+package com.pragmaticobjects.oo.meta.base.ifaces;
 
-import com.pragmaticobjects.oo.meta.base.ifaces.Method;
-import com.pragmaticobjects.oo.meta.base.ifaces.Type;
-import com.pragmaticobjects.oo.meta.src.JavaPoetDefinition;
 import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterSpec;
-import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.TypeName;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
-import javax.lang.model.element.Modifier;
 
 /**
  *
  * @author skapral
  */
-public class Interface implements JavaPoetDefinition {
+public class MethodWithBody implements Method {
+    private final Type returns;
     private final String name;
-    private final List<Type> superinterfaces;
-    private final List<Method> methods;
+    private final List<IdentityAttribute> arguments;
+    private final Option<CodeBlock> body;
 
-    public Interface(String name, List<Type> superinterfaces, List<Method> methods) {
+    private MethodWithBody(Type returns, String name, List<IdentityAttribute> arguments, Option<CodeBlock> body) {
+        this.returns = returns;
         this.name = name;
-        this.superinterfaces = superinterfaces;
-        this.methods = methods;
+        this.arguments = arguments;
+        this.body = body;
+    }
+    
+    public MethodWithBody(Type returns, String name, List<IdentityAttribute> arguments, CodeBlock body) {
+        this(returns, name, arguments, Option.of(body));
     }
     
     @Override
-    public final TypeSpec javaPoetSpec() {
-        TypeSpec.Builder ifaceBuilder = TypeSpec.interfaceBuilder(name);
-        ifaceBuilder.addSuperinterfaces(superinterfaces.map(Type::type));
-        ifaceBuilder.addMethods(
-            methods.map(m -> {
-                MethodSpec.Builder builder = MethodSpec.methodBuilder(m.name());
-                builder.returns(m.returns());
-                builder.addParameters(
-                    m.args().map(a -> ParameterSpec.builder(a.type(), a.name()).build())
-                );
-                Option<CodeBlock> body = m.body();
-                if(body.isEmpty()) {
-                    builder.addModifiers(Modifier.ABSTRACT);
-                } else {
-                    throw new RuntimeException("Non abstract methods are not allowed in interfaces");
-                }
-                return builder.build();
-            })
-        );
-        return ifaceBuilder.build();
+    public final TypeName returns() {
+        return returns.type();
+    }
+
+    @Override
+    public String name() {
+        return name;
+    }
+
+    @Override
+    public List<IdentityAttribute> args() {
+        return arguments;
+    }
+
+    @Override
+    public Option<CodeBlock> body() {
+        return body;
     }
 }

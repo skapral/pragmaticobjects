@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * meta-base
+ * data-core
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,52 +25,45 @@
  */
 package com.pragmaticobjects.oo.meta.src;
 
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
-
-import javax.annotation.processing.ProcessingEnvironment;
+import com.pragmaticobjects.oo.tests.Assertion;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.function.Function;
 
 /**
- * <a href="https://github.com/square/javapoet">Java poet</a> based source file. 
+ * Assertion, that prepares a temporary directory for the test
+ * 
  * @author skapral
  */
-public class SrcFileJavaPoet implements SourceFile {
-    private final String packageName;
-    private final JavaPoetDefinition typeSpec;
-    private final Destination dest;
+public class AssertAssumingTemporaryDirectory implements Assertion {
+    private final Function<Path, Assertion> assertionFn;
 
     /**
      * Ctor.
-     * @param packageName package name
-     * @param typeSpec {@link TypeSpec} source
-     * @param dest File destination
+     * @param assertionFn Assertion constructor
      */
-    public SrcFileJavaPoet(String packageName, JavaPoetDefinition typeSpec, Destination dest) {
-        this.packageName = packageName;
-        this.typeSpec = typeSpec;
-        this.dest = dest;
-    }
-
-    /**
-     * Ctor.
-     * @param packageName package name
-     * @param typeSpec {@link TypeSpec} source
-     * @param env Processing environment
-     */
-    public SrcFileJavaPoet(String packageName, JavaPoetDefinition typeSpec, ProcessingEnvironment env) {
-        this(
-            packageName,
-            typeSpec,
-            new DestFromProcessingEnvironment(env)
-        );
+    public AssertAssumingTemporaryDirectory(Function<Path, Assertion> assertionFn) {
+        this.assertionFn = assertionFn;
     }
     
     @Override
-    public final void generate() {
-        JavaFile javaFile = JavaFile.builder(
-            packageName,
-            typeSpec.javaPoetSpec()
-        ).build();
-        dest.persist(javaFile);
+    public final void check() throws Exception {
+        final Path tempPath;
+        try {
+            tempPath = Files.createTempDirectory("AssertAssumingTemporaryDirectory");
+        } catch(IOException ex) {
+            throw new RuntimeException("Creating temporary directory was unsuccessfull", ex);
+        }
+        try {
+            assertionFn.apply(tempPath).check();
+        } finally {
+            try {
+                Files.delete(tempPath);
+            } catch(Exception ex) {
+                //Intentionally supressed
+            }
+        }
+        
     }
 }

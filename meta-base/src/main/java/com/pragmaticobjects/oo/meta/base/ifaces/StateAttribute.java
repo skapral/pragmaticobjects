@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * meta-base
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,54 +23,18 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.meta.src;
+package com.pragmaticobjects.oo.meta.base.ifaces;
 
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
-
-import javax.annotation.processing.ProcessingEnvironment;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.TypeName;
+import java.util.Optional;
 
 /**
- * <a href="https://github.com/square/javapoet">Java poet</a> based source file. 
+ *
  * @author skapral
  */
-public class SrcFileJavaPoet implements SourceFile {
-    private final String packageName;
-    private final JavaPoetDefinition typeSpec;
-    private final Destination dest;
-
-    /**
-     * Ctor.
-     * @param packageName package name
-     * @param typeSpec {@link TypeSpec} source
-     * @param dest File destination
-     */
-    public SrcFileJavaPoet(String packageName, JavaPoetDefinition typeSpec, Destination dest) {
-        this.packageName = packageName;
-        this.typeSpec = typeSpec;
-        this.dest = dest;
-    }
-
-    /**
-     * Ctor.
-     * @param packageName package name
-     * @param typeSpec {@link TypeSpec} source
-     * @param env Processing environment
-     */
-    public SrcFileJavaPoet(String packageName, JavaPoetDefinition typeSpec, ProcessingEnvironment env) {
-        this(
-            packageName,
-            typeSpec,
-            new DestFromProcessingEnvironment(env)
-        );
-    }
-    
-    @Override
-    public final void generate() {
-        JavaFile javaFile = JavaFile.builder(
-            packageName,
-            typeSpec.javaPoetSpec()
-        ).build();
-        dest.persist(javaFile);
-    }
+public interface StateAttribute {
+    TypeName type();
+    String name();
+    Optional<CodeBlock> initializer();
 }

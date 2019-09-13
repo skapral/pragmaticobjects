@@ -25,39 +25,87 @@
  */
 package com.pragmaticobjects.oo.meta.base;
 
+import com.pragmaticobjects.oo.meta.base.ifaces.Method;
+import com.pragmaticobjects.oo.meta.base.ifaces.Type;
+import com.pragmaticobjects.oo.meta.src.JavaPoetDefinition;
 import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import io.vavr.collection.List;
-import java.util.function.Supplier;
+import com.pragmaticobjects.oo.meta.base.ifaces.IdentityAttribute;
+import com.pragmaticobjects.oo.meta.base.ifaces.StateAttribute;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
+import io.vavr.control.Option;
+import java.util.Optional;
+import javax.lang.model.element.Modifier;
 
 /**
  *
  * @author skapral
  */
-public class Clazz implements Supplier<TypeSpec> {
+public class Clazz implements JavaPoetDefinition {
     private final String name;
-    private final Supplier<TypeName> superclass;
-    private final List<Supplier<TypeName>> superinterfaces;
-    private final List<Supplier<FieldSpec>> fields;
-    private final List<Supplier<MethodSpec>> methods;
+    private final Option<Type> superclass;
+    private final List<Type> superinterfaces;
+    private final List<IdentityAttribute> identity;
+    private final List<StateAttribute> state;
+    private final List<Method> methods;
 
-    public Clazz(String name, Supplier<TypeName> superclass, List<Supplier<TypeName>> superinterfaces, List<Supplier<FieldSpec>> fields, List<Supplier<MethodSpec>> methods) {
+    public Clazz(String name, Option<Type> superclass, List<Type> superinterfaces, List<IdentityAttribute> identity, List<StateAttribute> state, List<Method> methods) {
         this.name = name;
         this.superclass = superclass;
         this.superinterfaces = superinterfaces;
-        this.fields = fields;
+        this.identity = identity;
+        this.state = state;
         this.methods = methods;
     }
-    
+
     @Override
-    public final TypeSpec get() {
-        return TypeSpec.classBuilder(name)
-                .superclass(superclass.get())
-                .addFields(fields.map(Supplier::get))
-                .addSuperinterfaces(superinterfaces.map(Supplier::get))
-                .addMethods(methods.map(Supplier::get))
-                .build();
+    public final TypeSpec javaPoetSpec() {
+        TypeSpec.Builder classBuilder = TypeSpec.classBuilder(name);
+        if(superclass.isDefined()) {
+            classBuilder.superclass(superclass.get().type());
+        }
+        classBuilder.addSuperinterfaces(superinterfaces.map(Type::type));
+        classBuilder.addFields(
+            identity.map(id -> FieldSpec.builder(id.type(), id.name(), Modifier.PRIVATE, Modifier.FINAL).build())
+        );
+        classBuilder.addFields(
+            state.map((StateAttribute st) -> {
+                Optional<CodeBlock> initializer = st.initializer();
+                FieldSpec.Builder builder = FieldSpec.builder(st.type(), st.name(), Modifier.STATIC, Modifier.PRIVATE, Modifier.FINAL);
+                initializer.ifPresent(cb -> builder.initializer(cb));
+                return builder.build();
+            })
+        );
+        classBuilder.addMethod(
+            identity.foldLeft(
+                MethodSpec.constructorBuilder()
+                        .addModifiers(Modifier.PUBLIC),
+                (builder, f) -> builder
+                        .addParameter(f.type(), f.name())
+                        .addStatement("this.$L = $L", f.name(), f.name())
+            ).build()
+        );
+        classBuilder.addMethods(
+            methods.map(m -> {
+                MethodSpec.Builder builder = MethodSpec.methodBuilder(m.name());
+                builder.addModifiers(Modifier.PUBLIC);
+                builder.returns(m.returns());
+                builder.addParameters(
+                    m.args().map(a -> ParameterSpec.builder(a.type(), a.name()).build())
+                );
+                Option<CodeBlock> body = m.body();
+                if(body.isEmpty()) {
+                    builder.addModifiers(Modifier.ABSTRACT);
+                } else {
+                    builder.addModifiers(Modifier.FINAL);
+                    builder.addCode(body.get());
+                }
+                return builder.build();
+            })
+        );
+        return classBuilder.build();
     }
 }

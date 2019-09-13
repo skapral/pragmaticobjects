@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * meta-base
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,51 +26,28 @@
 package com.pragmaticobjects.oo.meta.src;
 
 import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
-
-import javax.annotation.processing.ProcessingEnvironment;
+import java.io.IOException;
 
 /**
- * <a href="https://github.com/square/javapoet">Java poet</a> based source file. 
+ *
  * @author skapral
  */
-public class SrcFileJavaPoet implements SourceFile {
-    private final String packageName;
-    private final JavaPoetDefinition typeSpec;
-    private final Destination dest;
+public class DestToString implements Destination {
+    private final StringBuilder stringBuilder;
 
-    /**
-     * Ctor.
-     * @param packageName package name
-     * @param typeSpec {@link TypeSpec} source
-     * @param dest File destination
-     */
-    public SrcFileJavaPoet(String packageName, JavaPoetDefinition typeSpec, Destination dest) {
-        this.packageName = packageName;
-        this.typeSpec = typeSpec;
-        this.dest = dest;
+    public DestToString(StringBuilder stringBuilder) {
+        this.stringBuilder = stringBuilder;
     }
 
-    /**
-     * Ctor.
-     * @param packageName package name
-     * @param typeSpec {@link TypeSpec} source
-     * @param env Processing environment
-     */
-    public SrcFileJavaPoet(String packageName, JavaPoetDefinition typeSpec, ProcessingEnvironment env) {
-        this(
-            packageName,
-            typeSpec,
-            new DestFromProcessingEnvironment(env)
-        );
-    }
-    
     @Override
-    public final void generate() {
-        JavaFile javaFile = JavaFile.builder(
-            packageName,
-            typeSpec.javaPoetSpec()
-        ).build();
-        dest.persist(javaFile);
+    public void persist(JavaFile file) {
+        try {
+            file.writeTo(stringBuilder);
+        } catch (IOException ex) {
+            throw new RuntimeException(
+                String.format("Attempt to save java file %s to string failed", file.toJavaFileObject().getName()),
+                ex
+            );
+        }
     }
 }

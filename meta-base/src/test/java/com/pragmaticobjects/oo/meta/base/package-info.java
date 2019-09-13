@@ -24,27 +24,3 @@
  * ============================================================================
  */
 package com.pragmaticobjects.oo.meta.base;
-
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.TypeName;
-import java.util.function.Supplier;
-import javax.lang.model.element.Modifier;
-
-/**
- *
- * @author skapral
- */
-public class IdentityAttribute implements Supplier<FieldSpec> {
-    private final Supplier<TypeName> type;
-    private final Supplier<String> name;
-
-    public IdentityAttribute(Supplier<TypeName> type, Supplier<String> name) {
-        this.type = type;
-        this.name = name;
-    }
-    
-    @Override
-    public final FieldSpec get() {
-        return FieldSpec.builder(type.get(), name.get(), Modifier.PRIVATE, Modifier.FINAL).build();
-    }
-}
