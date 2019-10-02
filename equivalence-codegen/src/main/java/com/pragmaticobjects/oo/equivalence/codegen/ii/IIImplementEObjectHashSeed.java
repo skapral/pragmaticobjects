@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,6 +52,7 @@ public class IIImplementEObjectHashSeed implements InstrumentationIteration {
         );
         return builder
                 .defineMethod("hashSeed", int.class, Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL)
-                .intercept(new Implementation(baseTypeImpl));
+                .intercept(new Implementation(baseTypeImpl))
+                .annotateMethod(new GeneratedMark());
     }
 }
