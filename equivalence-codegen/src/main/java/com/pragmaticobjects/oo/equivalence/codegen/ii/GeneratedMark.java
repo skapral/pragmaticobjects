@@ -23,47 +23,18 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.cn;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
-import io.vavr.collection.HashSet;
-import io.vavr.collection.List;
-import io.vavr.collection.Set;
-import org.assertj.core.api.Assertions;
+import java.lang.annotation.Annotation;
+import lombok.Generated;
 
 /**
- * Assertion that passes if {@link ClassNames} contain certain class names
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public class AssertClassNamesContainCertainNames implements Assertion {
-    private final ClassNames classNames;
-    private final Set<String> namesToCheck;
-
-    /**
-     * Ctor.
-     *
-     * @param classNames {@link ClassNames} under test
-     * @param namesToCheck expected names
-     */
-    public AssertClassNamesContainCertainNames(ClassNames classNames, Set<String> namesToCheck) {
-        this.classNames = classNames;
-        this.namesToCheck = namesToCheck;
-    }
-
-    /**
-     * Ctor.
-     *
-     * @param classNames {@link ClassNames} under test
-     * @param namesToCheck expected names
-     */
-    public AssertClassNamesContainCertainNames(ClassNames classNames, String... namesToCheck) {
-        this(classNames, HashSet.of(namesToCheck));
-    }
-
+class GeneratedMark implements Generated {
     @Override
-    public final void check() throws Exception {
-        List<String> extractedNames = classNames.classNames();
-        Assertions.assertThat(extractedNames).containsAll(namesToCheck);
+    public final Class<? extends Annotation> annotationType() {
+        return Generated.class;
     }
 }
