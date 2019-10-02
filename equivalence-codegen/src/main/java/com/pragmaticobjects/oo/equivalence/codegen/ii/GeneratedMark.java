@@ -23,40 +23,18 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.lang.annotation.Annotation;
+import lombok.Generated;
 
 /**
- * Matcher which matches types, all declared fields of which are private final
  *
- * @author Kapralov Sergey
+ * @author skapral
  */
-public class AllFieldsArePrivateFinal implements ElementMatcher<TypeDescription> {
-    private static final Logger LOG = LoggerFactory.getLogger(AllFieldsArePrivateFinal.class);
-    
+class GeneratedMark implements Generated {
     @Override
-    public final boolean matches(TypeDescription target) {
-        for(FieldDescription fd : target.getDeclaredFields()) {
-            LOG.debug(fd.getDeclaringType().getActualName() + "::" + fd.getName());
-            if(fd.isEnum()) {
-                LOG.debug("enum");
-                continue;
-            }
-            if(fd.isSynthetic()) {
-                LOG.debug("synthetic");
-                continue;
-            }
-            if(!fd.isPrivate() || !fd.isFinal()) {
-                LOG.debug("false");
-                return false;
-            }
-        }
-        LOG.debug("true");
-        return true;
+    public final Class<? extends Annotation> annotationType() {
+        return Generated.class;
     }
 }

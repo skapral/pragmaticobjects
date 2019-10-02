@@ -43,7 +43,7 @@ public class AssertInstanceOf implements Assertion {
     @Override
     public final void check() throws Exception {
         assertThat(obj)
-                .withFailMessage("Expected obj to be instance of EObject\r\n  obj: %s", obj)
+                .withFailMessage("Expected obj to be instance of %s\r\n  obj: %s", clazz.getName(), obj)
                 .isInstanceOf(clazz);
     }
 }

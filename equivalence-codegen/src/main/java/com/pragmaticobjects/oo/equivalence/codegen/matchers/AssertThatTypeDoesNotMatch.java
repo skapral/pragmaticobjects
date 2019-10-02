@@ -52,6 +52,19 @@ public class AssertThatTypeDoesNotMatch implements Assertion {
         this.matcher = matcher;
     }
 
+    /**
+     * Ctor.
+     *
+     * @param clazz Type
+     * @param matcher Matcher
+     */
+    public AssertThatTypeDoesNotMatch(Class<?> clazz, ElementMatcher<TypeDescription> matcher) {
+        this(
+            new TypeDescription.ForLoadedType(clazz),
+            matcher
+        );
+    }
+    
     @Override
     public final void check() throws Exception {
         assertThat(matcher.matches(typeDescription)).isFalse();

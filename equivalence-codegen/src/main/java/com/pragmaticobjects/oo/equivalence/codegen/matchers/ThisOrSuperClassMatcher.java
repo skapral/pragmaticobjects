@@ -25,31 +25,36 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
-import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import io.vavr.control.Option;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
 
 /**
+ * Recursively checks the class and all its parents till the hierarchy root, using provided matcher.
  *
- * @author skapral
+ * @author Kapralov Sergey
  */
-public class MatchAttributesStandForIdentityTest extends TestsSuite {
-    public MatchAttributesStandForIdentityTest() {
-        super(
-            new TestCase(
-                "match class with final attributes",
-                new AssertThatTypeMatches(
-                    EClass.class,
-                    new MatchAttributesStandForIdentity()
-                )
-            )
-        );
+public class ThisOrSuperClassMatcher implements ElementMatcher<TypeDescription> {
+    private final ElementMatcher<TypeDescription> matcher;
+
+    /**
+     * Ctor.
+     *
+     * @param matcher Matcher
+     */
+    public ThisOrSuperClassMatcher(final ElementMatcher<TypeDescription> matcher) {
+        this.matcher = matcher;
     }
-}
 
-class EClass {
-    private final Object id;
-
-    public EClass(Object id) {
-        this.id = id;
+    @Override
+    public final boolean matches(final TypeDescription target) {
+        boolean truth = matcher.matches(target);
+        if(!truth) {
+            truth = Option.of(target.getSuperClass())
+                .map(TypeDescription.Generic::asErasure)
+                .map(this::matches)
+                .getOrElse(false);
+        }
+        return truth;
     }
 }

@@ -84,6 +84,13 @@ public class AllMethodsAreFinalTest extends TestsSuite {
                     new TypeDescription.ForLoadedType(Taz.class),
                     new AllMethodsAreFinal()
                 )
+            ),
+            new TestCase(
+                "ignores abstract methods",
+                new AssertThatTypeMatches(
+                    new TypeDescription.ForLoadedType(Maz.class),
+                    new AllMethodsAreFinal()
+                )
             )
         );
     }
@@ -127,9 +134,13 @@ public class AllMethodsAreFinalTest extends TestsSuite {
     private static class Haz {
         private static void method() {}
     }
-
+    
     private static class Taz {
         public final void method() {}
         private void privateMethod() {}
+    }
+    
+    private static abstract class Maz {
+        public abstract void a();
     }
 }

@@ -23,33 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
-
-import java.util.stream.Collectors;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-import net.bytebuddy.matcher.ElementMatchers;
-
-/**
- *
- * @author skapral
- */
-public class MatchAttributesStandForIdentity implements ElementMatcher<TypeDescription> {
-    @Override
-    public boolean matches(TypeDescription td) {
-        return td.getDeclaredFields().stream()
-                .filter(ElementMatchers.not(
-                        ElementMatchers.isSynthetic()
-                )::matches)
-                .filter(ElementMatchers.not(
-                        ElementMatchers.isStatic()
-                )::matches)
-                .map(
-                    new ConjunctionMatcher<>(
-                        ElementMatchers.isPrivate(),
-                        ElementMatchers.isFinal()
-                    )::matches
-                )
-                .collect(Collectors.reducing(true, Boolean::logicalAnd));
-    }
-}
+package com.pragmaticobjects.oo.equivalence.codegen.sets;

@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,7 +27,9 @@ package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
 import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Box;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Implementation;
-import io.vavr.collection.List;
+import com.pragmaticobjects.oo.equivalence.codegen.sets.Attributes;
+import com.pragmaticobjects.oo.equivalence.codegen.sets.AttributesFromTypeDescription;
+import java.util.function.Function;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
@@ -46,6 +48,16 @@ import net.bytebuddy.matcher.ElementMatchers;
  * @author skapral
  */
 public class IIImplementEObjectAttributes implements InstrumentationIteration {
+    private final Function<TypeDescription, Attributes> attributesFn;
+
+    public IIImplementEObjectAttributes(Function<TypeDescription, Attributes> attributesFn) {
+        this.attributesFn = attributesFn;
+    }
+
+    public IIImplementEObjectAttributes() {
+        this(AttributesFromTypeDescription::new);
+    }
+    
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
         if(!typeDescription.getDeclaredMethods()
@@ -54,16 +66,15 @@ public class IIImplementEObjectAttributes implements InstrumentationIteration {
             return builder;
         }
         StackManipulation attributesImpl = new StackManipulation.Compound(
-            List.ofAll(typeDescription.getDeclaredFields())
-                .filter(ElementMatchers.not(ElementMatchers.isSynthetic())::matches)
-                .filter(ElementMatchers.not(ElementMatchers.isStatic())::matches)
+            attributesFn.apply(typeDescription).asList()
                 .map(field -> loadAttribute(field))
                 .transform(list -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(list.asJava())),
             MethodReturn.REFERENCE
         );
         return builder
                 .defineMethod("attributes", Object[].class, Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL)
-                .intercept(new Implementation(attributesImpl));
+                .intercept(new Implementation(attributesImpl))
+                .annotateMethod(new GeneratedMark());
     }
     
     private StackManipulation loadAttribute(FieldDescription field) {
