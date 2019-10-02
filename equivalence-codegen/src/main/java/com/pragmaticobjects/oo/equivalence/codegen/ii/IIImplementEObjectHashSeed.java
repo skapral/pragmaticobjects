@@ -52,6 +52,7 @@ public class IIImplementEObjectHashSeed implements InstrumentationIteration {
         );
         return builder
                 .defineMethod("hashSeed", int.class, Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL)
-                .intercept(new Implementation(baseTypeImpl));
+                .intercept(new Implementation(baseTypeImpl))
+                .annotateMethod(new GeneratedMark());
     }
 }

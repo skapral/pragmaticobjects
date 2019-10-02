@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-maven-plugin
+ * inference-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,36 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.ii;
-
-import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Implementation;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.constant.ClassConstant;
-import net.bytebuddy.implementation.bytecode.member.MethodReturn;
-import net.bytebuddy.jar.asm.Opcodes;
-import net.bytebuddy.matcher.ElementMatchers;
-
-/**
- *
- * @author skapral
- */
-public class IIImplementEObjectBaseType implements InstrumentationIteration {
-    @Override
-    public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
-        if(!typeDescription.getDeclaredMethods()
-                .filter(ElementMatchers.named("baseType"))
-                .isEmpty()) {
-            return builder;
-        }
-        StackManipulation baseTypeImpl = new StackManipulation.Compound(
-            ClassConstant.of(typeDescription),
-            MethodReturn.REFERENCE
-        );
-        return builder
-                .defineMethod("baseType", Class.class, Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL)
-                .intercept(new Implementation(baseTypeImpl))
-                .annotateMethod(new GeneratedMark());
-    }
-}
+package lombok;

@@ -73,7 +73,8 @@ public class IIImplementEObjectAttributes implements InstrumentationIteration {
         );
         return builder
                 .defineMethod("attributes", Object[].class, Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL)
-                .intercept(new Implementation(attributesImpl));
+                .intercept(new Implementation(attributesImpl))
+                .annotateMethod(new GeneratedMark());
     }
     
     private StackManipulation loadAttribute(FieldDescription field) {
