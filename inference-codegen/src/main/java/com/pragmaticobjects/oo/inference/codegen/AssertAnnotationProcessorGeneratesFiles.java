@@ -121,7 +121,7 @@ public class AssertAnnotationProcessorGeneratesFiles implements Assertion {
                     "-classpath", classpath.toString()
                 ),
                 null,
-                fileManager.getJavaFileObjects(tmpDir.resolve(sourceFileLocations))
+                fileManager.getJavaFileObjects(tmpDir.resolve(sourceFileLocations).toFile())
             );
             task.setProcessors(Arrays.asList(processor));
             if (task.call()) {
