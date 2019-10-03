@@ -1,0 +1,22 @@
+package ${this.packageName};
+
+import com.pragmaticobjects.oo.inference.api.Inference;
+<#list imports as import>
+import ${import.fullName};
+</#list>
+
+public class ${this.name} implements ${interface.name} {
+    private final Inference<${interface.name}> inference;
+
+    public ${this.name}(Inference<${interface.name}> inference) {
+        this.inference = inference;
+    }
+
+    <#list methods as method>
+    @Override
+    public final ${method.returns.name} ${method.name}(<#list method.args as arg>${arg.type.name} ${arg.name}</#list>) {
+        return inference.inferredInstance().${method.name}(<#list method.args as arg>${arg.name}</#list>);
+    }
+
+    </#list>
+}
