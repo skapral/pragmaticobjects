@@ -19,7 +19,7 @@
     </properties>
     
     <name>OO-Inference</name>
-    <description>Inference pattern generator</description>
+    <description>Annotation processor for generating inferred objects</description>
     <url>https://github.com/pragmatic-objects/oo-inference</url>
     <scm>
         <url>https://github.com/pragmatic-objects/oo-inference.git</url>
