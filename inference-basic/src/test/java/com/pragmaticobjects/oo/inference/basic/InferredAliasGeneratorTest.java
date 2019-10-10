@@ -25,7 +25,6 @@
  */
 package com.pragmaticobjects.oo.inference.basic;
 
-import com.pragmaticobjects.oo.inference.codegen.AssertAnnotationProcessorGeneratesFiles;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.List;

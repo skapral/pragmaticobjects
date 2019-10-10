@@ -79,7 +79,7 @@ public class InferredAliasModel implements ImportsProvider {
         HashSet<Type> set = new HashSet<>();
         set.add(inference);
         for(Argument arg : args) {
-            set.add(arg.type);
+            set.addAll(arg.getImports());
         }
         return set;
     }

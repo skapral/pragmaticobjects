@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.inference.codegen;
+package com.pragmaticobjects.oo.inference.basic;
 
 import com.pragmaticobjects.oo.tests.Assertion;
 import io.vavr.collection.List;
