@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-codegen
+ * inference-basic
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,8 +23,9 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.inference.codegen;
+package com.pragmaticobjects.oo.inference.basic;
 
+import com.pragmaticobjects.oo.inference.codegen.AssertAnnotationProcessorGeneratesFiles;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.List;
@@ -34,13 +35,13 @@ import java.nio.file.Paths;
  *
  * @author skapral
  */
-public class InferredAliasGeneratorTest extends TestsSuite {
-    public InferredAliasGeneratorTest() {
+public class InferredImplementationGeneratorTest extends TestsSuite {
+    public InferredImplementationGeneratorTest() {
         super(
             new TestCase(
                 "Fraction inference alias",
                 new AssertAnnotationProcessorGeneratesFiles(
-                    new InferredAliasGenerator(),
+                    new InferredImplementationGenerator(),
                     Paths.get("com","test", "FracFromStringInference.java"),
                     String.join("\r\n",
                         "package com.test;",
@@ -66,20 +67,29 @@ public class InferredAliasGeneratorTest extends TestsSuite {
                     ),
                     List.of(
                         new AssertAnnotationProcessorGeneratesFiles.File(
-                            Paths.get("com", "test", "FracFromString.java"),
+                            Paths.get("com", "test", "FractionInferred.java"),
                             String.join("\r\n",
                                 "package com.test;",
                                 "",
                                 "import com.pragmaticobjects.oo.inference.api.Inference;",
-                                "import com.test.FracFromStringInference;",
-                                "import java.lang.String;",
                                 "",
-                                "public class FracFromString extends FractionInferred {",
-                                "    public FracFromString(String str) {",
-                                "        super(",
-                                "            new FracFromStringInference(str)",
-                                "        );",
+                                "public class FractionInferred implements Fraction {",
+                                "    private final Inference<Fraction> inference;",
+                                "",
+                                "    public FractionInferred(Inference<Fraction> inference) {",
+                                "        this.inference = inference;",
                                 "    }",
+                                "",
+                                "    @Override",
+                                "    public final int numerator() {",
+                                "        return inference.inferredInstance().numerator();",
+                                "    }",
+                                "",
+                                "    @Override",
+                                "    public final int denumenator() {",
+                                "        return inference.inferredInstance().denumenator();",
+                                "    }",
+                                "",
                                 "}",
                                 ""
                             )

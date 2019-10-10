@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-codegen
+ * inference-basic
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,8 +23,9 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.inference.codegen;
+package com.pragmaticobjects.oo.inference.basic;
 
+import com.pragmaticobjects.oo.inference.codegen.AssertAnnotationProcessorGeneratesFiles;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.List;
@@ -34,13 +35,13 @@ import java.nio.file.Paths;
  *
  * @author skapral
  */
-public class InferredImplementationGeneratorTest extends TestsSuite {
-    public InferredImplementationGeneratorTest() {
+public class InferredAliasGeneratorTest extends TestsSuite {
+    public InferredAliasGeneratorTest() {
         super(
             new TestCase(
                 "Fraction inference alias",
                 new AssertAnnotationProcessorGeneratesFiles(
-                    new InferredImplementationGenerator(),
+                    new InferredAliasGenerator(),
                     Paths.get("com","test", "FracFromStringInference.java"),
                     String.join("\r\n",
                         "package com.test;",
@@ -66,29 +67,75 @@ public class InferredImplementationGeneratorTest extends TestsSuite {
                     ),
                     List.of(
                         new AssertAnnotationProcessorGeneratesFiles.File(
-                            Paths.get("com", "test", "FractionInferred.java"),
+                            Paths.get("com", "test", "FracFromString.java"),
                             String.join("\r\n",
                                 "package com.test;",
                                 "",
                                 "import com.pragmaticobjects.oo.inference.api.Inference;",
+                                "import com.test.FracFromStringInference;",
+                                "import java.lang.String;",
                                 "",
-                                "public class FractionInferred implements Fraction {",
-                                "    private final Inference<Fraction> inference;",
-                                "",
-                                "    public FractionInferred(Inference<Fraction> inference) {",
-                                "        this.inference = inference;",
+                                "public class FracFromString extends FractionInferred {",
+                                "    public FracFromString(String str) {",
+                                "        super(",
+                                "            new FracFromStringInference(str)",
+                                "        );",
                                 "    }",
+                                "}",
+                                ""
+                            )
+                        )
+                    )
+                )
+            ),
+            new TestCase(
+                "Fraction memoized alias",
+                new AssertAnnotationProcessorGeneratesFiles(
+                    new InferredAliasGenerator(),
+                    Paths.get("com","test", "FracFromStringInference.java"),
+                    String.join("\r\n",
+                        "package com.test;",
+                        "import com.pragmaticobjects.oo.inference.api.Infers;",
+                        "import com.pragmaticobjects.oo.inference.api.Inference;",
+                        "import com.test.Fraction;",
+                        "import com.test.FracFixed;",
+                        "public @Infers(value = \"FracFromString\", memoized = true) class FracFromStringInference implements Inference<Fraction> {",
+                        "    private final String str;",
+
+                        "    public FracFromStringInference(String str) {",
+                        "        this.str = str;",
+                        "    }",
+
+                        "    @Override",
+                        "    public final Fraction inferredInstance() {",
+                        "        return new FracFixed(",
+                        "            Integer.parseInt(str.split(\"/\")[0]),",
+                        "            Integer.parseInt(str.split(\"/\")[1])",
+                        "        );",
+                        "    }",
+                        "}"
+                    ),
+                    List.of(
+                        new AssertAnnotationProcessorGeneratesFiles.File(
+                            Paths.get("com", "test", "FracFromString.java"),
+                            String.join("\r\n",
+                                "package com.test;",
                                 "",
-                                "    @Override",
-                                "    public final int numerator() {",
-                                "        return inference.inferredInstance().numerator();",
+                                "import com.pragmaticobjects.oo.inference.api.Inference;",
+                                "import com.pragmaticobjects.oo.inference.api.MemoizedInference;",
+                                "import com.pragmaticobjects.oo.memoized.core.Memory;",
+                                "import com.test.FracFromStringInference;",
+                                "import java.lang.String;",
+                                "",
+                                "public class FracFromString extends FractionInferred {",
+                                "    public FracFromString(String str, Memory memory) {",
+                                "        super(",
+                                "            new MemoizedInference(",
+                                "                new FracFromStringInference(str),",
+                                "                memory",
+                                "            )",
+                                "        );",
                                 "    }",
-                                "",
-                                "    @Override",
-                                "    public final int denumenator() {",
-                                "        return inference.inferredInstance().denumenator();",
-                                "    }",
-                                "",
                                 "}",
                                 ""
                             )

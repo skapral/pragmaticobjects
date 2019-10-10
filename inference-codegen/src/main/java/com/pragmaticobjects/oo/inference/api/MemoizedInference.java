@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-codegen
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,18 +25,26 @@
  */
 package com.pragmaticobjects.oo.inference.api;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.pragmaticobjects.oo.memoized.core.Memory;
 
 /**
  *
  * @author skapral
+ * @param <T> type
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
-public @interface Infers {
-    String value();
-    boolean memoized() default false;
+public class MemoizedInference<T> implements Inference<T> {
+    private final Inference<T> inference;
+    private final Memory memory;
+
+    public MemoizedInference(Inference<T> inference, Memory memory) {
+        this.inference = inference;
+        this.memory = memory;
+    }
+
+    @Override
+    public final T inferredInstance() {
+        return memory
+            .memoizedCalculation(this, "inferredObject", inference::inferredInstance)
+            .calculate();
+    }
 }

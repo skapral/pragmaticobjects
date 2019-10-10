@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-codegen
+ * inference-basic
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,9 +23,10 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.inference.codegen;
+package com.pragmaticobjects.oo.inference.basic;
 
 import com.pragmaticobjects.oo.inference.api.Infers;
+import com.pragmaticobjects.oo.inference.codegen.FreemarkerArtifact;
 import com.pragmaticobjects.oo.inference.codegen.model.Argument;
 import com.pragmaticobjects.oo.inference.codegen.model.InferredAliasModel;
 import com.pragmaticobjects.oo.inference.codegen.model.Type;
@@ -89,7 +90,7 @@ public class InferredAliasGenerator extends AbstractProcessor {
                 args
             );
             FreemarkerArtifact freemarkerArtifact = new FreemarkerArtifact(
-                "inferredAlias",
+                anno.memoized() ? "memoizedAlias" : "inferredAlias",
                 model
             );
             try {

@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-codegen
+ * inference-basic
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,13 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.test;
-
-/**
- *
- * @author skapral
- */
-public interface Fraction {
-    int numerator();
-    int denumenator();
-}
+package com.pragmaticobjects.oo.inference.basic;

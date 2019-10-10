@@ -1,0 +1,19 @@
+package ${this.packageName};
+
+import com.pragmaticobjects.oo.inference.api.Inference;
+import com.pragmaticobjects.oo.inference.api.MemoizedInference;
+import com.pragmaticobjects.oo.memoized.core.Memory;
+<#list imports as import>
+import ${import.fullName};
+</#list>
+
+public class ${this.name} extends ${baseInference.name} {
+    public ${this.name}(${args?map(a -> a.type.name + " " + a.name)?join(", ")}, Memory memory) {
+        super(
+            new MemoizedInference(
+                new ${inference.name}(${args?map(a -> a.name)?join(", ")}),
+                memory
+            )
+        );
+    }
+}

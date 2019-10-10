@@ -32,6 +32,7 @@
     </licenses>
     <modules>
         <module>inference-codegen</module>
+        <module>inference-basic</module>
     </modules>
     
     <dependencyManagement>
@@ -40,6 +41,11 @@
                 <groupId>com.pragmaticobjects.oo.inference</groupId>
                 <artifactId>inference-codegen</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pragmaticobjects.oo.memoized</groupId>
+                <artifactId>memoized-core</artifactId>
+                <version>0.0.1</version>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>

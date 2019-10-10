@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-codegen
+ * inference-basic
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,8 +23,9 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.inference.codegen;
+package com.pragmaticobjects.oo.inference.basic;
 
+import com.pragmaticobjects.oo.inference.codegen.FreemarkerArtifact;
 import com.pragmaticobjects.oo.inference.codegen.model.InferredClassModel;
 import com.pragmaticobjects.oo.inference.codegen.model.Method;
 import com.pragmaticobjects.oo.inference.codegen.model.Type;
