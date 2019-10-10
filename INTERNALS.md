@@ -55,7 +55,7 @@ public @Infers(value = "GithubUser", memoized = true) class GithubUserInference 
 
 ...we can make inferred alias for it, extending `InferredUser`...
 
-```
+```java
 public class GithubUser extends UserInferred {
     public GithubUser(String apiToken, Memory memory) {
         super(

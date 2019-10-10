@@ -22,7 +22,7 @@ Annotation processor for generating inferred objects. For information about what
 
 2. Define and annotate an inference:
 
-```
+```java
 public @Infers(value = "GithubUser", memoized = true) class GithubUserInference implements Inference<User> {
     private final String apiToken;
 
