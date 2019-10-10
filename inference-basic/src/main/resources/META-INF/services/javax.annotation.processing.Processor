@@ -1,2 +1,2 @@
-com.pragmaticobjects.oo.inference.codegen.InferredImplementationGenerator
-com.pragmaticobjects.oo.inference.codegen.InferredAliasGenerator
+com.pragmaticobjects.oo.inference.basic.InferredImplementationGenerator
+com.pragmaticobjects.oo.inference.basic.InferredAliasGenerator
