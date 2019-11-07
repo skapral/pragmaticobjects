@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-basic
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,20 +25,31 @@
  */
 package com.pragmaticobjects.oo.inference.codegen.model;
 
-import io.vavr.Tuple2;
-import io.vavr.collection.HashMap;
-import java.util.Collection;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.PrimitiveType;
+import javax.lang.model.type.TypeMirror;
 
+/**
+ *
+ * @author skapral
+ */
+public class TypeFromTypeMirror extends TypeInferred {
 
-public class InferredClassModel extends FAMMapped {
-    public InferredClassModel(Type _this, Type _interface, Collection<Method> _methods) {
+    public TypeFromTypeMirror(TypeMirror t) {
         super(
-            _this,
-            HashMap.ofEntries(
-                new Tuple2<>("interface", _interface),
-                new Tuple2<>("methods", _methods)
-            )
+            new Inference<Type>() {
+                @Override
+                public final Type inferredInstance() {
+                    if(t instanceof DeclaredType) {
+                        return new TypeFromDeclaredType((DeclaredType) t);
+                    }
+                    if(t instanceof PrimitiveType) {
+                        return new TypeFromPrimitiveType((PrimitiveType) t);
+                    }
+                    throw new RuntimeException();
+                }
+            }
         );
     }
+    
 }
-

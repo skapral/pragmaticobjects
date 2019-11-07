@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-basic
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,20 +25,11 @@
  */
 package com.pragmaticobjects.oo.inference.codegen.model;
 
-import io.vavr.Tuple2;
-import io.vavr.collection.HashMap;
-import java.util.Collection;
-
-
-public class InferredClassModel extends FAMMapped {
-    public InferredClassModel(Type _this, Type _interface, Collection<Method> _methods) {
-        super(
-            _this,
-            HashMap.ofEntries(
-                new Tuple2<>("interface", _interface),
-                new Tuple2<>("methods", _methods)
-            )
-        );
-    }
+/**
+ *
+ * @author skapral
+ */
+public interface Argument extends ImportsProvider {
+    Type type();
+    String name();
 }
-

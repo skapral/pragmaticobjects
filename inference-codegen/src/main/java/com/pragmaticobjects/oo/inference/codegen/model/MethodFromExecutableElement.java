@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-basic
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,49 +26,32 @@
 package com.pragmaticobjects.oo.inference.codegen.model;
 
 import io.vavr.collection.List;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 import javax.lang.model.element.ExecutableElement;
 
-
-public class Method implements ImportsProvider {
-    public final Type returns;
-    public final String name;
-    public final Iterable<Argument> args;
-
-    public static Method from(ExecutableElement t) {
-        return new Method(
-            Type.from(t.getReturnType()), 
-            t.getSimpleName().toString(),
-            List.of(t)
-                .flatMap(_t -> _t.getParameters())
-                .map(tm -> new Argument(Type.from(tm.asType()), tm.getSimpleName().toString()))
-                .toJavaList()
+/**
+ *
+ * @author skapral
+ */
+public class MethodFromExecutableElement extends MethodInferred {
+    
+    public MethodFromExecutableElement(ExecutableElement t) {
+        super(
+            new Inference<Method>() {
+                @Override
+                public final Method inferredInstance() {
+                    return new MethodFixed(
+                        new TypeFromTypeMirror(t.getReturnType()), 
+                        t.getSimpleName().toString(),
+                        List.of(t)
+                            .flatMap(_t -> _t.getParameters())
+                            .map(tm -> new ArgumentFixed(
+                                new TypeFromTypeMirror(tm.asType()),
+                                tm.getSimpleName().toString()
+                            ))
+                    );
+                }
+            }
         );
     }
     
-    public Method(Type returns, String name, Iterable<Argument> args) {
-        this.returns = returns;
-        this.name = name;
-        this.args = args;
-    }
-    
-    public Method(Type returns, String name, Argument... args) {
-        this(
-            returns,
-            name,
-            Arrays.asList(args)
-        );
-    }
-
-    @Override
-    public Collection<Type> getImports() {
-        HashSet<Type> types = new HashSet<>();
-        types.add(returns);
-        for(Argument arg : args) {
-            types.add(arg.type);
-        }
-        return types;
-    }
 }

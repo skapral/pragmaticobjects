@@ -25,62 +25,23 @@
  */
 package com.pragmaticobjects.oo.inference.codegen.model;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
+import io.vavr.Tuple2;
+import io.vavr.collection.HashMap;
 
 /**
  *
  * @author skapral
  */
-public class InferredAliasModel implements ImportsProvider {
-    private final Type _this;
-    private final Type _baseInference;
-    private final Type _interface;
-    private final Type inference;
-    private final Collection<Argument> args;
-
-    public InferredAliasModel(Type _this, Type _baseInference, Type _interface, Type inference, Collection<Argument> args) {
-        this._this = _this;
-        this._baseInference = _baseInference;
-        this._interface = _interface;
-        this.inference = inference;
-        this.args = args;
-    }
-
-    
-
-    public InferredAliasModel(Type _this, Type _baseInference, Type _interface, Type inference, Argument... args) {
-        this(_this, _baseInference, _interface, inference, Arrays.asList(args));
-    }
-
-    public final Type getThis() {
-        return _this;
-    }
-
-    public final Type getBaseInference() {
-        return _baseInference;
-    }
-
-    public final Type getInterface() {
-        return _interface;
-    }
-
-    public final Type getInference() {
-        return inference;
-    }
-
-    public final Collection<Argument> getArgs() {
-        return args;
-    }
-    
-    @Override
-    public final Collection<Type> getImports() {
-        HashSet<Type> set = new HashSet<>();
-        set.add(inference);
-        for(Argument arg : args) {
-            set.addAll(arg.getImports());
-        }
-        return set;
+public class InferredAliasModel extends FAMMapped {
+    public InferredAliasModel(Type _this, Type _baseInference, Type _interface, Type inference, Iterable<Argument> args) {
+        super(
+            _this,
+            HashMap.ofEntries(
+                new Tuple2<>("baseInference", _baseInference),
+                new Tuple2<>("interface", _interface),
+                new Tuple2<>("inference", inference),
+                new Tuple2<>("args", args)
+            )
+        );
     }
 }

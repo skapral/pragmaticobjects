@@ -28,8 +28,11 @@ package com.pragmaticobjects.oo.inference.codegen;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Method;
 
 /**
  *
@@ -37,18 +40,34 @@ import java.io.Writer;
  */
 public class FreemarkerArtifact implements Artifact {
     private static final Configuration CFG = new Configuration(
-        Configuration.getVersion()
+            Configuration.getVersion()
     );
-    
+
     static {
         DefaultObjectWrapper ow = new DefaultObjectWrapper(
             Configuration.getVersion()
-        );
+        ) {
+            @Override
+            protected void finetuneMethodAppearance(Class clazz, Method m, MethodAppearanceDecision decision) {
+                if (m.getDeclaringClass() != Object.class && m.getReturnType() != void.class && m.getParameterTypes().length == 0) {
+                    String mName = m.getName();
+                    if (!(mName.startsWith("get") && (mName.length() == 3 || Character.isUpperCase(mName.charAt(3))))) {
+                        decision.setExposeMethodAs(null);
+                        try {
+                            decision.setExposeAsProperty(new PropertyDescriptor(mName, clazz, mName, null));
+                        } catch (IntrospectionException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        };
+        ow.setIterableSupport(true);
         ow.setExposeFields(true);
         CFG.setClassForTemplateLoading(FreemarkerArtifact.class, "/templates");
         CFG.setObjectWrapper(ow);
     }
-    
+
     private final String templateName;
     private final Object model;
 
@@ -56,7 +75,7 @@ public class FreemarkerArtifact implements Artifact {
         this.templateName = templateName;
         this.model = model;
     }
-    
+
     @Override
     public final String contents() {
         try {

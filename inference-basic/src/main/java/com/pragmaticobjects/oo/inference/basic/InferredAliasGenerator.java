@@ -28,8 +28,12 @@ package com.pragmaticobjects.oo.inference.basic;
 import com.pragmaticobjects.oo.inference.api.Infers;
 import com.pragmaticobjects.oo.inference.codegen.FreemarkerArtifact;
 import com.pragmaticobjects.oo.inference.codegen.model.Argument;
+import com.pragmaticobjects.oo.inference.codegen.model.ArgumentFromVariableElement;
 import com.pragmaticobjects.oo.inference.codegen.model.InferredAliasModel;
 import com.pragmaticobjects.oo.inference.codegen.model.Type;
+import com.pragmaticobjects.oo.inference.codegen.model.TypeFromDeclaredType;
+import com.pragmaticobjects.oo.inference.codegen.model.TypeFromTypeMirror;
+import com.pragmaticobjects.oo.inference.codegen.model.TypeReferential;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
 import java.io.IOException;
@@ -73,20 +77,19 @@ public class InferredAliasGenerator extends AbstractProcessor {
                     .map(i -> i.getTypeArguments().get(0))
                     .map(i -> (DeclaredType) i)
                     .get();
-            java.util.List<Argument> args = List.ofAll(elem.getEnclosedElements())
+            List<Argument> args = List.ofAll(elem.getEnclosedElements())
                     .filter(e -> e.getKind() == ElementKind.FIELD)
                     .filter(e -> !e.getModifiers().contains(Modifier.STATIC))
                     .map(e -> (VariableElement) e)
-                    .map(e -> Argument.from(e))
-                    .toJavaList();
+                    .map(e -> new ArgumentFromVariableElement(e));
             String packageName = ((PackageElement)elem.getEnclosingElement()).getQualifiedName().toString();
             String inferredImplementationName = iface.asElement().getSimpleName().toString() + "Inferred";
             String aliasName = anno.value();
             InferredAliasModel model = new InferredAliasModel(
-                new Type(packageName, aliasName),
-                new Type(packageName, inferredImplementationName),
-                Type.from(iface),
-                Type.from((TypeElement) elem),
+                new TypeReferential(packageName, aliasName),
+                new TypeReferential(packageName, inferredImplementationName),
+                new TypeFromDeclaredType(iface),
+                new TypeFromTypeMirror(((TypeElement) elem).asType()),
                 args
             );
             FreemarkerArtifact freemarkerArtifact = new FreemarkerArtifact(
@@ -94,7 +97,7 @@ public class InferredAliasGenerator extends AbstractProcessor {
                 model
             );
             try {
-                JavaFileObject newSrc = processingEnv.getFiler().createSourceFile(model.getThis().getFullName());
+                JavaFileObject newSrc = processingEnv.getFiler().createSourceFile(model.<Type>get("this").getFullName());
                 try(OutputStream os = newSrc.openOutputStream()) {
                     os.write(freemarkerArtifact.contents().getBytes());
                     os.flush();

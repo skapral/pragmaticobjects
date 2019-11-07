@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-basic
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,20 +25,47 @@
  */
 package com.pragmaticobjects.oo.inference.codegen.model;
 
-import io.vavr.Tuple2;
-import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
 import java.util.Collection;
+import java.util.Comparator;
 
+/**
+ *
+ * @author skapral
+ */
+public class FAMMapped implements FreemarkerArtifactModel {
+    private final Type _this;
+    private final Map<String, Object> map;
 
-public class InferredClassModel extends FAMMapped {
-    public InferredClassModel(Type _this, Type _interface, Collection<Method> _methods) {
-        super(
-            _this,
-            HashMap.ofEntries(
-                new Tuple2<>("interface", _interface),
-                new Tuple2<>("methods", _methods)
-            )
-        );
+    public FAMMapped(Type _this, Map<String, Object> map) {
+        this._this = _this;
+        this.map = map;
+    }
+    
+    @Override
+    public final Type thisType() {
+        return _this;
+    }
+    
+    @Override
+    public final <T> T get(String item) {
+        if("this".equals(item)) {
+            return (T) _this;
+        } else {
+            return (T) map.get(item).get();
+        }
+    }
+
+    @Override
+    public final Collection<Type> getImports() {
+        return map.values()
+                .filter(a -> a instanceof ImportsProvider)
+                .map(a -> (ImportsProvider) a)
+                .flatMap(ip -> ip.getImports())
+                .filter(t -> !t.isPrimitive())
+                .filter(t -> !t.packageName().startsWith("java.lang"))
+                .filter(t -> !t.packageName().equals(thisType().packageName()))
+                .distinctBy(Comparator.comparing(Type::getFullName))
+                .asJava();
     }
 }
-

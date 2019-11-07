@@ -36,11 +36,23 @@ public class FreemarkerArtifactTest extends TestsSuite {
     public FreemarkerArtifactTest() {
         super(
             new TestCase(
-                "Simple template test",
+                "Elegant-model test",
                 new AssertArtifactContents(
                     new FreemarkerArtifact(
                         "testTemplate",
-                        new Model("Hello", "World")
+                        new ElegantModel("Hello", "World")
+                    ),
+                    String.join("\r\n",
+                        "Hello, World!"
+                    )
+                )
+            ),
+                new TestCase(
+                "Generic model test",
+                new AssertArtifactContents(
+                    new FreemarkerArtifact(
+                        "testTemplate",
+                        new GenericModel("Hello", "World")
                     ),
                     String.join("\r\n",
                         "Hello, World!"
@@ -50,13 +62,45 @@ public class FreemarkerArtifactTest extends TestsSuite {
         );
     }
     
-    public static class Model {
-        public final String greeting;
-        public final String name;
+    public static class ElegantModel {
+        private final String greeting;
+        private final String name;
 
-        public Model(String greeting, String name) {
+        public ElegantModel(String greeting, String name) {
             this.greeting = greeting;
             this.name = name;
+        }
+        
+        public final String greeting() {
+            return greeting;
+        }
+        
+        public final String name() {
+            return name;
+        }
+    }
+    
+    public static class GenericModel {
+        private final String greeting;
+        private final String name;
+
+        public GenericModel(String greeting, String name) {
+            this.greeting = greeting;
+            this.name = name;
+        }
+        
+        public final Object get(String index) {
+            switch(index) {
+                case "greeting": {
+                    return greeting;
+                }
+                case "name": {
+                    return name;
+                }
+                default: {
+                    throw new RuntimeException();
+                }
+            }
         }
     }
 }

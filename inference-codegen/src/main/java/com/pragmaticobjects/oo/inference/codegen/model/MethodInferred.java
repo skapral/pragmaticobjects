@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-basic
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,20 +25,36 @@
  */
 package com.pragmaticobjects.oo.inference.codegen.model;
 
-import io.vavr.Tuple2;
-import io.vavr.collection.HashMap;
 import java.util.Collection;
 
+/**
+ *
+ * @author skapral
+ */
+public class MethodInferred implements Method {
+    private final Inference<Method> inference;
 
-public class InferredClassModel extends FAMMapped {
-    public InferredClassModel(Type _this, Type _interface, Collection<Method> _methods) {
-        super(
-            _this,
-            HashMap.ofEntries(
-                new Tuple2<>("interface", _interface),
-                new Tuple2<>("methods", _methods)
-            )
-        );
+    public MethodInferred(Inference<Method> inference) {
+        this.inference = inference;
+    }
+
+    @Override
+    public final Type returns() {
+        return inference.inferredInstance().returns();
+    }
+
+    @Override
+    public final String name() {
+        return inference.inferredInstance().name();
+    }
+
+    @Override
+    public final Iterable<Argument> args() {
+        return inference.inferredInstance().args();
+    }
+
+    @Override
+    public final Collection<Type> getImports() {
+        return inference.inferredInstance().getImports();
     }
 }
-

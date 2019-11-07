@@ -27,8 +27,10 @@ package com.pragmaticobjects.oo.inference.basic;
 
 import com.pragmaticobjects.oo.inference.codegen.FreemarkerArtifact;
 import com.pragmaticobjects.oo.inference.codegen.model.InferredClassModel;
-import com.pragmaticobjects.oo.inference.codegen.model.Method;
+import com.pragmaticobjects.oo.inference.codegen.model.MethodFromExecutableElement;
 import com.pragmaticobjects.oo.inference.codegen.model.Type;
+import com.pragmaticobjects.oo.inference.codegen.model.TypeFromDeclaredType;
+import com.pragmaticobjects.oo.inference.codegen.model.TypeReferential;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
 import java.io.IOException;
@@ -73,11 +75,11 @@ public class InferredImplementationGenerator extends AbstractProcessor {
             String packageName = pe.getQualifiedName().toString();
             String inferredImplementationName = iface.asElement().getSimpleName().toString() + "Inferred";
             InferredClassModel model = new InferredClassModel(
-                new Type(packageName, inferredImplementationName),
-                Type.from(iface),
+                new TypeReferential(packageName, inferredImplementationName),
+                new TypeFromDeclaredType(iface),
                 List.of(iface.asElement())
                     .flatMap(i -> i.getEnclosedElements())
-                    .map(e -> Method.from((ExecutableElement) e))
+                    .map(e -> new MethodFromExecutableElement((ExecutableElement) e))
                     .toJavaStream().collect(Collectors.toList())
             );
             FreemarkerArtifact freemarkerArtifact = new FreemarkerArtifact(
@@ -85,7 +87,7 @@ public class InferredImplementationGenerator extends AbstractProcessor {
                 model
             );
             try {
-                JavaFileObject newSrc = processingEnv.getFiler().createSourceFile(model.getThis().getFullName());
+                JavaFileObject newSrc = processingEnv.getFiler().createSourceFile(model.<Type>get("this").getFullName());
                 try(OutputStream os = newSrc.openOutputStream()) {
                     os.write(freemarkerArtifact.contents().getBytes());
                     os.flush();

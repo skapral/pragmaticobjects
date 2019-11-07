@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-basic
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,20 +25,46 @@
  */
 package com.pragmaticobjects.oo.inference.codegen.model;
 
-import io.vavr.Tuple2;
-import io.vavr.collection.HashMap;
 import java.util.Collection;
+import java.util.HashSet;
 
+/**
+ *
+ * @author skapral
+ */
+public class MethodFixed implements Method {
+    private final Type returns;
+    private final String name;
+    private final Iterable<Argument> args;
 
-public class InferredClassModel extends FAMMapped {
-    public InferredClassModel(Type _this, Type _interface, Collection<Method> _methods) {
-        super(
-            _this,
-            HashMap.ofEntries(
-                new Tuple2<>("interface", _interface),
-                new Tuple2<>("methods", _methods)
-            )
-        );
+    public MethodFixed(Type returns, String name, Iterable<Argument> args) {
+        this.returns = returns;
+        this.name = name;
+        this.args = args;
+    }
+
+    @Override
+    public final Type returns() {
+        return returns;
+    }
+
+    @Override
+    public final String name() {
+        return name;
+    }
+
+    @Override
+    public final Iterable<Argument> args() {
+        return args;
+    }
+
+    @Override
+    public final Collection<Type> getImports() {
+        HashSet<Type> types = new HashSet<>();
+        types.add(returns);
+        for(Argument arg : args) {
+            types.add(arg.type());
+        }
+        return types;
     }
 }
-

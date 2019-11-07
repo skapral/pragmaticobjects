@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * inference-basic
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,29 +27,42 @@ package com.pragmaticobjects.oo.inference.codegen.model;
 
 import java.util.Collection;
 import java.util.Collections;
-import javax.lang.model.element.VariableElement;
 
+/**
+ *
+ * @author skapral
+ */
+public class TypePrimitive implements Type {
+    private final String name;
 
-public class Argument implements ImportsProvider {
-    public final Type type;
-    public final String name;
-
-    
-    public static Argument from(VariableElement e) {
-        return new Argument(
-            Type.from(e.asType()),
-            e.getSimpleName().toString()
-        );
-    }
-    
-    public Argument(Type type, String name) {
-        this.type = type;
+    public TypePrimitive(String name) {
         this.name = name;
     }
 
     @Override
-    public final Collection<Type> getImports() {
-        return Collections.singleton(this.type);
+    public final boolean isPrimitive() {
+        return true;
     }
-}
 
+    @Override
+    public final String getFullName() {
+        return name;
+    }
+
+    @Override
+    public final String packageName() {
+        throw new RuntimeException("Attempt to obtain package name from a primitive");
+    }
+
+    @Override
+    public final String name() {
+        return name;
+    }
+
+    @Override
+    public final Collection<Type> getImports() {
+        return Collections.emptyList();
+    }
+    
+    
+}
