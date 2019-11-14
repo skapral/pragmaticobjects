@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * project-name
+ * meta-base
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,20 +23,26 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.meta.base.ifaces;
+package com.pragmaticobjects.oo.meta.base;
 
-import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.TypeName;
-import io.vavr.collection.List;
-import io.vavr.control.Option;
+import com.pragmaticobjects.oo.tests.Assertion;
+import org.assertj.core.api.Assertions;
 
 /**
  *
  * @author skapral
  */
-public interface Method {
-    TypeName returns();
-    String name();
-    List<IdentityAttribute> args();
-    Option<CodeBlock> body();
+public class AssertArtifactContents implements Assertion {
+    private final Artifact artifact;
+    private final String contents;
+
+    public AssertArtifactContents(Artifact artifact, String contents) {
+        this.artifact = artifact;
+        this.contents = contents;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        Assertions.assertThat(artifact.contents()).isEqualToNormalizingNewlines(contents);
+    }
 }

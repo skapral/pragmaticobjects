@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * project-name
+ * meta-freemarker
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,15 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.meta.base.ifaces;
-
-import com.squareup.javapoet.TypeName;
-
-/**
- *
- * @author skapral
- */
-public interface IdentityAttribute {
-    TypeName type();
-    String name();
-}
+package com.pragmaticobjects.oo.meta.freemarker;

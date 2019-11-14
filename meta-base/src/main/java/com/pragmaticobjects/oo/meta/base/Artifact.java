@@ -23,23 +23,12 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.meta.base.ifaces;
-
-import com.squareup.javapoet.TypeName;
+package com.pragmaticobjects.oo.meta.base;
 
 /**
  *
  * @author skapral
  */
-public class TypeFixed implements Type {
-    private final TypeName typeName;
-
-    public TypeFixed(TypeName typeName) {
-        this.typeName = typeName;
-    }
-
-    @Override
-    public final TypeName type() {
-        return typeName;
-    }
+public interface Artifact {
+    String contents();
 }
