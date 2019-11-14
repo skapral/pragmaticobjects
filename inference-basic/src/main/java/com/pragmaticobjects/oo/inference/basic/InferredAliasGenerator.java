@@ -26,7 +26,6 @@
 package com.pragmaticobjects.oo.inference.basic;
 
 import com.pragmaticobjects.oo.inference.api.Infers;
-import com.pragmaticobjects.oo.inference.codegen.FreemarkerArtifact;
 import com.pragmaticobjects.oo.inference.codegen.model.Argument;
 import com.pragmaticobjects.oo.inference.codegen.model.ArgumentFromVariableElement;
 import com.pragmaticobjects.oo.inference.codegen.model.InferredAliasModel;
@@ -34,6 +33,7 @@ import com.pragmaticobjects.oo.inference.codegen.model.Type;
 import com.pragmaticobjects.oo.inference.codegen.model.TypeFromDeclaredType;
 import com.pragmaticobjects.oo.inference.codegen.model.TypeFromTypeMirror;
 import com.pragmaticobjects.oo.inference.codegen.model.TypeReferential;
+import com.pragmaticobjects.oo.meta.freemarker.FreemarkerArtifact;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
 import java.io.IOException;

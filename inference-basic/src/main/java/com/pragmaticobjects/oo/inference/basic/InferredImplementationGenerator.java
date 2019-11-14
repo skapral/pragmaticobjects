@@ -25,12 +25,12 @@
  */
 package com.pragmaticobjects.oo.inference.basic;
 
-import com.pragmaticobjects.oo.inference.codegen.FreemarkerArtifact;
 import com.pragmaticobjects.oo.inference.codegen.model.InferredClassModel;
 import com.pragmaticobjects.oo.inference.codegen.model.MethodFromExecutableElement;
 import com.pragmaticobjects.oo.inference.codegen.model.Type;
 import com.pragmaticobjects.oo.inference.codegen.model.TypeFromDeclaredType;
 import com.pragmaticobjects.oo.inference.codegen.model.TypeReferential;
+import com.pragmaticobjects.oo.meta.freemarker.FreemarkerArtifact;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
 import java.io.IOException;
