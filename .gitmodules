@@ -1,0 +1,3 @@
+[submodule "ci-settings"]
+	path = ci-settings
+	url = git@github.com:skapral/ci-settings.git
