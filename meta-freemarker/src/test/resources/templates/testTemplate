@@ -1,1 +1,1 @@
-${greeting}, ${name}!
+${this.greeting}, ${this.name}!

@@ -70,9 +70,9 @@ public class FreemarkerArtifact implements Artifact {
     }
 
     private final String templateName;
-    private final Object model;
+    private final FreemarkerArtifactModel model;
 
-    public FreemarkerArtifact(String templateName, Object model) {
+    public FreemarkerArtifact(String templateName, FreemarkerArtifactModel model) {
         this.templateName = templateName;
         this.model = model;
     }

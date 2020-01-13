@@ -28,6 +28,8 @@ package com.pragmaticobjects.oo.meta.freemarker;
 import com.pragmaticobjects.oo.meta.base.AssertArtifactContents;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
+import io.vavr.collection.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -41,7 +43,11 @@ public class FreemarkerArtifactTest extends TestsSuite {
                 new AssertArtifactContents(
                     new FreemarkerArtifact(
                         "testTemplate",
-                        new ElegantModel("Hello", "World")
+                        new GenericModel(
+                            HashMap.<String, Object>of(
+                                "this", new ElegantObject("Hello", "World")
+                            ).toJavaMap()
+                        )
                     ),
                     String.join("\r\n",
                         "Hello, World!"
@@ -53,7 +59,15 @@ public class FreemarkerArtifactTest extends TestsSuite {
                 new AssertArtifactContents(
                     new FreemarkerArtifact(
                         "testTemplate",
-                        new GenericModel("Hello", "World")
+                        new GenericModel(
+                            HashMap.<String, Object>of(
+                                "this",
+                                HashMap.<String, Object>of(
+                                    "greeting", "Hello",
+                                    "name", "World"
+                                ).toJavaMap()
+                            ).toJavaMap()
+                        )
                     ),
                     String.join("\r\n",
                         "Hello, World!"
@@ -63,15 +77,15 @@ public class FreemarkerArtifactTest extends TestsSuite {
         );
     }
     
-    public static class ElegantModel {
+    public static class ElegantObject {
         private final String greeting;
         private final String name;
 
-        public ElegantModel(String greeting, String name) {
+        public ElegantObject(String greeting, String name) {
             this.greeting = greeting;
             this.name = name;
         }
-        
+
         public final String greeting() {
             return greeting;
         }
@@ -81,27 +95,16 @@ public class FreemarkerArtifactTest extends TestsSuite {
         }
     }
     
-    public static class GenericModel {
-        private final String greeting;
-        private final String name;
+    public static class GenericModel implements FreemarkerArtifactModel {
+        private final Map<String, Object> map;
 
-        public GenericModel(String greeting, String name) {
-            this.greeting = greeting;
-            this.name = name;
+        public GenericModel(Map<String, Object> map) {
+            this.map = map;
         }
         
+        @Override
         public final Object get(String index) {
-            switch(index) {
-                case "greeting": {
-                    return greeting;
-                }
-                case "name": {
-                    return name;
-                }
-                default: {
-                    throw new RuntimeException();
-                }
-            }
+            return map.get(index);
         }
     }
 }
