@@ -19,16 +19,16 @@
             <artifactId>vavr</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.pragmaticobjects.oo.tests</groupId>
-            <artifactId>tests-junit5</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
+            <groupId>com.pragmaticobjects.oo.meta</groupId>
+            <artifactId>meta-freemarker</artifactId>
         </dependency>
         <dependency>
             <groupId>com.pragmaticobjects.oo.meta</groupId>
-            <artifactId>meta-freemarker</artifactId>
+            <artifactId>meta-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.pragmaticobjects.oo.meta</groupId>
+            <artifactId>meta-anno-procesor</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -25,6 +25,9 @@
  */
 package com.pragmaticobjects.oo.inference.codegen.model;
 
+import com.pragmaticobjects.oo.meta.model.Argument;
+import com.pragmaticobjects.oo.meta.model.FAMStandard;
+import com.pragmaticobjects.oo.meta.model.Type;
 import io.vavr.Tuple2;
 import io.vavr.collection.HashMap;
 
@@ -32,7 +35,7 @@ import io.vavr.collection.HashMap;
  *
  * @author skapral
  */
-public class InferredAliasModel extends FAMMapped {
+public class InferredAliasModel extends FAMStandard {
     public InferredAliasModel(Type _this, Type _baseInference, Type _interface, Type inference, Iterable<Argument> args) {
         super(
             _this,

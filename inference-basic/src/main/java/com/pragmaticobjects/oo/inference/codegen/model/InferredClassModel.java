@@ -25,12 +25,15 @@
  */
 package com.pragmaticobjects.oo.inference.codegen.model;
 
+import com.pragmaticobjects.oo.meta.model.FAMStandard;
+import com.pragmaticobjects.oo.meta.model.Method;
+import com.pragmaticobjects.oo.meta.model.Type;
 import io.vavr.Tuple2;
 import io.vavr.collection.HashMap;
 import java.util.Collection;
 
 
-public class InferredClassModel extends FAMMapped {
+public class InferredClassModel extends FAMStandard {
     public InferredClassModel(Type _this, Type _interface, Collection<Method> _methods) {
         super(
             _this,
