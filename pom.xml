@@ -55,6 +55,7 @@
         <module>meta-base</module>
         <module>meta-freemarker</module>
         <module>meta-model</module>
+        <module>meta-anno-procesor</module>
     </modules>
     
     <dependencyManagement>
@@ -78,6 +79,16 @@
                 <groupId>io.vavr</groupId>
                 <artifactId>vavr</artifactId>
                 <version>0.10.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pragmaticobjects.oo.tests</groupId>
+                <artifactId>tests-junit5</artifactId>
+                <version>0.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.6</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
