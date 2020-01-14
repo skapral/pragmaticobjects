@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * meta-base
+ * meta-model
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2020 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,13 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.meta.base;
-
-import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
-
-/**
- * 
- * @author skapral
- */
-public class DummyTest extends TestsSuite {
-}
+package com.pragmaticobjects.oo.meta.model;
