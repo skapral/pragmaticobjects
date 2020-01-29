@@ -1,8 +1,8 @@
 /*-
  * ===========================================================================
- * meta-anno-procesor
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 - 2020 Kapralov Sergey
+ * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,18 @@
  */
 package com.pragmaticobjects.oo.meta.anno.procesor;
 
-import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
  * @author skapral
  */
-public class DummyTest extends TestsSuite {
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.SOURCE)
+public @interface Dummy {
+    String name();
+    String message();
 }
