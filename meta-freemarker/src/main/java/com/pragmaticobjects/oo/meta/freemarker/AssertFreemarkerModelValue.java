@@ -1,8 +1,8 @@
 /*-
  * ===========================================================================
- * meta-model
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 - 2020 Kapralov Sergey
+ * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,28 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.meta.model;
+package com.pragmaticobjects.oo.meta.freemarker;
 
-import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
+import com.pragmaticobjects.oo.tests.Assertion;
+import org.assertj.core.api.Assertions;
 
 /**
  *
  * @author skapral
  */
-public class DummyTest extends TestsSuite {
+public class AssertFreemarkerModelValue implements Assertion {
+    private final FreemarkerArtifactModel model;
+    private final String key;
+    private final Object value;
+
+    public AssertFreemarkerModelValue(FreemarkerArtifactModel model, String key, Object value) {
+        this.model = model;
+        this.key = key;
+        this.value = value;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        Assertions.assertThat(model.<Object>get(key)).isEqualTo(value);
+    }
 }
