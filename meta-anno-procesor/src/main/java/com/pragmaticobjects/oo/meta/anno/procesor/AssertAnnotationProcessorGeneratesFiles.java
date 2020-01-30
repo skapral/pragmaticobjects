@@ -62,8 +62,8 @@ public class AssertAnnotationProcessorGeneratesFiles implements Assertion {
 
         public final void assertPresence(Path root) {
             Assertions.assertThat(root.resolve(path)).exists();
-            try {
-                String contents = IOUtils.toString(new FileInputStream(root.resolve(path).toFile()),Charset.defaultCharset());
+            try(FileInputStream is = new FileInputStream(root.resolve(path).toFile())) {
+                String contents = IOUtils.toString(is, Charset.defaultCharset());
                 Assertions.assertThat(contents).isEqualToNormalizingNewlines(this.contents);
             } catch(Exception ex) {
                 throw new RuntimeException(ex);
@@ -112,7 +112,6 @@ public class AssertAnnotationProcessorGeneratesFiles implements Assertion {
                 }
             }
             fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(tmpDir.toFile()));
-            
             JavaCompiler.CompilationTask task = compiler.getTask(
                 null,
                 fileManager,
@@ -129,12 +128,8 @@ public class AssertAnnotationProcessorGeneratesFiles implements Assertion {
                     file.assertPresence(tmpDir);
                 }
             } else {
-                Assertions.fail("Compilation failure occurred");
+                throw new AssertionError("Compilation failure occurred");
             }
         }
-    }
-
-    private static String classPathFor(Class<?> clazz) {
-        return clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
     }
 }

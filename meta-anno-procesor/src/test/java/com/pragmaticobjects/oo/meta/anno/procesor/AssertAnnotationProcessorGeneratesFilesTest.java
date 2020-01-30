@@ -81,14 +81,29 @@ public class AssertAnnotationProcessorGeneratesFilesTest extends TestsSuite {
                         ),
                         List.of(
                             new AssertAnnotationProcessorGeneratesFiles.File(
-                                Paths.get("A"),
-                                "42"
-                            ),
-                            new AssertAnnotationProcessorGeneratesFiles.File(
                                 Paths.get("B"),
                                 "123"
                             )
                         )
+                    )
+                )
+            ),
+            new TestCase(
+                "DummyProcessor on annotated file - compilation error",
+                new AssertAssertionFails(
+                    new AssertAnnotationProcessorGeneratesFiles(
+                        new DummyProcessor(),
+                        Paths.get("com","test", "AnnotatedTypeWrongFileName.java"),
+                        String.join(
+                            "\r\n",
+                            "package com.test;",
+                            "import com.pragmaticobjects.oo.meta.anno.procesor.Dummy;",
+                            "@Dummy(name = \"A\", message = \"42\")",
+                            "public class AnnotatedType {",
+                            "    // EMPTY",
+                            "}"
+                        ),
+                        List.empty()
                     )
                 )
             )
