@@ -2,7 +2,7 @@
  * ===========================================================================
  * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 Kapralov Sergey
+ * Copyright (C) 2019 - 2020 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,66 +36,57 @@ import java.lang.annotation.Target;
  *
  * @author skapral
  */
-public class ShouldBeMarkedAsEObjectTest extends TestsSuite {
-    public ShouldBeMarkedAsEObjectTest() {
+public class HasHintTest extends TestsSuite {
+    public HasHintTest() {
         super(
             new TestCase(
-                "match hinted abstract object",
+                "match hinted type",
                 new AssertThatTypeMatches(
                     Type1.class,
-                    new ShouldBeMarkedAsEObject(EObjectHint.class, EObjectHint::enabled)
+                    new _HasEObjectHint(true)
                 )
             ),
             new TestCase(
-                "mismatch hinted abstract subtype from abstract object",
+                "mismatch hinted-false type",
                 new AssertThatTypeDoesNotMatch(
                     Type2.class,
-                    new ShouldBeMarkedAsEObject(EObjectHint.class, EObjectHint::enabled)
+                    new _HasEObjectHint(true)
                 )
             ),
             new TestCase(
-                "mismatch non-hinted abstract class",
+                "mismatch hinted type",
+                new AssertThatTypeDoesNotMatch(
+                    Type1.class,
+                    new _HasEObjectHint(false)
+                )
+            ),
+            new TestCase(
+                "mismatch type without true hint",
                 new AssertThatTypeDoesNotMatch(
                     Type3.class,
-                    new ShouldBeMarkedAsEObject(EObjectHint.class, EObjectHint::enabled)
+                    new _HasEObjectHint(true)
                 )
             ),
             new TestCase(
-                "mismatch subtype from non-hinted abstract class",
+                "mismatch type without false hint",
                 new AssertThatTypeDoesNotMatch(
-                    Type4.class,
-                    new ShouldBeMarkedAsEObject(EObjectHint.class, EObjectHint::enabled)
+                    Type3.class,
+                    new _HasEObjectHint(false)
                 )
-            ),
-            new TestCase(
-                "match simple class",
-                new AssertThatTypeMatches(
-                    Type5.class,
-                    new ShouldBeMarkedAsEObject(EObjectHint.class, EObjectHint::enabled)
-                )
-            )
+            )  
         );
     }
     
-    
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
-    private static @interface EObjectHint {
-        boolean enabled() default true;
+    private static @interface EObjectHint { boolean enabled() default true; }
+    private static class _HasEObjectHint extends HasHint<EObjectHint> {
+        public _HasEObjectHint(boolean enabled) {
+            super(EObjectHint.class, EObjectHint::enabled, enabled);
+        }
     }
     
-    private static abstract @EObjectHint class Type1 {
-    }
-    
-    private static abstract @EObjectHint class Type2 extends Type1 {
-    }
-    
-    private static abstract class Type3 {
-    }
-    
-    private static class Type4 extends Type3 {
-    }
-    
-    private static class Type5 {
-    }
+    private static @EObjectHint class Type1 {}
+    private static @EObjectHint(enabled = false) class Type2 {}
+    private static class Type3 {}
 }

@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,42 +23,24 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+package com.pragmaticobjects.oo.equivalence.itests;
 
+import com.pragmaticobjects.oo.equivalence.assertions.AssertSubtypeOf;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.pragmaticobjects.oo.equivalence.itests.classes.IgnoredClass;
 
 /**
  *
  * @author skapral
  */
-public class AnnotatedTest extends TestsSuite {
-    public AnnotatedTest() {
+public class TestHintedClasses extends TestsSuite {
+    public TestHintedClasses() {
         super(
             new TestCase(
-                "match hinted",
-                new AssertThatTypeMatches(
-                    Type1.class,
-                    new Annotated(TestAnnotation.class)
-                )
-            ),
-            new TestCase(
-                "mismatch non-hinted",
-                new AssertThatTypeDoesNotMatch(
-                    Type2.class,
-                    new Annotated(TestAnnotation.class)
-                )
+                "explicit ignoring of a class",
+                new AssertSubtypeOf(IgnoredClass.class, Object.class)
             )
         );
     }
-    
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    private static @interface TestAnnotation {}
-    private static @TestAnnotation class Type1 {}
-    private static class Type2 {}
 }

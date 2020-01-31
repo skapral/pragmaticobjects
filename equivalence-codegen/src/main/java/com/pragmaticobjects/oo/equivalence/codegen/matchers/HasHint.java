@@ -2,7 +2,7 @@
  * ===========================================================================
  * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 Kapralov Sergey
+ * Copyright (C) 2019 - 2020 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,32 +25,37 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
+import java.lang.annotation.Annotation;
+import java.util.Optional;
+import java.util.function.Function;
+import static net.bytebuddy.description.annotation.AnnotationDescription.Loadable;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
-import java.lang.annotation.Annotation;
-
-import static net.bytebuddy.matcher.ElementMatchers.annotationType;
-import static net.bytebuddy.matcher.ElementMatchers.hasAnnotation;
-
 /**
- * Matches classes, annotated with certain annotation.
  *
- * @author Kapralov Sergey
+ * @author skapral
+ * @param <Hint> Hint
  */
-public class Annotated implements ElementMatcher<TypeDescription> {
-    private final Class<? extends Annotation> annotation;
+public class HasHint<Hint extends Annotation> implements ElementMatcher<TypeDescription> {
+    private final Class<Hint> annotationType;
+    private final Function<Hint, Boolean> annotationAccess;
+    private final boolean enabled;
 
-    /**
-     * Ctor.
-     * @param annotation Annotation
-     */
-    public Annotated(final Class<? extends Annotation> annotation) {
-        this.annotation = annotation;
+    public HasHint(Class<Hint> annotationType, Function<Hint, Boolean> annotationAccess, boolean enabled) {
+        this.annotationType = annotationType;
+        this.annotationAccess = annotationAccess;
+        this.enabled = enabled;
     }
-
+    
     @Override
-    public final boolean matches(final TypeDescription target) {
-        return hasAnnotation(annotationType(annotation)).matches(target);
+    public final boolean matches(TypeDescription target) {
+        final Loadable<Hint> hint = target.getDeclaredAnnotations().ofType(annotationType);
+        System.out.println(hint);
+        return Optional.ofNullable(hint)
+                .map(Loadable::load)
+                .map(a -> annotationAccess.apply(a))
+                .map(b -> b.equals(enabled))
+                .orElse(false);
     }
 }

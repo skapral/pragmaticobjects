@@ -27,6 +27,7 @@ package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
 import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 import java.lang.annotation.Annotation;
+import java.util.function.Function;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
 
@@ -34,42 +35,37 @@ import net.bytebuddy.matcher.ElementMatchers;
  *
  * @author skapral
  */
-public class ShouldBeMarkedAsEObject extends ConjunctionMatcher<TypeDescription> {
-    public ShouldBeMarkedAsEObject(Class<? extends Annotation> eobjectHint) {
+public class ShouldBeMarkedAsEObject extends DisjunctionMatcher<TypeDescription> {
+    public <Hint extends Annotation> ShouldBeMarkedAsEObject(Class<Hint> eobjectHint, Function<Hint, Boolean> hintStatus) {
         super(
-            new SubtypeOfObjectAttributesOfWhichAreIdentity(),
-            new HintedClassIfAbstract(eobjectHint)
-        );
-    }
-    
-    public ShouldBeMarkedAsEObject() {
-        this(EObjectHint.class);
-    }
-    
-    private static class SubtypeOfObjectAttributesOfWhichAreIdentity extends ConjunctionMatcher<TypeDescription> {
-        public SubtypeOfObjectAttributesOfWhichAreIdentity() {
-            super(
+            // direct subtype of Object, attributes of which are all final (stand fr identity)
+            new ConjunctionMatcher<>(
+                ElementMatchers.not(
+                    ElementMatchers.isAbstract()
+                ),
                 new MatchSuperClass(
                     ElementMatchers.is(Object.class)
                 ),
-                new AttributesStandForIdentity()
-            );
-        }
-    }
-    
-    private static class HintedClassIfAbstract extends DisjunctionMatcher<TypeDescription> {
-        public HintedClassIfAbstract(Class<? extends Annotation> eobjectHint) {
-            super(
-                ElementMatchers.not(    
-                    ElementMatchers.isAbstract()
-                ),
+                new AttributesStandForIdentity(),
+                // unless it is explicitly hinted as not a candidate
+                ElementMatchers.not(
+                    new HasHint<>(eobjectHint, hintStatus, false)
+                )
+            ),
+            // or explicitly hinted class if abstract
+            new ConjunctionMatcher<>(
+                ElementMatchers.isAbstract(),
                 new ConjunctionMatcher<>(
                     new MatchSuperClass(
                         ElementMatchers.is(Object.class)
                     ),
-                    new Annotated(eobjectHint)
+                    new HasHint<>(eobjectHint, hintStatus, true)
                 )
-            );
-        }
+            )
+        );
+    }
+    
+    public ShouldBeMarkedAsEObject() {
+        this(EObjectHint.class, EObjectHint::enabled);
     }
 }

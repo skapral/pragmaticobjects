@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,34 +23,19 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.itests.classes;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 
 /**
- * A hint, telling equivalence instrumentor whether the class should (or should not) be subtype of EObject.
- * If the class is abstract, and if it is extended directly from {@link java.lang.Object}, its base class is replaced to
- * {@link EObject}, and instrumentor handles its non-abstract subtypes as EObjects.
- * 
- * The abstract EObject class must fit these requirements:
- * <ul>
- * <li>All its non-abstract methods should be final</li>
- * <li>All its non-static properties should be protected final</li>
- * </ul>
- * 
- * Instrumentation
- * post-checks will fail the instrumentation process, if any violation found.
- * 
- * For non-abstract classes, the annotation is ignored, unless "enabled" property is set to false. In this case, the class will
- * be left uninstrumented.
- * 
+ *
  * @author skapral
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.CLASS)
-public @interface EObjectHint {
-    boolean enabled() default true;
+@EObjectHint(enabled = false)
+public class IgnoredClass {
+    private int id;
+
+    public IgnoredClass(int id) {
+        this.id = id;
+    }
 }
