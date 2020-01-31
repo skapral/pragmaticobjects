@@ -37,7 +37,7 @@ import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectHashSeed
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IISequential;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AllMethodsAreFinal;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AttributesStandForIdentity;
-import com.pragmaticobjects.oo.equivalence.codegen.matchers.ShouldBeMarkedAsEObject;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.HasEObjectHint;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.ShouldImplementEObjectMethods;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.VerboseMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
@@ -60,7 +60,7 @@ public class StandardInstrumentationStage extends SequenceStage {
             new ShowStatsStage(),
             new ByteBuddyTransformationStage(
                 new IIConditional(
-                    new ShouldBeMarkedAsEObject(),
+                    new HasEObjectHint(true),
                     new IIVerbose(
                         new IIMarkAsEObject()
                     )

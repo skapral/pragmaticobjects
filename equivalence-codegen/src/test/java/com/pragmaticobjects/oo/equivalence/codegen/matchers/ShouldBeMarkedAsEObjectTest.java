@@ -43,35 +43,35 @@ public class ShouldBeMarkedAsEObjectTest extends TestsSuite {
                 "match hinted abstract object",
                 new AssertThatTypeMatches(
                     Type1.class,
-                    new ShouldBeMarkedAsEObject(EObjectHint.class)
+                    new ShouldBeMarkedAsEObject(EObjectHint.class, EObjectHint::enabled)
                 )
             ),
             new TestCase(
                 "mismatch hinted abstract subtype from abstract object",
                 new AssertThatTypeDoesNotMatch(
                     Type2.class,
-                    new ShouldBeMarkedAsEObject(EObjectHint.class)
+                    new ShouldBeMarkedAsEObject(EObjectHint.class, EObjectHint::enabled)
                 )
             ),
             new TestCase(
                 "mismatch non-hinted abstract class",
                 new AssertThatTypeDoesNotMatch(
                     Type3.class,
-                    new ShouldBeMarkedAsEObject(EObjectHint.class)
+                    new ShouldBeMarkedAsEObject(EObjectHint.class, EObjectHint::enabled)
                 )
             ),
             new TestCase(
                 "mismatch subtype from non-hinted abstract class",
                 new AssertThatTypeDoesNotMatch(
                     Type4.class,
-                    new ShouldBeMarkedAsEObject(EObjectHint.class)
+                    new ShouldBeMarkedAsEObject(EObjectHint.class, EObjectHint::enabled)
                 )
             ),
             new TestCase(
                 "match simple class",
                 new AssertThatTypeMatches(
                     Type5.class,
-                    new ShouldBeMarkedAsEObject(EObjectHint.class)
+                    new ShouldBeMarkedAsEObject(EObjectHint.class, EObjectHint::enabled)
                 )
             )
         );
@@ -80,7 +80,9 @@ public class ShouldBeMarkedAsEObjectTest extends TestsSuite {
     
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
-    private static @interface EObjectHint {}
+    private static @interface EObjectHint {
+        boolean enabled() default true;
+    }
     
     private static abstract @EObjectHint class Type1 {
     }
