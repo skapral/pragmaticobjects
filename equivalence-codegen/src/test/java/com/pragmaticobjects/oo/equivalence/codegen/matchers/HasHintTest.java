@@ -54,12 +54,26 @@ public class HasHintTest extends TestsSuite {
                 )
             ),
             new TestCase(
-                "mismatch type without hint",
+                "mismatch hinted type",
+                new AssertThatTypeDoesNotMatch(
+                    Type1.class,
+                    new _HasEObjectHint(false)
+                )
+            ),
+            new TestCase(
+                "mismatch type without true hint",
                 new AssertThatTypeDoesNotMatch(
                     Type3.class,
                     new _HasEObjectHint(true)
                 )
-            )
+            ),
+            new TestCase(
+                "mismatch type without false hint",
+                new AssertThatTypeDoesNotMatch(
+                    Type3.class,
+                    new _HasEObjectHint(false)
+                )
+            )  
         );
     }
     

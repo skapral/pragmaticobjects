@@ -55,6 +55,7 @@ public class HasHint<Hint extends Annotation> implements ElementMatcher<TypeDesc
         return Optional.ofNullable(hint)
                 .map(Loadable::load)
                 .map(a -> annotationAccess.apply(a))
-                .orElse(false) == enabled;
+                .map(b -> b.equals(enabled))
+                .orElse(false);
     }
 }
