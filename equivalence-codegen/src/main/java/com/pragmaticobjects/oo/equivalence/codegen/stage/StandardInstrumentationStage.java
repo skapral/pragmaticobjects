@@ -31,13 +31,14 @@ import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectAttribut
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIMarkAsEObject;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIVerbose;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchSuperClass;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectBaseType;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectHashSeed;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IISequential;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AllMethodsAreFinal;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AttributesStandForIdentity;
-import com.pragmaticobjects.oo.equivalence.codegen.matchers.HasEObjectHint;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.ShouldBeMarkedAsEObject;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.ShouldImplementEObjectMethods;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.VerboseMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
@@ -60,7 +61,7 @@ public class StandardInstrumentationStage extends SequenceStage {
             new ShowStatsStage(),
             new ByteBuddyTransformationStage(
                 new IIConditional(
-                    new HasEObjectHint(true),
+                    new ShouldBeMarkedAsEObject(),
                     new IIVerbose(
                         new IIMarkAsEObject()
                     )
