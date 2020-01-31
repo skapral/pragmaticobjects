@@ -31,7 +31,6 @@ import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectAttribut
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIMarkAsEObject;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIVerbose;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
-import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchSuperClass;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectBaseType;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectHashSeed;
