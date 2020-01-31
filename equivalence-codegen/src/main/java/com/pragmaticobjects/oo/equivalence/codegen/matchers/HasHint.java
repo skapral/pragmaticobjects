@@ -1,8 +1,8 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 Kapralov Sergey
+ * Copyright (C) 2019 - 2020 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,38 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.Annotation;
+import java.util.Optional;
+import java.util.function.Function;
+import static net.bytebuddy.description.annotation.AnnotationDescription.Loadable;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
 
 /**
- * A hint, telling equivalence instrumentor whether the class should (or should not) be subtype of EObject.
- * If the class is abstract, and if it is extended directly from {@link java.lang.Object}, its base class is replaced to
- * {@link EObject}, and instrumentor handles its non-abstract subtypes as EObjects.
- * 
- * The abstract EObject class must fit these requirements:
- * <ul>
- * <li>All its non-abstract methods should be final</li>
- * <li>All its non-static properties should be protected final</li>
- * </ul>
- * 
- * Instrumentation
- * post-checks will fail the instrumentation process, if any violation found.
- * 
- * For non-abstract classes, the annotation is ignored, unless "enabled" property is set to false. In this case, the class will
- * be left uninstrumented.
- * 
+ *
  * @author skapral
+ * @param <Hint> Hint
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.CLASS)
-public @interface EObjectHint {
-    boolean enabled() default true;
+public class HasHint<Hint extends Annotation> implements ElementMatcher<TypeDescription> {
+    private final Class<Hint> annotationType;
+    private final Function<Hint, Boolean> annotationAccess;
+    private final boolean enabled;
+
+    public HasHint(Class<Hint> annotationType, Function<Hint, Boolean> annotationAccess, boolean enabled) {
+        this.annotationType = annotationType;
+        this.annotationAccess = annotationAccess;
+        this.enabled = enabled;
+    }
+    
+    @Override
+    public final boolean matches(TypeDescription target) {
+        final Loadable<Hint> hint = target.getDeclaredAnnotations().ofType(annotationType);
+        System.out.println(hint);
+        return Optional.ofNullable(hint)
+                .map(Loadable::load)
+                .map(a -> annotationAccess.apply(a))
+                .orElse(false) == enabled;
+    }
 }

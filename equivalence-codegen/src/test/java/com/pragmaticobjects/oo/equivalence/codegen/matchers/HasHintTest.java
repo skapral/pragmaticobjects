@@ -1,8 +1,8 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 Kapralov Sergey
+ * Copyright (C) 2019 - 2020 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,34 +23,56 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A hint, telling equivalence instrumentor whether the class should (or should not) be subtype of EObject.
- * If the class is abstract, and if it is extended directly from {@link java.lang.Object}, its base class is replaced to
- * {@link EObject}, and instrumentor handles its non-abstract subtypes as EObjects.
- * 
- * The abstract EObject class must fit these requirements:
- * <ul>
- * <li>All its non-abstract methods should be final</li>
- * <li>All its non-static properties should be protected final</li>
- * </ul>
- * 
- * Instrumentation
- * post-checks will fail the instrumentation process, if any violation found.
- * 
- * For non-abstract classes, the annotation is ignored, unless "enabled" property is set to false. In this case, the class will
- * be left uninstrumented.
- * 
+ *
  * @author skapral
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.CLASS)
-public @interface EObjectHint {
-    boolean enabled() default true;
+public class HasHintTest extends TestsSuite {
+    public HasHintTest() {
+        super(
+            new TestCase(
+                "match hinted type",
+                new AssertThatTypeMatches(
+                    Type1.class,
+                    new _HasEObjectHint(true)
+                )
+            ),
+            new TestCase(
+                "mismatch hinted-false type",
+                new AssertThatTypeDoesNotMatch(
+                    Type2.class,
+                    new _HasEObjectHint(true)
+                )
+            ),
+            new TestCase(
+                "mismatch type without hint",
+                new AssertThatTypeDoesNotMatch(
+                    Type3.class,
+                    new _HasEObjectHint(true)
+                )
+            )
+        );
+    }
+    
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    private static @interface EObjectHint { boolean enabled() default true; }
+    private static class _HasEObjectHint extends HasHint<EObjectHint> {
+        public _HasEObjectHint(boolean enabled) {
+            super(EObjectHint.class, EObjectHint::enabled, enabled);
+        }
+    }
+    
+    private static @EObjectHint class Type1 {}
+    private static @EObjectHint(enabled = false) class Type2 {}
+    private static class Type3 {}
 }
