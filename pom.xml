@@ -79,7 +79,7 @@
             <dependency>
                 <groupId>com.pragmaticobjects.oo.tests</groupId>
                 <artifactId>tests-junit5</artifactId>
-                <version>0.0.0</version>
+                <version>0.0.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
