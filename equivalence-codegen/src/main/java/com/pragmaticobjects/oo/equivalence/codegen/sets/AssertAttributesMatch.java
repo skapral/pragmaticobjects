@@ -52,7 +52,10 @@ public class AssertAttributesMatch implements Assertion {
 
     @Override
     public final void check() throws Exception {
-        fieldMatchers.zipAll(attrs.asList(), ElementMatchers.none(), null)
+        List<FieldDescription> attrs = this.attrs.asList()
+                // WA: JaCoCo instrumentation impacts results of the testing. Inner JaCoCo fields should be ignored.
+                .filter(ElementMatchers.not(ElementMatchers.nameStartsWith("$jacoco"))::matches);
+        fieldMatchers.zipAll(attrs, ElementMatchers.none(), null)
                 .forEachWithIndex((Tuple2<ElementMatcher<FieldDescription>, FieldDescription> tuple, int index) -> {
                     ElementMatcher<FieldDescription> matcher = tuple._1;
                     FieldDescription field = tuple._2;

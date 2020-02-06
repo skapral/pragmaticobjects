@@ -1,8 +1,8 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 - 2020 Kapralov Sergey
+ * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,35 +23,40 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.sets;
+package com.pragmaticobjects.oo.equivalence.itests.classes;
 
-import io.vavr.collection.List;
-import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.description.type.TypeDescription;
+import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 
 /**
  *
  * @author skapral
  */
-public class AttributesFromTypeDescription implements Attributes {
-    private final TypeDescription td;
-
-    public AttributesFromTypeDescription(TypeDescription td) {
-        this.td = td;
+public @EObjectHint(enabled = false) class AnonymousClass {
+    public interface Interface {
+        int value();
     }
     
-    public AttributesFromTypeDescription(Class clazz) {
-        this(
-            new TypeDescription.ForLoadedType(clazz)
-        );
+    public static Interface anonymousImplementation(int value) {
+        return new Interface() {
+            @Override
+            public final int value() {
+                return value;
+            }
+        };
     }
-
-    @Override
-    public final List<FieldDescription> asList() {
-        List<FieldDescription> fields = List.ofAll(td.getDeclaredFields());
-        for(TypeDescription.Generic superType = td.getSuperClass(); !superType.represents(Object.class); superType = superType.getSuperClass()) {
-            fields = fields.prependAll(List.ofAll(superType.asErasure().getDeclaredFields()));
-        }
-        return fields;
+    
+    public static Interface anonymousMutableImplementation(int value) {
+        return new Interface() {
+            private int counter = 0;
+            
+            @Override
+            public final int value() {
+                counter++;
+                return value;
+            }
+        };
     }
+    
+    public static final Class<?> anonymousType = anonymousImplementation(42).getClass();
+    public static final Class<?> anonymousMutableType = anonymousMutableImplementation(42).getClass();
 }

@@ -1,8 +1,8 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 - 2020 Kapralov Sergey
+ * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,35 +23,35 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.sets;
+package com.pragmaticobjects.oo.equivalence.itests;
 
-import io.vavr.collection.List;
-import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.description.type.TypeDescription;
+import com.pragmaticobjects.oo.equivalence.assertions.AssertSubtypeOf;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.itests.classes.AnonymousClass;
 
 /**
  *
  * @author skapral
  */
-public class AttributesFromTypeDescription implements Attributes {
-    private final TypeDescription td;
-
-    public AttributesFromTypeDescription(TypeDescription td) {
-        this.td = td;
-    }
-    
-    public AttributesFromTypeDescription(Class clazz) {
-        this(
-            new TypeDescription.ForLoadedType(clazz)
+public class TestAnonymousImplementations extends TestsSuite {
+    public TestAnonymousImplementations() {
+        super(
+            new TestCase(
+                "anonymous interface",
+                new AssertSubtypeOf(
+                    AnonymousClass.anonymousType,
+                    EObject.class
+                )
+            ),
+            new TestCase(
+                "anonymous mutable interface",
+                new AssertSubtypeOf(
+                    AnonymousClass.anonymousMutableType,
+                    Object.class
+                )
+            )
         );
-    }
-
-    @Override
-    public final List<FieldDescription> asList() {
-        List<FieldDescription> fields = List.ofAll(td.getDeclaredFields());
-        for(TypeDescription.Generic superType = td.getSuperClass(); !superType.represents(Object.class); superType = superType.getSuperClass()) {
-            fields = fields.prependAll(List.ofAll(superType.asErasure().getDeclaredFields()));
-        }
-        return fields;
     }
 }
