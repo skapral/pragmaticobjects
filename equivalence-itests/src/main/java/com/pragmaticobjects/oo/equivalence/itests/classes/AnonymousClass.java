@@ -45,6 +45,18 @@ public @EObjectHint(enabled = false) class AnonymousClass {
         };
     }
     
-    public static final Interface anonymousInstance = anonymousImplementation(42);
-    public static final Class<?> anonymousType = anonymousInstance.getClass();
+    public static Interface anonymousMutableImplementation(int value) {
+        return new Interface() {
+            private int counter = 0;
+            
+            @Override
+            public final int value() {
+                counter++;
+                return value;
+            }
+        };
+    }
+    
+    public static final Class<?> anonymousType = anonymousImplementation(42).getClass();
+    public static final Class<?> anonymousMutableType = anonymousMutableImplementation(42).getClass();
 }

@@ -44,6 +44,13 @@ public class TestAnonymousImplementations extends TestsSuite {
                     AnonymousClass.anonymousType,
                     EObject.class
                 )
+            ),
+            new TestCase(
+                "anonymous mutable interface",
+                new AssertSubtypeOf(
+                    AnonymousClass.anonymousMutableType,
+                    Object.class
+                )
             )
         );
     }
