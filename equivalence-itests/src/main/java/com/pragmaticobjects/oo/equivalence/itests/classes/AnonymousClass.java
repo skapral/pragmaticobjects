@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,42 +23,40 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+package com.pragmaticobjects.oo.equivalence.itests.classes;
 
-import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
-import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 
 /**
  *
  * @author skapral
  */
-public class AnnotatedTest extends TestsSuite {
-    public AnnotatedTest() {
-        super(
-            new TestCase(
-                "match hinted",
-                new AssertThatTypeMatches(
-                    Type1.class,
-                    new Annotated(TestAnnotation.class)
-                )
-            ),
-            new TestCase(
-                "mismatch non-hinted",
-                new AssertThatTypeDoesNotMatch(
-                    Type2.class,
-                    new Annotated(TestAnnotation.class)
-                )
-            )
-        );
+public @EObjectHint(enabled = false) class AnonymousClass {
+    public interface Interface {
+        int value();
     }
     
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    private static @interface TestAnnotation {}
-    private static @TestAnnotation class Type1 {}
-    private static class Type2 {}
+    public static Interface anonymousImplementation(int value) {
+        return new Interface() {
+            @Override
+            public final int value() {
+                return value;
+            }
+        };
+    }
+    
+    public static Interface anonymousMutableImplementation(int value) {
+        return new Interface() {
+            private int counter = 0;
+            
+            @Override
+            public final int value() {
+                counter++;
+                return value;
+            }
+        };
+    }
+    
+    public static final Class<?> anonymousType = anonymousImplementation(42).getClass();
+    public static final Class<?> anonymousMutableType = anonymousMutableImplementation(42).getClass();
 }

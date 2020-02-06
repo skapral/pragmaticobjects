@@ -2,7 +2,7 @@
  * ===========================================================================
  * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 Kapralov Sergey
+ * Copyright (C) 2019 - 2020 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,6 @@ package com.pragmaticobjects.oo.equivalence.codegen.sets;
 import io.vavr.collection.List;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatchers;
 
 /**
  *
@@ -53,8 +52,6 @@ public class AttributesFromTypeDescription implements Attributes {
         for(TypeDescription.Generic superType = td.getSuperClass(); !superType.represents(Object.class); superType = superType.getSuperClass()) {
             fields = fields.prependAll(List.ofAll(superType.asErasure().getDeclaredFields()));
         }
-        return fields
-            .filter(ElementMatchers.not(ElementMatchers.isSynthetic())::matches)
-            .filter(ElementMatchers.not(ElementMatchers.isStatic())::matches);
+        return fields;
     }
 }

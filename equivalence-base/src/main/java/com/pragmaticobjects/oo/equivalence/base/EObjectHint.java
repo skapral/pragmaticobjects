@@ -2,7 +2,7 @@
  * ===========================================================================
  * equivalence-base
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 Kapralov Sergey
+ * Copyright (C) 2019 - 2020 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,9 +31,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A hint, telling instrumentor that the abstract class should be subtype of EObject.
- * If the class is not an abstract class that is extended directly from 
- * {@link java.lang.Object}, the annotation is ignored. Otherwise, its base class is replaced
+ * A hint, telling equivalence instrumentor whether the class should (or should not) be subtype of EObject.
+ * If the class is abstract, and if it is extended directly from {@link java.lang.Object}, its base class is replaced to
  * {@link EObject}, and instrumentor handles its non-abstract subtypes as EObjects.
  * 
  * The abstract EObject class must fit these requirements:
@@ -45,8 +44,13 @@ import java.lang.annotation.Target;
  * Instrumentation
  * post-checks will fail the instrumentation process, if any violation found.
  * 
+ * For non-abstract classes, the annotation is ignored, unless "enabled" property is set to false. In this case, the class will
+ * be left uninstrumented.
+ * 
  * @author skapral
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.CLASS)
-public @interface EObjectHint {}
+public @interface EObjectHint {
+    boolean enabled() default true;
+}

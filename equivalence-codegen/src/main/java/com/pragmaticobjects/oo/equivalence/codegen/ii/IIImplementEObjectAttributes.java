@@ -2,7 +2,7 @@
  * ===========================================================================
  * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 Kapralov Sergey
+ * Copyright (C) 2019 - 2020 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Box;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Implementation;
 import com.pragmaticobjects.oo.equivalence.codegen.sets.Attributes;
 import com.pragmaticobjects.oo.equivalence.codegen.sets.AttributesFromTypeDescription;
+import com.pragmaticobjects.oo.equivalence.codegen.sets.AttributesNonStatic;
 import java.util.function.Function;
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
@@ -55,7 +56,11 @@ public class IIImplementEObjectAttributes implements InstrumentationIteration {
     }
 
     public IIImplementEObjectAttributes() {
-        this(AttributesFromTypeDescription::new);
+        this(
+            td -> new AttributesNonStatic(
+                new AttributesFromTypeDescription(td)
+            )
+        );
     }
     
     @Override

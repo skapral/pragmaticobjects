@@ -2,7 +2,7 @@
  * ===========================================================================
  * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 Kapralov Sergey
+ * Copyright (C) 2019 - 2020 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,6 +58,13 @@ public class AttributesFromTypeDescriptionTest extends TestsSuite {
                     ElementMatchers.fieldType(int.class),
                     ElementMatchers.fieldType(String.class)
                 )
+            ),
+            new TestCase(
+                "attributes of anonymous class",
+                new AssertAttributesMatch(
+                    new AttributesFromTypeDescription(Interface1.instance(42).getClass()),
+                    ElementMatchers.fieldType(int.class)
+                )
             )
         );
     }
@@ -88,4 +95,19 @@ public class AttributesFromTypeDescriptionTest extends TestsSuite {
             this.b = b;
         }
     }
+    
+    public interface Interface1 {
+        int value();
+        
+        static Interface1 instance(int value) {
+            return new Interface1() {
+                @Override
+                public final int value() {
+                    return value;
+                }
+            };
+        }
+    }
+    
+    
 }
