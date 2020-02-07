@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.pragmaticobjects.oo.base</groupId>
         <artifactId>base-parent-equivalence</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
     </parent>
     
     <groupId>com.pragmaticobjects.oo.meta</groupId>
