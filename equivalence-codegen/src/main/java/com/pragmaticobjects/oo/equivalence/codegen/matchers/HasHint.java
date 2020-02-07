@@ -51,7 +51,6 @@ public class HasHint<Hint extends Annotation> implements ElementMatcher<TypeDesc
     @Override
     public final boolean matches(TypeDescription target) {
         final Loadable<Hint> hint = target.getDeclaredAnnotations().ofType(annotationType);
-        System.out.println(hint);
         return Optional.ofNullable(hint)
                 .map(Loadable::load)
                 .map(a -> annotationAccess.apply(a))

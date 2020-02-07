@@ -37,10 +37,6 @@ import java.nio.file.Paths;
 class CflsFromPathTest extends TestsSuite {
     private static final String TEST_CLASS_PATH = System.getProperty("user.dir") + "/target/test-classes";
 
-    static {
-        System.out.println("user.dir = " + TEST_CLASS_PATH);
-    }
-
     /**
      * Ctor.
      */
