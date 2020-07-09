@@ -10,10 +10,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -134,6 +134,61 @@ public class InferredAliasGeneratorTest extends TestsSuite {
                                 "    }",
                                 "}",
                                 ""
+                            )
+                        )
+                    )
+                )
+            ),
+            new TestCase(
+                "Fraction alias with attribute that requires importing",
+                new AssertAnnotationProcessorGeneratesFiles(
+                    new InferredAliasGenerator(),
+                    Paths.get("com", "test", "RandomFracInference.java"),
+                    String.join("\r\n",
+                            "package com.test;",
+                            "import com.pragmaticobjects.oo.inference.api.Infers;",
+                            "import com.pragmaticobjects.oo.inference.api.Inference;",
+                            "import com.test.Fraction;",
+                            "import com.test.FracFixed;",
+                            "import java.util.Random;",
+                            "public @Infers(value = \"RandomFrac\", memoized = true) class RandomFracInference implements Inference<Fraction> {",
+                            "    private final Random random;",
+
+                            "    public RandomFracInference(Random random) {",
+                            "        this.random = random;",
+                            "    }",
+
+                            "    @Override",
+                            "    public final Fraction inferredInstance() {",
+                            "        return new FracFixed(",
+                            "            random.nextInt(),",
+                            "            random.nextInt()",
+                            "        );",
+                            "    }",
+                            "}"
+                    ),
+                    List.of(
+                        new AssertAnnotationProcessorGeneratesFiles.File(
+                            Paths.get("com", "test", "RandomFrac.java"),
+                            String.join("\r\n",
+                                    "package com.test;",
+                                    "",
+                                    "import com.pragmaticobjects.oo.inference.api.Inference;",
+                                    "import com.pragmaticobjects.oo.inference.api.MemoizedInference;",
+                                    "import com.pragmaticobjects.oo.memoized.core.Memory;",
+                                    "import java.util.Random;",
+                                    "",
+                                    "public class RandomFrac extends FractionInferred {",
+                                    "    public RandomFrac(Random random, Memory memory) {",
+                                    "        super(",
+                                    "            new MemoizedInference(",
+                                    "                new RandomFracInference(random),",
+                                    "                memory",
+                                    "            )",
+                                    "        );",
+                                    "    }",
+                                    "}",
+                                    ""
                             )
                         )
                     )
