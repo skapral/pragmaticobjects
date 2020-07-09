@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.meta.model;
 
 import com.pragmaticobjects.oo.meta.freemarker.FreemarkerArtifactModel;
+import com.sun.tools.javac.util.List;
 import io.vavr.collection.Map;
 import java.util.Collection;
 import java.util.Comparator;
@@ -61,6 +62,7 @@ public class FAMStandard implements FreemarkerArtifactModel {
 
     private final Collection<Type> getImports() {
         return map.values()
+                .flatMap(a -> a instanceof Iterable<?> ? List.from((Iterable<?>) a) : List.of(a))
                 .filter(a -> a instanceof ImportsProvider)
                 .map(a -> (ImportsProvider) a)
                 .flatMap(ip -> ip.getImports())

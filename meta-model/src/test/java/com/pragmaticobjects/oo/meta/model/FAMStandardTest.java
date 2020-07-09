@@ -29,6 +29,7 @@ import com.pragmaticobjects.oo.meta.freemarker.AssertFreemarkerModelValue;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.HashMap;
+import io.vavr.collection.LinkedHashMap;
 import io.vavr.collection.List;
 import java.util.Collection;
 
@@ -55,13 +56,17 @@ public class FAMStandardTest extends TestsSuite {
                 new AssertFreemarkerModelValue(
                     new FAMStandard(
                         new TypeReferential("com.test", "TestObject"),
-                        HashMap.<String, Object>of(
-                            "somedependency", new TypeReferential("com.dependency", "Dependency")
+                        LinkedHashMap.<String, Object>of(
+                            "somedependency", new TypeReferential("com.dependency", "Dependency"),
+                            "listofdependencies", List.<Type>of(
+                                new TypeReferential("com.dependency", "Dependency2")
+                            )
                         )
                     ),
                     "imports",
                     List.<Type>of(
-                        new TypeReferential("com.dependency", "Dependency")
+                        new TypeReferential("com.dependency", "Dependency"),
+                        new TypeReferential("com.dependency", "Dependency2")
                     ).asJava()
                 )
             )
