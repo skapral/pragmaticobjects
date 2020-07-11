@@ -25,13 +25,17 @@
  */
 package com.pragmaticobjects.oo.meta.model;
 
+import io.vavr.control.Option;
+
 /**
  *
  * @author skapral
  */
 public interface Type extends ImportsProvider {
-    public boolean isPrimitive();
-    public String getFullName();
-    public String packageName();
-    public String name();
+    boolean isPrimitive();
+    String getFullName();
+    String packageName();
+    String name();
+    String declaration();
+    Generic generic();
 }

@@ -25,6 +25,8 @@
  */
 package com.pragmaticobjects.oo.meta.model;
 
+import io.vavr.collection.List;
+
 import java.util.Collection;
 import java.util.Collections;
 
@@ -35,10 +37,16 @@ import java.util.Collections;
 public class TypeReferential implements Type {
     private final String packageName;
     private final String name;
+    private final Generic generic;
 
     public TypeReferential(String packageName, String name) {
+        this(packageName, name, new GenericEmpty());
+    }
+
+    public TypeReferential(String packageName, String name, Generic generic) {
         this.packageName = packageName;
         this.name = name;
+        this.generic = generic;
     }
 
     @Override
@@ -62,7 +70,20 @@ public class TypeReferential implements Type {
     }
 
     @Override
+    public final Generic generic() {
+        return generic;
+    }
+
+    @Override
+    public final String declaration() {
+        String generic = generic().asString().isEmpty() ? "" : "<" + generic().asString() + ">";
+        return name() + generic;
+    }
+
+    @Override
     public final Collection<Type> getImports() {
-        return Collections.singleton(this);
+        return List.<Type>of(this)
+                .appendAll(generic.getImports())
+                .asJava();
     }
 }

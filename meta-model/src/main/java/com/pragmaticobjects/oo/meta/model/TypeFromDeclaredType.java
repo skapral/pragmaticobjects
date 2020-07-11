@@ -25,8 +25,11 @@
  */
 package com.pragmaticobjects.oo.meta.model;
 
+import io.vavr.collection.List;
+
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.type.DeclaredType;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -41,7 +44,12 @@ public class TypeFromDeclaredType extends TypeInferred {
                 public final Type inferredInstance() {
                     return new TypeReferential(
                         ((PackageElement) t.asElement().getEnclosingElement()).getQualifiedName().toString(),
-                        t.asElement().getSimpleName().toString()
+                        t.asElement().getSimpleName().toString(),
+                        new GenericSequence(
+                            t.getTypeArguments().stream()
+                                .map(GenericFromTypeMirror::new)
+                                .collect(List.collector())
+                        )
                     );
                 }
             }

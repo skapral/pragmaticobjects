@@ -59,6 +59,16 @@ public class TypeInferred implements Type {
     }
 
     @Override
+    public final Generic generic() {
+        return inference.inferredInstance().generic();
+    }
+
+    @Override
+    public final String declaration() {
+        return inference.inferredInstance().declaration();
+    }
+
+    @Override
     public final Collection<Type> getImports() {
         return inference.inferredInstance().getImports();
     }
