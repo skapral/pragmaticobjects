@@ -25,8 +25,6 @@
  */
 package com.pragmaticobjects.oo.meta.model;
 
-import io.vavr.control.Option;
-
 /**
  *
  * @author skapral

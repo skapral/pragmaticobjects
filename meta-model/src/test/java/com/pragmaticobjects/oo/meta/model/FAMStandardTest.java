@@ -31,7 +31,6 @@ import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.LinkedHashMap;
 import io.vavr.collection.List;
-import java.util.Collection;
 
 /**
  *

@@ -28,7 +28,6 @@ package com.pragmaticobjects.oo.meta.model;
 import io.vavr.collection.List;
 
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  *

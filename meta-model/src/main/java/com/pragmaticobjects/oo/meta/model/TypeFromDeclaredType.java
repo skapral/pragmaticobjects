@@ -29,7 +29,6 @@ import io.vavr.collection.List;
 
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.type.DeclaredType;
-import java.util.stream.Collectors;
 
 /**
  *

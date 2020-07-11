@@ -26,9 +26,7 @@
 package com.pragmaticobjects.oo.meta.model;
 
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
-import java.util.Collection;
 import java.util.Objects;
 
 public class GenericFromWildcardType extends GenericInferred {
