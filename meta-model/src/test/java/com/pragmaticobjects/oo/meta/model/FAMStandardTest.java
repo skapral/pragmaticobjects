@@ -31,7 +31,6 @@ import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.LinkedHashMap;
 import io.vavr.collection.List;
-import java.util.Collection;
 
 /**
  *
@@ -71,34 +70,5 @@ public class FAMStandardTest extends TestsSuite {
                 )
             )
         );
-    }
-}
-
-class DummyType implements Type {
-    @Override
-    public final boolean isPrimitive() {
-        return false;
-    }
-
-    @Override
-    public final String getFullName() {
-        return packageName() + "." + name();
-    }
-
-    @Override
-    public final String packageName() {
-        return "com.test";
-    }
-
-    @Override
-    public final String name() {
-        return "DummyType";
-    }
-
-    @Override
-    public final Collection<Type> getImports() {
-        return List.<Type>of(
-            new TypeReferential("com.test", "Dependency")
-        ).asJava();
     }
 }

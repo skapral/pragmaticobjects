@@ -25,15 +25,6 @@
  */
 package com.pragmaticobjects.oo.meta.model;
 
-/**
- *
- * @author skapral
- */
-public interface Type extends ImportsProvider {
-    boolean isPrimitive();
-    String getFullName();
-    String packageName();
-    String name();
-    String declaration();
-    Generic generic();
+public enum GenericBoundary {
+    EXTENDS, SUPER
 }

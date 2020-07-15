@@ -25,15 +25,17 @@
  */
 package com.pragmaticobjects.oo.meta.model;
 
-/**
- *
- * @author skapral
- */
-public interface Type extends ImportsProvider {
-    boolean isPrimitive();
-    String getFullName();
-    String packageName();
-    String name();
-    String declaration();
-    Generic generic();
+import java.util.Collection;
+import java.util.Collections;
+
+public class GenericEmpty implements Generic {
+    @Override
+    public final String asString() {
+        return "";
+    }
+
+    @Override
+    public final Collection<Type> getImports() {
+        return Collections.emptyList();
+    }
 }

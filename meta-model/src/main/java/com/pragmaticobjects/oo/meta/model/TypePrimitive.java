@@ -60,6 +60,16 @@ public class TypePrimitive implements Type {
     }
 
     @Override
+    public final String declaration() {
+        return name();
+    }
+
+    @Override
+    public final Generic generic() {
+        return new GenericEmpty();
+    }
+
+    @Override
     public final Collection<Type> getImports() {
         return Collections.emptyList();
     }
