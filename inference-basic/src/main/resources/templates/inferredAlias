@@ -6,7 +6,7 @@ import ${import.fullName};
 </#list>
 
 public class ${this.name} extends ${baseInference.name} {
-    public ${this.name}(${args?map(a -> a.type.name + " " + a.name)?join(", ")}) {
+    public ${this.name}(${args?map(a -> a.type.declaration + " " + a.name)?join(", ")}) {
         super(
             new ${inference.name}(${args?map(a -> a.name)?join(", ")})
         );
