@@ -8,7 +8,7 @@ import ${import.fullName};
 </#list>
 
 public class ${this.name} extends ${baseInference.name} {
-    public ${this.name}(${args?map(a -> a.type.name + " " + a.name)?join(", ")}, Memory memory) {
+    public ${this.name}(${args?map(a -> a.type.declaration + " " + a.name)?join(", ")}, Memory memory) {
         super(
             new MemoizedInference(
                 new ${inference.name}(${args?map(a -> a.name)?join(", ")}),

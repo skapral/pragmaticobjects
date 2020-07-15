@@ -50,17 +50,17 @@
             <dependency>
                 <groupId>com.pragmaticobjects.oo.meta</groupId>
                 <artifactId>meta-freemarker</artifactId>
-                <version>0.0.2</version>
+                <version>0.0.3</version>
             </dependency>
             <dependency>
                 <groupId>com.pragmaticobjects.oo.meta</groupId>
                 <artifactId>meta-model</artifactId>
-                <version>0.0.2</version>
+                <version>0.0.3</version>
             </dependency>
             <dependency>
                 <groupId>com.pragmaticobjects.oo.meta</groupId>
                 <artifactId>meta-anno-procesor</artifactId>
-                <version>0.0.2</version>
+                <version>0.0.3</version>
             </dependency>
             <dependency>
                 <groupId>io.vavr</groupId>
