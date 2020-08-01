@@ -40,7 +40,7 @@ public class IIImplementEObjectAttributesTest extends TestsSuite {
                 "declares the method",
                 new AssertClassAfterInstrumentation(
                     new IIImplementEObjectAttributes(),
-                    Foo.class,
+                    Bar.class,
                     ElementMatchers.declaresMethod(
                         ElementMatchers.hasMethodName("attributes")
                     )

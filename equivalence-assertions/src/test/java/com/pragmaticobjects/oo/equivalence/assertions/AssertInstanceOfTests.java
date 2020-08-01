@@ -1,8 +1,8 @@
 /*-
  * ===========================================================================
- * equivalence-assertions
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 - 2020 Kapralov Sergey
+ * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,25 +25,31 @@
  */
 package com.pragmaticobjects.oo.equivalence.assertions;
 
-import static org.assertj.core.api.Assertions.*;
-
 /**
  *
  * @author skapral
  */
-public class AssertNotInstanceOf implements Assertion {
-    private final Object obj;
-    private final Class clazz;
-
-    public AssertNotInstanceOf(Object obj, Class clazz) {
-        this.obj = obj;
-        this.clazz = clazz;
-    }
-
-    @Override
-    public final void check() throws Exception {
-        assertThat(obj)
-                .withFailMessage("Expected obj to be not instance of %s\r\n  obj: %s", clazz.getName(), obj)
-                .isNotInstanceOf(clazz);
+public class AssertInstanceOfTests extends TestsSuite {
+    public AssertInstanceOfTests() {
+        super(
+            new TestCase(
+                "pass scenario",
+                new AssertAssertionPasses(
+                    new AssertInstanceOf(
+                        42,
+                        Integer.class
+                    )
+                )
+            ),
+            new TestCase(
+                "fail scenario",
+                new AssertAssertionFails(
+                    new AssertInstanceOf(
+                        new Object(),
+                        Integer.class
+                    )
+                )
+            )
+        );
     }
 }

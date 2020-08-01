@@ -29,7 +29,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 
 /**
- * Plugin which does nothing.
+ * Iteration which does no instrumentation.
  *
  * @author Kapralov Sergey
  */

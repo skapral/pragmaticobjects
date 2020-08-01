@@ -1,8 +1,8 @@
 /*-
  * ===========================================================================
- * equivalence-assertions
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 - 2020 Kapralov Sergey
+ * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,22 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.assertions;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
+
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 
 /**
- * Inferred assertion.
- * 
+ *
  * @author skapral
  */
-public class AssertInferred implements Assertion {
-    private final Inference inference;
-
-    /**
-     * Ctor.
-     * 
-     * @param inference Inference
-     */
-    public AssertInferred(Inference inference) {
-        this.inference = inference;
-    }
-
-    @Override
-    public final void check() throws Exception {
-        inference.assertion().check();
+public class IINopTest extends TestsSuite {
+    public IINopTest() {
+        super(
+            new TestCase(
+                "No instrumentation",
+                new AssertClassIsTheSameAfterInstrumentation(new IINop(), Foo.class)
+            )
+        );
     }
 }

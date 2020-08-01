@@ -1,8 +1,8 @@
 /*-
  * ===========================================================================
- * equivalence-assertions
+ * project-name
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 - 2020 Kapralov Sergey
+ * Copyright (C) 2019 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,32 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.assertions;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
+import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.dynamic.DynamicType;
 import static org.assertj.core.api.Assertions.*;
 
 /**
  *
  * @author skapral
  */
-public class AssertNotInstanceOf implements Assertion {
-    private final Object obj;
-    private final Class clazz;
+public class AssertClassIsTheSameAfterInstrumentation implements Assertion {
+    private final InstrumentationIteration ii;
+    private final Class<?> type;
 
-    public AssertNotInstanceOf(Object obj, Class clazz) {
-        this.obj = obj;
-        this.clazz = clazz;
+    public AssertClassIsTheSameAfterInstrumentation(InstrumentationIteration ii, Class<?> type) {
+        this.ii = ii;
+        this.type = type;
     }
-
+    
     @Override
     public final void check() throws Exception {
-        assertThat(obj)
-                .withFailMessage("Expected obj to be not instance of %s\r\n  obj: %s", clazz.getName(), obj)
-                .isNotInstanceOf(clazz);
+        final DynamicType.Builder<?> builder = new ByteBuddy().redefine(type);
+        final TypeDescription typeDescription = new TypeDescription.ForLoadedType(type);
+        final DynamicType.Builder<?> instrumentedBuilder = ii.apply(builder, typeDescription);
+        assertThat(instrumentedBuilder == builder).isTrue();
     }
 }
