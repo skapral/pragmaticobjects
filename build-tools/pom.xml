@@ -5,15 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.pragmaticobjects</groupId>
-    <artifactId>pragmaticobjects</artifactId>
+    <artifactId>build-tools</artifactId>
     <version>0.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-
-    <modules>
-        <module>oo-equivalence</module>
-        <module>oo-inference</module>
-        <module>oo-tests</module>
-        <module>oo-memoized</module>
-        <module>build-tools</module>
-    </modules>
+    
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 </project>
