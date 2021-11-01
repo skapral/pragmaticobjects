@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.pragmaticobjects.oo.base</groupId>
+        <artifactId>base-parent-equivalence</artifactId>
+        <version>0.0.5</version>
+    </parent>
+    
+    <groupId>com.pragmaticobjects.oo.meta</groupId>
+    <artifactId>oo-meta</artifactId>
+    <version>0.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+    
+    <name>OO-Meta</name>
+    <description>Pragmatic Objects sources generator</description>
+    <url>https://github.com/pragmatic-objects/oo-meta</url>
+    <scm>
+        <url>https://github.com/pragmatic-objects/oo-meta.git</url>
+    </scm>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+    
+    <developers>
+        <developer>
+            <name>Kapralov Sergey</name>
+            <email>skapralov@mail.ru</email>
+            <timezone>UTC+03:00</timezone>
+        </developer>
+    </developers>
+    
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+    
+    <modules>
+        <module>meta-base</module>
+        <module>meta-freemarker</module>
+        <module>meta-model</module>
+        <module>meta-anno-procesor</module>
+    </modules>
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.pragmaticobjects.oo.meta</groupId>
+                <artifactId>meta-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pragmaticobjects.oo.meta</groupId>
+                <artifactId>meta-freemarker</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>2.3.30</version>
+            </dependency>
+            <dependency>
+                <groupId>io.vavr</groupId>
+                <artifactId>vavr</artifactId>
+                <version>0.10.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pragmaticobjects.oo.tests</groupId>
+                <artifactId>tests-junit5</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.7</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
