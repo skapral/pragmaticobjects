@@ -12,6 +12,7 @@
     <modules>
         <module>build-tools</module>
         <module>oo-equivalence</module>
+        <module>oo-meta</module>
         <module>oo-inference</module>
         <module>oo-tests</module>
         <module>oo-memoized</module>

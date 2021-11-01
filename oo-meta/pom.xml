@@ -3,21 +3,16 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>com.pragmaticobjects.oo.base</groupId>
-        <artifactId>base-parent-equivalence</artifactId>
-        <version>0.0.5</version>
+        <groupId>com.pragmaticobjects</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.0.0-SNAPSHOT</version>
+        <relativePath>../build-tools/parent/pom.xml</relativePath>
     </parent>
     
     <groupId>com.pragmaticobjects.oo.meta</groupId>
     <artifactId>oo-meta</artifactId>
     <version>0.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
     
     <name>OO-Meta</name>
     <description>Pragmatic Objects sources generator</description>
@@ -92,4 +87,30 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.pragmaticobjects.oo.equivalence</groupId>
+            <artifactId>equivalence-base</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.pragmaticobjects.oo.equivalence</groupId>
+                <artifactId>equivalence-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>instrument</goal>
+                            <goal>instrument-tests</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
