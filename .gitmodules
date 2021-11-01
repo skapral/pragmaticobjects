@@ -1,0 +1,16 @@
+[submodule "oo-equivalence"]
+	path = oo-equivalence
+	url = git@github.com:pragmatic-objects/oo-equivalence.git
+	branch = master
+[submodule "oo-memoized"]
+	path = oo-memoized
+	url = git@github.com:pragmatic-objects/oo-memoized.git
+	branch = master
+[submodule "oo-inference"]
+	path = oo-inference
+	url = git@github.com:pragmatic-objects/oo-inference.git
+	branch = master
+[submodule "oo-tests"]
+	path = oo-tests
+	url = git@github.com:pragmatic-objects/oo-tests.git
+	branch = master
