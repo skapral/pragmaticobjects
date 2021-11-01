@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC
+        "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+        "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+<module name="Checker">
+    <module name="JavadocPackage"/>
+    <module name="FileTabCharacter"/>
+
+    <module name="TreeWalker">
+        <module name="SuppressionCommentFilter"/>
+        <module name="CyclomaticComplexity"/>
+        <module name="NPathComplexity"/>
+        <module name="JavaNCSS"/>
+        <module name="IllegalImport"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports"/>
+        <module name="Indentation"/>
+        <module name="JavadocType">
+            <property name="allowUnknownTags" value="true"/>
+        </module>
+        <module name="JavadocMethod">
+            <property name="scope" value="public"/>
+            <property name="allowedAnnotations" value="Override"/>
+        </module>
+    </module>
+</module>
