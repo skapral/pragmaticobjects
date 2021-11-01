@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.pragmaticobjects.oo.base</groupId>
+        <artifactId>base-parent-equivalence</artifactId>
+        <version>0.0.4</version>
+    </parent>
+
+    <groupId>com.pragmaticobjects.oo.tests</groupId>
+    <artifactId>oo-tests</artifactId>
+    <version>0.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>OO-Tests</name>
+    <description>Reusable test assertions</description>
+    <url>https://github.com/pragmatic-objects/oo-tests</url>
+    <scm>
+        <url>https://github.com/pragmatic-objects/oo-tests.git</url>
+    </scm>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Kapralov Sergey</name>
+            <email>skapralov@mail.ru</email>
+            <timezone>UTC+03:00</timezone>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+    
+    <modules>
+        <module>tests-core</module>
+        <module>tests-junit5</module>
+        <module>tests-junit4</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.pragmaticobjects.oo.tests</groupId>
+                <artifactId>tests-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13</version>
+            </dependency>
+            <dependency>
+                <groupId>io.vavr</groupId>
+                <artifactId>vavr</artifactId>
+                <version>0.10.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.kimble</groupId>
+                <artifactId>junit-test-factory</artifactId>
+                <version>4.12.6</version>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>3.15.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>5.6.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <skipAddThirdParty>true</skipAddThirdParty>
+                    <skipAggregateAddThirdParty>true</skipAggregateAddThirdParty>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
