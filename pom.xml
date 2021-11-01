@@ -10,10 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>build-tools</module>
         <module>oo-equivalence</module>
         <module>oo-inference</module>
         <module>oo-tests</module>
         <module>oo-memoized</module>
-        <module>build-tools</module>
     </modules>
 </project>
