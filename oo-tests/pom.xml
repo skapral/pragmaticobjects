@@ -56,7 +56,8 @@
     <modules>
         <module>tests-core</module>
         <module>tests-junit5</module>
-        <module>tests-junit4</module>
+        <!-- Skipped since its crucial dependency is not available anymore -->
+        <!--<module>tests-junit4</module>-->
     </modules>
 
     <dependencyManagement>
