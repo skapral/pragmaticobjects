@@ -59,6 +59,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.pragmaticobjects.oo.tests</groupId>
+                <artifactId>tests-junit5</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>1.7.30</version>
@@ -72,11 +77,6 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>3.2.4</version>
-            </dependency>
-            <dependency>
-                <groupId>com.pragmaticobjects.oo.tests</groupId>
-                <artifactId>tests-junit5</artifactId>
-                <version>0.0.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
