@@ -1,6 +1,6 @@
 # OO-Equivalence
 
-Equivalence logic generator for Java objects. For information about what equivalence is, read this [post](https://www.pragmaticobjects.com/chapters/009_equivalence_101.html). For information on how it is generated, read this [guide](INTERNALS.md).
+Equivalence logic generator for Java objects. For information about what equivalence is, and how it is generated, read this [guide](INTERNALS.md).
 
 ## Installation
 

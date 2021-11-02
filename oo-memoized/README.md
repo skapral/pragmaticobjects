@@ -50,7 +50,7 @@ class GithubUser {
 OO-Memoized provides a contract named `Memory`. Instances of `Memory` 
 encapsulate access to shared state, where memoized and cached values are stored.
 One important characteristic of `Memory` instances is reproducability - for 
-two [equivalent](https://www.pragmaticobjects.com/chapters/009_equivalence_101.html) 
+two [equivalent](../oo-equivalence/INTERNALS.md) 
 instances of `Memory` there is a guarantee that they reproduce
 same shared state.
 

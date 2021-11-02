@@ -28,8 +28,7 @@ class InferredUser implements User {
 
 ## Why?
 
-Inferred classes can be a basis for [aliases](https://www.pragmaticobjects.com/chapters/005_implementation_inheritance_paranoia.html#aliases) 
-of objects, behavior of which is resolved at runtime.
+Inferred classes can be a basis for object aliases, behavior of which is resolved at runtime.
 Provided that we have an inferred user that is resolved from Github API...
 
 ```java
@@ -100,5 +99,5 @@ annotation. Annotation has two attributes:
 
 - `String value()` --- mandatory, defines the name of generated inferred object.
 - `boolean memoized() default false` --- defines whether inferred object will memoize the inference results or not. Currently, memoization
-of the interences is done by means of [OO-Memoized](https://github.com/pragmatic-objects/oo-memoized).
+of the interences is done by means of [OO-Memoized](../oo-memoized).
 
