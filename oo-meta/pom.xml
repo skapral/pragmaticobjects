@@ -16,9 +16,9 @@
     
     <name>OO-Meta</name>
     <description>Pragmatic Objects sources generator</description>
-    <url>https://github.com/pragmatic-objects/oo-meta</url>
+    <url>https://github.com/skapral/pragmaticobjects</url>
     <scm>
-        <url>https://github.com/pragmatic-objects/oo-meta.git</url>
+        <url>https://github.com/skapral/pragmaticobjects.git</url>
     </scm>
     <licenses>
         <license>
@@ -34,18 +34,7 @@
             <timezone>UTC+03:00</timezone>
         </developer>
     </developers>
-    
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
-    </distributionManagement>
-    
+
     <modules>
         <module>meta-base</module>
         <module>meta-freemarker</module>

@@ -23,9 +23,9 @@
 
     <name>OO-Equivalence</name>
     <description>Equivalence logic generator for Elegant Objects</description>
-    <url>https://github.com/pragmatic-objects/oo-equivalence</url>
+    <url>https://github.com/skapral/pragmaticobjects</url>
     <scm>
-        <url>https://github.com/pragmatic-objects/oo-equivalence.git</url>
+        <url>https://github.com/skapral/pragmaticobjects.git</url>
     </scm>
     <licenses>
         <license>
@@ -33,7 +33,7 @@
             <url>http://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
-    
+
     <dependencyManagement>
         <dependencies>
             <dependency>

@@ -16,9 +16,9 @@
     
     <name>OO-Inference</name>
     <description>Annotation processor for generating inferred objects</description>
-    <url>https://github.com/pragmatic-objects/oo-inference</url>
+    <url>https://github.com/skapral/pragmaticobjects</url>
     <scm>
-        <url>https://github.com/pragmatic-objects/oo-inference.git</url>
+        <url>https://github.com/skapral/pragmaticobjects.git</url>
     </scm>
     <licenses>
         <license>
