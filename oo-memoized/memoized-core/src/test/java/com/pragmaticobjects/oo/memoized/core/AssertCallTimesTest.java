@@ -25,44 +25,39 @@
  */
 package com.pragmaticobjects.oo.memoized.core;
 
-import java.util.concurrent.atomic.AtomicReference;
+import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
+import com.pragmaticobjects.oo.tests.TestCase;
+import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 
 /**
- * Calculation, calculated more more then one time. Result is memoized.
- * 
- * @author skapral
- * @param <T> calculation result's type
+ * Test {@link Memory} implementation that memoises nothing
  */
-public class CalcMemoized<T> implements Calculation<T> {
-    private final AtomicReference<T> memoizeReference;
-    private final Calculation<T> calculation;
-
-    /**
-     * Ctor.
-     * @param memoizeReference reference for memoization
-     * @param calculation calculation to memoize
-     */
-    public CalcMemoized(AtomicReference<T> memoizeReference, Calculation<T> calculation) {
-        this.memoizeReference = memoizeReference;
-        this.calculation = calculation;
-    }
-    
-    /**
-     * Ctor.
-     * @param calculation calculation to memoize
-     */
-    public CalcMemoized(Calculation<T> calculation) {
-        this(new AtomicReference<>(), calculation);
+class BluntMemory implements Memory {
+    @Override
+    public final <T> T memoized(MemoizedCallable<T> callable) {
+        return callable.call();
     }
 
     @Override
-    public final T calculate() {
-        synchronized(memoizeReference) {
-            if(memoizeReference.get() == null) {
-                T result = calculation.calculate();
-                memoizeReference.set(result);
-            }
-        }
-        return memoizeReference.get();
+    public final void clean() {
+        // Do Nothing
+    }
+}
+
+
+public class AssertCallTimesTest extends TestsSuite {
+    public AssertCallTimesTest() {
+        super(
+            new TestCase(
+                "blunt count",
+                new AssertAssertionPasses(
+                    new AssertCallTimes(
+                        new BluntMemory(),
+                            10,
+                            10
+                    )
+                )
+            )
+        );
     }
 }

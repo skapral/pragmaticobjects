@@ -26,14 +26,14 @@
 package com.pragmaticobjects.oo.memoized.core;
 
 /**
- * Calculation
- * 
- * @author skapral
- * @param <T> calculation's result type
+ * Callable, result of which is memoized by {@link Memory}.
+ *
+ * IMPORTANT: implementors of this class must be immutable classes with
+ * implementations for {@link Object#equals(Object)} and {@link Object#hashCode()}, compliant with requirements that {@link java.util.Map}
+ * contract defines for its keys.
+ *
+ * @param <T> callable's result
  */
-public interface Calculation<T> {
-    /**
-     * @return result
-     */
-    T calculate();
+public interface MemoizedCallable<T> {
+    T call();
 }

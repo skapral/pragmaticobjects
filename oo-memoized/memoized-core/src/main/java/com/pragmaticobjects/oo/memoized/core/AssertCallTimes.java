@@ -26,40 +26,43 @@
 package com.pragmaticobjects.oo.memoized.core;
 
 import com.pragmaticobjects.oo.tests.Assertion;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import static org.mockito.Mockito.*;
+import org.assertj.core.api.Assertions;
 
-/**
- * Asserts that calculation under test is executed certain number of times.
- * @author skapral
- */
-public class AssertCalculationTriggeredCertainNumberOfTimes implements Assertion {
-    private final Function<Supplier, Calculation> calculationFn;
-    private final int timesToCall;
-    private final int timesCalculated;
+import java.util.concurrent.atomic.AtomicInteger;
 
-    /**
-     * Ctor.
-     * 
-     * @param calculationFn calculation constructor
-     * @param timesToCall times to call calculation under test
-     * @param timesCalculated expected number of actual calculation execution
-     */
-    public AssertCalculationTriggeredCertainNumberOfTimes(Function<Supplier, Calculation> calculationFn, int timesToCall, int timesCalculated) {
-        this.calculationFn = calculationFn;
-        this.timesToCall = timesToCall;
-        this.timesCalculated = timesCalculated;
+// NOTE: equals, hashCode and toString are implicitly generated
+// by equivalence-maven-plugin
+class TestCallable implements MemoizedCallable {
+    private final AtomicInteger counter;
+
+    public TestCallable(AtomicInteger counter) {
+        this.counter = counter;
+    }
+
+    @Override
+    public final Object call() {
+        counter.incrementAndGet();
+        return null;
+    }
+}
+
+public class AssertCallTimes implements Assertion {
+    private final Memory memory;
+    private final int callNums;
+    private final int expectedNumCalls;
+
+    public AssertCallTimes(Memory memory, int callNums, int expectedNumCalls) {
+        this.memory = memory;
+        this.callNums = callNums;
+        this.expectedNumCalls = expectedNumCalls;
     }
 
     @Override
     public final void check() throws Exception {
-        final Supplier mock = mock(Supplier.class);
-        when(mock.get()).thenReturn(new Object());
-        final Calculation calculationUnderTest = calculationFn.apply(mock);
-        for(int i = 0; i < timesToCall; i++) {
-            calculationUnderTest.calculate();
+        AtomicInteger counter = new AtomicInteger();
+        for(int i = 0; i < callNums; i++) {
+            memory.memoized(new TestCallable(counter));
         }
-        verify(mock, times(timesCalculated)).get();
+        Assertions.assertThat(counter).hasValue(expectedNumCalls);
     }
 }

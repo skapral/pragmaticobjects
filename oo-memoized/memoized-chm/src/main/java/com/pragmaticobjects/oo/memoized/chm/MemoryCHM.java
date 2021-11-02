@@ -25,12 +25,13 @@
  */
 package com.pragmaticobjects.oo.memoized.chm;
 
-import com.pragmaticobjects.oo.memoized.core.CalcDefault;
+import com.pragmaticobjects.oo.memoized.core.MemoizedCallable;
 import com.pragmaticobjects.oo.memoized.core.Memory;
-import com.pragmaticobjects.oo.memoized.core.Calculation;
-import java.util.Arrays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
+import java.util.concurrent.FutureTask;
 
 /**
  * Memory region, backed by {@link ConcurrentHashMap} instance
@@ -38,15 +39,16 @@ import java.util.function.Supplier;
  * @author skapral
  */
 public class MemoryCHM implements Memory {
-    private static final ConcurrentHashMap<Object, Calculation> DEFAULT = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<Object, Calculation> memoizedObjects;
+    private static final ConcurrentHashMap<Object, FutureTask> DEFAULT = new ConcurrentHashMap<>();
+    private static final Logger LOG = LoggerFactory.getLogger(MemoryCHM.class);
+    private final ConcurrentHashMap<Object, FutureTask> memoizedObjects;
 
     /**
      * Ctor.
      * 
      * @param memoizedObjects hash map for memoized calculations
      */
-    public MemoryCHM(ConcurrentHashMap<Object, Calculation> memoizedObjects) {
+    public MemoryCHM(ConcurrentHashMap<Object, FutureTask> memoizedObjects) {
         this.memoizedObjects = memoizedObjects;
     }
 
@@ -58,11 +60,19 @@ public class MemoryCHM implements Memory {
     }
 
     @Override
-    public final <S, T> Calculation<T> memoizedCalculation(S that, Object key, Supplier<T> methodBody) {
-        return memoizedObjects.computeIfAbsent(
-            Arrays.asList(that, key),
-            mref -> new CalcDefault(that, key, methodBody)
-        );
+    public final <T> T memoized(MemoizedCallable<T> callable) {
+        try {
+            FutureTask t = memoizedObjects.computeIfAbsent(callable, k -> new FutureTask(() -> {
+                if(LOG.isTraceEnabled()) {
+                    LOG.trace("New calculation: {}", callable.toString());
+                }
+                return callable.call();
+            }));
+            t.run();
+            return (T) t.get();
+        } catch(Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override

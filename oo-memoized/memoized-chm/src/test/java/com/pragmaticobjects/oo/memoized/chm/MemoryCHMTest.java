@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * memoized-core
+ * memoized-chm
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2021 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,30 +23,28 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.memoized.core;
+package com.pragmaticobjects.oo.memoized.chm;
 
+
+import com.pragmaticobjects.oo.memoized.core.AssertCallTimes;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
-import java.util.concurrent.atomic.AtomicReference;
 
-/**
- *
- * @author skapral
- */
-public class CalcMemoizedTest extends TestsSuite {
-    public CalcMemoizedTest() {
+import java.util.concurrent.ConcurrentHashMap;
+
+class MemoryCHMTest extends TestsSuite {
+    public MemoryCHMTest() {
         super(
-            new TestCase(
-                "memoized calculation called only once",
-                new AssertCalculationTriggeredCertainNumberOfTimes(
-                    supplier -> new CalcMemoized(
-                        new AtomicReference(),
-                        new CalcFromSupplier(supplier)
-                    ),
-                    10, 
-                    1
+                new TestCase(
+                        "Check at most once call",
+                        new AssertCallTimes(
+                                new MemoryCHM(
+                                        new ConcurrentHashMap<>()
+                                ),
+                                10,
+                                1
+                        )
                 )
-            )
         );
     }
 }

@@ -25,6 +25,7 @@
  */
 package com.pragmaticobjects.oo.inference.api;
 
+import com.pragmaticobjects.oo.memoized.core.MemoizedCallable;
 import com.pragmaticobjects.oo.memoized.core.Memory;
 
 /**
@@ -43,8 +44,11 @@ public class MemoizedInference<T> implements Inference<T> {
 
     @Override
     public final T inferredInstance() {
-        return memory
-            .memoizedCalculation(this, "inferredObject", inference::inferredInstance)
-            .calculate();
+        return memory.memoized(new MemoizedCallable<T>() {
+            @Override
+            public final T call() {
+                return inference.inferredInstance();
+            }
+        });
     }
 }

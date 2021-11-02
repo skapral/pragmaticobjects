@@ -25,26 +25,22 @@
  */
 package com.pragmaticobjects.oo.memoized.core;
 
-import java.util.function.Supplier;
-
 /**
- * Memory region. Holds and manages links on memoized calculations.
+ * Abstraction for a place where memoized values are kept.
  * 
  * @author skapral
  */
 public interface Memory {
     /**
-     * Obtain memoized calculation instance
-     * @param <S> object type
-     * @param <T> method reference return value
-     * @param that context object
-     * @param key memoization key
-     * @param methodBody method logic to execute
+     * Obtain and memoize the result from callable
+     * @param <T> result type
+     * @param callable callable to memoize
      * @return result
      */
-    <S, T> Calculation<T> memoizedCalculation(S that, Object key, Supplier<T> methodBody);
+    <T> T memoized(MemoizedCallable<T> callable);
+
     /**
-     * Drop all memoized calculations
+     * Drop all memoized values
      */
     void clean();
 }

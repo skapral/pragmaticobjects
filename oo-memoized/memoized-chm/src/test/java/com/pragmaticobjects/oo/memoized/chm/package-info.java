@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * memoized-core
+ * memoized-chm
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2021 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,34 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.memoized.core;
-
-import com.pragmaticobjects.oo.tests.TestCase;
-import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
-
-/**
- * Tests suite for {@link CalcDefault}.
- * 
- * @author skapral
- */
-public class CalcDefaultTest extends TestsSuite {
-    /**
-     * Ctor
-     */
-    public CalcDefaultTest() {
-        super(
-            new TestCase(
-                "calculation memoized",
-                new AssertCalculationTriggeredCertainNumberOfTimes(
-                    s -> new CalcDefault(
-                        new Object(),
-                        "toString",
-                        s
-                    ),
-                    10,
-                    1
-                )
-            )
-        );
-    }
-}
+package com.pragmaticobjects.oo.memoized.chm;
