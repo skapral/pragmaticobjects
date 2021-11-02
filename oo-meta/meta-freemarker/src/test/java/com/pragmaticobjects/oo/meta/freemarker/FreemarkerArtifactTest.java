@@ -39,13 +39,13 @@ public class FreemarkerArtifactTest extends TestsSuite {
     public FreemarkerArtifactTest() {
         super(
             new TestCase(
-                "Elegant-model test",
+                "Object-based-model test",
                 new AssertArtifactContents(
                     new FreemarkerArtifact(
                         "testTemplate",
                         new GenericModel(
                             HashMap.<String, Object>of(
-                                "this", new ElegantObject("Hello", "World")
+                                "this", new ModelObject("Hello", "World")
                             ).toJavaMap()
                         )
                     ),
@@ -77,11 +77,11 @@ public class FreemarkerArtifactTest extends TestsSuite {
         );
     }
     
-    public static class ElegantObject {
+    public static class ModelObject {
         private final String greeting;
         private final String name;
 
-        public ElegantObject(String greeting, String name) {
+        public ModelObject(String greeting, String name) {
             this.greeting = greeting;
             this.name = name;
         }

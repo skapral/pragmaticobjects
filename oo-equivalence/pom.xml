@@ -22,7 +22,7 @@
     </modules>
 
     <name>OO-Equivalence</name>
-    <description>Equivalence logic generator for Elegant Objects</description>
+    <description>Equivalence logic generator for immutable objects</description>
     <url>https://github.com/skapral/pragmaticobjects</url>
     <scm>
         <url>https://github.com/skapral/pragmaticobjects.git</url>
