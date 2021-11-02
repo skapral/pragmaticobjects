@@ -46,8 +46,7 @@
     <modules>
         <module>tests-core</module>
         <module>tests-junit5</module>
-        <!-- Skipped since its crucial dependency is not available anymore -->
-        <!--<module>tests-junit4</module>-->
+        <module>tests-junit4</module>
     </modules>
 
     <dependencyManagement>
@@ -68,11 +67,6 @@
                 <version>0.10.2</version>
             </dependency>
             <dependency>
-                <groupId>com.github.kimble</groupId>
-                <artifactId>junit-test-factory</artifactId>
-                <version>4.12.6</version>
-            </dependency>
-            <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>3.15.0</version>
@@ -84,20 +78,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <!-- Needed for JUnit4 module -->
-    <!--<build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <configuration>
-                    <skipAddThirdParty>true</skipAddThirdParty>
-                    <skipAggregateAddThirdParty>true</skipAggregateAddThirdParty>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>-->
 
     <dependencies>
         <dependency>
@@ -120,13 +100,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <proc>none</proc>
-                </configuration>
             </plugin>
         </plugins>
     </build>

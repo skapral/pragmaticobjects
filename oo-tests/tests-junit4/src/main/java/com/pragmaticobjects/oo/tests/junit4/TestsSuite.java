@@ -2,7 +2,7 @@
  * ===========================================================================
  * tests-junit4
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 Kapralov Sergey
+ * Copyright (C) 2019 - 2021 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,44 +25,17 @@
  */
 package com.pragmaticobjects.oo.tests.junit4;
 
-import com.github.kimble.FactoryRunner;
 import com.pragmaticobjects.oo.tests.TestCase;
 import io.vavr.collection.List;
-import java.util.Objects;
 import org.junit.runner.RunWith;
-
-
-/**
- * Internal {@link TestCase} adapter for {@link TestsSuite}.
- * 
- * @author skapral
- */
-class TestCaseAdapter implements FactoryRunner.Test {
-    private final TestCase testCase;
-
-    /**
-     * Ctor.
-     * 
-     * @param testCase  Test case
-     */
-    public TestCaseAdapter(TestCase testCase) {
-        this.testCase = testCase;
-    }
-
-    @Override
-    public final void execute() throws Throwable {
-        testCase.execute();
-    }
-}
-
 
 /**
  * A tests suite
  * 
  * @author Kapralov Sergey
  */
-@RunWith(FactoryRunner.class)
-public class TestsSuite implements FactoryRunner.Producer {
+@RunWith(TestRunner.class)
+public class TestsSuite implements JUnit4TestsSuite {
     private final List<TestCase> testCases;
 
     /**
@@ -86,27 +59,7 @@ public class TestsSuite implements FactoryRunner.Producer {
     }
 
     @Override
-    public final void produceTests(FactoryRunner.TestConsumer tc) throws Throwable {
-        for(TestCase testCase : testCases) {
-            tc.accept(
-                testCase.description(), 
-                new TestCaseAdapter(testCase)
-            );
-        }
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        if(o instanceof TestsSuite) {
-            TestsSuite that = (TestsSuite)o;
-            return Objects.equals(testCases, that.testCases);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public final int hashCode() {
-        return Objects.hash(testCases);
+    public final Iterable<TestCase> produceTests() {
+        return testCases;
     }
 }

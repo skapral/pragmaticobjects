@@ -24,3 +24,18 @@
  * ============================================================================
  */
 package com.pragmaticobjects.oo.tests.junit4;
+
+import com.pragmaticobjects.oo.tests.TestCase;
+
+/**
+ * JUnit4 tests suite
+ *
+ * @author Kapralov Sergey
+ */
+public interface JUnit4TestsSuite {
+    /**
+     * JUnit 4 test factory method
+     * @return a set of {@link TestCase} instances.
+     */
+    Iterable<TestCase> produceTests();
+}

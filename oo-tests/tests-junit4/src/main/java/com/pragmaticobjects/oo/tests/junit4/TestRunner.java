@@ -24,3 +24,36 @@
  * ============================================================================
  */
 package com.pragmaticobjects.oo.tests.junit4;
+
+import com.pragmaticobjects.oo.tests.TestCase;
+import org.junit.runner.Description;
+import org.junit.runner.Runner;
+import org.junit.runner.notification.RunNotifier;
+
+public class TestRunner extends Runner {
+    private final Class<JUnit4TestsSuite> testClass;
+
+    public TestRunner(Class<JUnit4TestsSuite> testClass) {
+        super();
+        this.testClass = testClass;
+    }
+
+    @Override
+    public final Description getDescription() {
+        return Description.createTestDescription(testClass, "My runner description");
+    }
+
+    @Override
+    public final void run(RunNotifier notifier) {
+        try {
+            JUnit4TestsSuite testsSuite = testClass.newInstance();
+            for(TestCase test : testsSuite.produceTests()) {
+                notifier.fireTestStarted(Description.createTestDescription(testClass, test.description()));
+                test.execute();
+                notifier.fireTestFinished(Description.createTestDescription(testClass, test.description()));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

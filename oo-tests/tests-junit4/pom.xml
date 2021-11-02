@@ -8,18 +8,7 @@
     </parent>
     <artifactId>tests-junit4</artifactId>
     <packaging>jar</packaging>
-    
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-kim-betti-maven</id>
-            <name>bintray</name>
-            <url>http://dl.bintray.com/kim-betti/maven</url>
-        </repository>
-    </repositories>
-    
+
     <dependencies>
         <dependency>
             <groupId>com.pragmaticobjects.oo.tests</groupId>
@@ -32,10 +21,6 @@
         <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.kimble</groupId>
-            <artifactId>junit-test-factory</artifactId>
         </dependency>
     </dependencies>
 </project>
