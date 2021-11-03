@@ -2,9 +2,9 @@
 
 ## Introduction:
 
-Good tests must have only [one statement](https://www.yegor256.com/2017/05/17/single-statement-unit-tests.html). In theory,
-it's hard to disagree with that. But in practice sometimes it's hard to achieve. Some modules under test may have 
-complex preconditions and assumptions, and their simulation may n't fit into one statement.
+Good tests must have only one statement. In theory, it's hard to disagree with that. 
+But in practice sometimes it's hard to achieve. Some modules under test may have 
+complex preconditions and assumptions, and their simulation may not fit into one statement.
 
 For example, consider a class, which makes a call to some HTTP API: 
 - In order to make a good isolated unit test for such class, one will need to bootstrap and configure mock HTTP server. It
@@ -21,8 +21,20 @@ which extend your code may use them for their own tests.
 
 For the detailed idea description, refer to [this](https://pragmaticobjects.com/chapters/003_reusable_assertions.html) blogpost.
 
-OO-tests currently supports only JUnit5. It is highly recommented (but not mandatory) to use OO-tests on OO-atom-based
-projects. 
+OO-tests currently supports JUnit4 and JUnit5 testing frameworks. It is highly recommented (but not mandatory) to use `OO-tests` on 
+projects, instrumented by `maven-equivalence-plugin`. 
+
+## JUnit 4
+
+In order to start using OO-Tests with JUnit 4, add the maven dependency:
+
+```
+    <dependency>
+        <groupId>com.pragmaticobjects.oo.tests</groupId>
+        <artifactId>tests-junit4</artifactId>
+        <version>x.y.z</version>
+    </dependency>
+```
 
 ## JUnit 5
 
