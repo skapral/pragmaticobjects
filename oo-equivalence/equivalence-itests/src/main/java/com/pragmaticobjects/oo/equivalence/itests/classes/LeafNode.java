@@ -33,7 +33,7 @@ package com.pragmaticobjects.oo.equivalence.itests.classes;
 public class LeafNode<T> extends AbstractNode<T> {
     /**
      * Ctor.
-     * @param value 
+     * @param value node value
      */
     public LeafNode(T value) {
         super(value);

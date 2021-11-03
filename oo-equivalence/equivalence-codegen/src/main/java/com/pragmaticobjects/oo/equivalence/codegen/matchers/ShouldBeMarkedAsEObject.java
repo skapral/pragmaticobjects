@@ -38,7 +38,7 @@ import net.bytebuddy.matcher.ElementMatchers;
 public class ShouldBeMarkedAsEObject extends DisjunctionMatcher<TypeDescription> {
     public <Hint extends Annotation> ShouldBeMarkedAsEObject(Class<Hint> eobjectHint, Function<Hint, Boolean> hintStatus) {
         super(
-            // direct subtype of Object, attributes of which are all final (stand fr identity)
+            // direct subtype of Object, attributes of which are all final (stand for identity)
             new ConjunctionMatcher<>(
                 ElementMatchers.not(
                     ElementMatchers.isAbstract()

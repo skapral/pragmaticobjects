@@ -104,7 +104,7 @@ public abstract class EObject {
         return sb.toString();
     }
 
-    private final static HashSet<Class> NATURALLY_EQUIVALENT = new HashSet<Class>() {
+    private final static HashSet<Class<?>> NATURALLY_EQUIVALENT = new HashSet<Class<?>>() {
         {
             add(String.class);
             add(Boolean.class);

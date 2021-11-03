@@ -33,9 +33,9 @@ import static org.assertj.core.api.Assertions.*;
  */
 public class AssertInstanceOf implements Assertion {
     private final Object obj;
-    private final Class clazz;
+    private final Class<?> clazz;
 
-    public AssertInstanceOf(Object obj, Class clazz) {
+    public AssertInstanceOf(Object obj, Class<?> clazz) {
         this.obj = obj;
         this.clazz = clazz;
     }

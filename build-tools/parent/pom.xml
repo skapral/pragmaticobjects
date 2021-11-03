@@ -49,7 +49,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.12.0</version>
+                    <version>3.13.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -57,9 +57,9 @@
                     <version>1.6</version>
                 </plugin>
                 <plugin>
-                    <groupId>com.github.johnpoth</groupId>
-                    <artifactId>jshell-maven-plugin</artifactId>
-                    <version>1.2</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jxr-plugin</artifactId>
+                    <version>3.1.1</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -150,6 +150,29 @@
             </build>
         </profile>
         <profile>
+            <id>lint</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <compilerArgs>
+                                <arg>-Xlint:all</arg>
+                            </compilerArgs>
+                            <failOnWarning>true</failOnWarning>
+                            <failOnError>true</failOnError>
+                            <showWarnings>true</showWarnings>
+                            <showDeprecation>true</showDeprecation>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>styling</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -223,6 +246,16 @@
                     </plugin>
                 </plugins>
             </build>
+            <reporting>
+                <plugins>
+                    <plugin>
+                        <!-- fixes PMD's warning -->
+                        <!-- "Unable to locate Source XRef to link to - DISABLED" -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jxr-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </reporting>
         </profile>
         <profile>
             <id>ossrh</id>

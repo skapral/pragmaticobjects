@@ -64,7 +64,7 @@ public class AssertClassAfterInstrumentation implements Assertion {
     public final void check() throws Exception {
         final DynamicType.Builder<?> builder = new ByteBuddy().redefine(type);
         final TypeDescription typeDescription = new TypeDescription.ForLoadedType(type);
-        final AtomicReference<Class> typeRef = new AtomicReference<>();
+        final AtomicReference<Class<?>> typeRef = new AtomicReference<>();
         assertThatCode(() -> {
             final DynamicType.Unloaded<?> make = ii
                     .apply(builder, typeDescription)
@@ -83,7 +83,7 @@ public class AssertClassAfterInstrumentation implements Assertion {
     }
 
     /**
-     * Anonymous class loader for isolating calls on {@link AssertBuilderTransitionIsNotCorruptingClass}
+     * Anonymous class loader for isolating calls on {@link AssertClassAfterInstrumentation}
      *
      * @author Kapralov Sergey
      */

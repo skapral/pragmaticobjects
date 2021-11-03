@@ -33,9 +33,9 @@ import static org.assertj.core.api.Assertions.*;
  */
 public class AssertNotInstanceOf implements Assertion {
     private final Object obj;
-    private final Class clazz;
+    private final Class<?> clazz;
 
-    public AssertNotInstanceOf(Object obj, Class clazz) {
+    public AssertNotInstanceOf(Object obj, Class<?> clazz) {
         this.obj = obj;
         this.clazz = clazz;
     }

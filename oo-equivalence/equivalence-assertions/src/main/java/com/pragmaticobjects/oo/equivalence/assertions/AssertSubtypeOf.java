@@ -32,10 +32,10 @@ import static org.assertj.core.api.Assertions.*;
  * @author skapral
  */
 public class AssertSubtypeOf implements Assertion {
-    private final Class subtype;
-    private final Class type;
+    private final Class<?> subtype;
+    private final Class<?> type;
 
-    public AssertSubtypeOf(Class subtype, Class type) {
+    public AssertSubtypeOf(Class<?> subtype, Class<?> type) {
         this.subtype = subtype;
         this.type = type;
     }

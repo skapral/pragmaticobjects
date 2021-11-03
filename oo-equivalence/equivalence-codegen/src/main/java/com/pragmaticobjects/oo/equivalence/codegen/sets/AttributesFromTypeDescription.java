@@ -40,7 +40,7 @@ public class AttributesFromTypeDescription implements Attributes {
         this.td = td;
     }
     
-    public AttributesFromTypeDescription(Class clazz) {
+    public AttributesFromTypeDescription(Class<?> clazz) {
         this(
             new TypeDescription.ForLoadedType(clazz)
         );
