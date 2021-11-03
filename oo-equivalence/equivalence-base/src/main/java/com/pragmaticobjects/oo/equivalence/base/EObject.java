@@ -52,7 +52,7 @@ public abstract class EObject {
     /**
      * @return Object's name
      */
-    protected abstract Class<? extends EObject> baseType();
+    protected abstract Class<?> baseType();
 
     @Override
     public final boolean equals(Object obj) {
