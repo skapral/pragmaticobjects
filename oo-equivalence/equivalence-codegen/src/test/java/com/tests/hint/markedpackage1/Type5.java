@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2021 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,36 +23,9 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.tests.hint.markedpackage1;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.tests.hint.Hint;
 
-/**
- * A hint, telling equivalence instrumentor whether the class should (or should not) be subtype of EObject.
- * If the class is abstract, and if it is extended directly from {@link java.lang.Object}, its base class is replaced to
- * {@link EObject}, and instrumentor handles its non-abstract subtypes as EObjects.
- * 
- * The abstract EObject class must fit these requirements:
- * <ul>
- * <li>All its non-abstract methods should be final</li>
- * <li>All its non-static properties should be protected final</li>
- * </ul>
- * 
- * Instrumentation
- * post-checks will fail the instrumentation process, if any violation found.
- * 
- * For non-abstract classes, the annotation is ignored, unless "enabled" property is set to false. In this case, the class will
- * be left uninstrumented.
- *
- * EObjectHint, set on package level, is applied to all classes of package
- *
- * @author skapral
- */
-@Target({ElementType.TYPE, ElementType.PACKAGE})
-@Retention(RetentionPolicy.CLASS)
-public @interface EObjectHint {
-    boolean enabled() default true;
+public @Hint class Type5 {
 }

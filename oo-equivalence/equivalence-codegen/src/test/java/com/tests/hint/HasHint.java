@@ -23,40 +23,10 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+package com.tests.hint;
 
-import java.lang.annotation.Annotation;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Function;
-import static net.bytebuddy.description.annotation.AnnotationDescription.Loadable;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-
-/**
- * Checks whether type has annotation hint of certain type on a class or its package
- * @author skapral
- * @param <Hint> Hint
- */
-public class HasHint<Hint extends Annotation> implements ElementMatcher<TypeDescription> {
-    private final Class<Hint> annotationType;
-    private final Function<Hint, Boolean> annotationAccess;
-    private final boolean enabled;
-
-    public HasHint(Class<Hint> annotationType, Function<Hint, Boolean> annotationAccess, boolean enabled) {
-        this.annotationType = annotationType;
-        this.annotationAccess = annotationAccess;
-        this.enabled = enabled;
-    }
-    
-    @Override
-    public final boolean matches(TypeDescription target) {
-        Loadable<Hint> hint = target.getDeclaredAnnotations().ofType(annotationType);
-        hint = Objects.nonNull(hint) ? hint : target.getPackage().getDeclaredAnnotations().ofType(annotationType);
-        return Optional.ofNullable(hint)
-                .map(Loadable::load)
-                .map(a -> annotationAccess.apply(a))
-                .map(b -> b.equals(enabled))
-                .orElse(false);
+public class HasHint extends com.pragmaticobjects.oo.equivalence.codegen.matchers.HasHint<Hint> {
+    public HasHint(boolean enabled) {
+        super(Hint.class, Hint::enabled, enabled);
     }
 }

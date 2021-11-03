@@ -27,10 +27,12 @@ package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.tests.hint.HasHint;
+import com.tests.hint.Type1;
+import com.tests.hint.Type2;
+import com.tests.hint.Type3;
+import com.tests.hint.markedpackage1.Type4;
+import com.tests.hint.markedpackage1.Type5;
 
 /**
  *
@@ -43,50 +45,51 @@ public class HasHintTest extends TestsSuite {
                 "match hinted type",
                 new AssertThatTypeMatches(
                     Type1.class,
-                    new _HasEObjectHint(true)
+                    new HasHint(true)
                 )
             ),
             new TestCase(
                 "mismatch hinted-false type",
                 new AssertThatTypeDoesNotMatch(
                     Type2.class,
-                    new _HasEObjectHint(true)
+                    new HasHint(true)
                 )
             ),
             new TestCase(
                 "mismatch hinted type",
                 new AssertThatTypeDoesNotMatch(
                     Type1.class,
-                    new _HasEObjectHint(false)
+                    new HasHint(false)
                 )
             ),
             new TestCase(
                 "mismatch type without true hint",
                 new AssertThatTypeDoesNotMatch(
                     Type3.class,
-                    new _HasEObjectHint(true)
+                    new HasHint(true)
                 )
             ),
             new TestCase(
                 "mismatch type without false hint",
                 new AssertThatTypeDoesNotMatch(
                     Type3.class,
-                    new _HasEObjectHint(false)
+                    new HasHint(false)
                 )
-            )  
+            ),
+            new TestCase(
+                "package-level hint defines defaults for a whole package",
+                new AssertThatTypeDoesNotMatch(
+                    Type4.class,
+                    new HasHint(true)
+                )
+            ),
+                new TestCase(
+                "class-level hint overrides package-level hint",
+                new AssertThatTypeMatches(
+                    Type5.class,
+                    new HasHint(true)
+                )
+            )
         );
     }
-    
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    private static @interface EObjectHint { boolean enabled() default true; }
-    private static class _HasEObjectHint extends HasHint<EObjectHint> {
-        public _HasEObjectHint(boolean enabled) {
-            super(EObjectHint.class, EObjectHint::enabled, enabled);
-        }
-    }
-    
-    private static @EObjectHint class Type1 {}
-    private static @EObjectHint(enabled = false) class Type2 {}
-    private static class Type3 {}
 }

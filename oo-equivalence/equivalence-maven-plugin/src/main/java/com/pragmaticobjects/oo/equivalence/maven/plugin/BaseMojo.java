@@ -29,21 +29,20 @@ import com.pragmaticobjects.oo.equivalence.codegen.cn.CnExcludingPackages;
 import com.pragmaticobjects.oo.equivalence.codegen.cn.CnFromPath;
 import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
 import com.pragmaticobjects.oo.equivalence.codegen.cp.CpFromString;
-import com.pragmaticobjects.oo.equivalence.codegen.stage.Stage;
 import com.pragmaticobjects.oo.equivalence.codegen.instrumentation.ApplyStages;
+import com.pragmaticobjects.oo.equivalence.codegen.stage.Stage;
 import io.vavr.collection.HashSet;
-import java.io.File;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import java.io.File;
 import java.nio.file.Path;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.plugin.descriptor.PluginDescriptor;
 
 /**
  * Base Mojo for different instrumentations
@@ -55,8 +54,6 @@ public abstract class BaseMojo extends AbstractMojo {
     private MavenProject project;
     @Parameter(defaultValue = "false", required = true, readonly = true)
     private boolean instrumentPomProjects;
-    @Parameter
-    private String[] excludePackages;
 
     protected final ClassPath buildClassPath() {
         PluginDescriptor pluginDescriptor = (PluginDescriptor) this.getPluginContext().get("pluginDescriptor");
@@ -77,8 +74,7 @@ public abstract class BaseMojo extends AbstractMojo {
                 new CnExcludingPackages(
                     new CnFromPath(
                         workingDirectory
-                    ),
-                    Optional.ofNullable(excludePackages).orElse(new String[] {})
+                    )
                 ),
                 stage
             ).apply();
