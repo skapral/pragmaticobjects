@@ -140,6 +140,9 @@
                         <configuration>
                             <flattenMode>ossrh</flattenMode>
                             <updatePomFile>true</updatePomFile>
+                            <pomElements>
+                                <dependencyManagement>keep</dependencyManagement>
+                            </pomElements>
                         </configuration>
                     </plugin>
                 </plugins>
