@@ -5,7 +5,7 @@
     <parent>
         <artifactId>build-tools</artifactId>
         <groupId>com.pragmaticobjects</groupId>
-        <version>0.0.0-SNAPSHOT</version>
+        <version>9.9.9-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -75,6 +75,7 @@
                     <plugin>
                         <groupId>fr.brouillard.oss</groupId>
                         <artifactId>jgitver-maven-plugin</artifactId>
+                        <version>1.7.1</version>
                         <executions>
                             <execution>
                                 <phase>prepare-package</phase>
@@ -237,7 +238,7 @@
                             <dependency>
                                 <groupId>com.pragmaticobjects</groupId>
                                 <artifactId>checkstyle</artifactId>
-                                <version>0.0.0-SNAPSHOT</version>
+                                <version>9.9.9-SNAPSHOT</version>
                             </dependency>
                         </dependencies>
                     </plugin>
@@ -262,7 +263,7 @@
                             <dependency>
                                 <groupId>com.pragmaticobjects</groupId>
                                 <artifactId>pmd</artifactId>
-                                <version>0.0.0-SNAPSHOT</version>
+                                <version>9.9.9-SNAPSHOT</version>
                             </dependency>
                         </dependencies>
                     </plugin>
