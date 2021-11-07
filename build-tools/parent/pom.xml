@@ -5,7 +5,7 @@
     <parent>
         <artifactId>build-tools</artifactId>
         <groupId>com.pragmaticobjects</groupId>
-        <version>9.9.9-SNAPSHOT</version>
+        <version>9.9.9</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -65,29 +65,6 @@
         </pluginManagement>
     </build>
     <profiles>
-        <profile>
-            <id>jgitver</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>fr.brouillard.oss</groupId>
-                        <artifactId>jgitver-maven-plugin</artifactId>
-                        <version>1.7.1</version>
-                        <executions>
-                            <execution>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>attach-modified-poms</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>tests</id>
             <activation>
@@ -238,7 +215,7 @@
                             <dependency>
                                 <groupId>com.pragmaticobjects</groupId>
                                 <artifactId>checkstyle</artifactId>
-                                <version>9.9.9-SNAPSHOT</version>
+                                <version>9.9.9</version>
                             </dependency>
                         </dependencies>
                     </plugin>
@@ -263,7 +240,7 @@
                             <dependency>
                                 <groupId>com.pragmaticobjects</groupId>
                                 <artifactId>pmd</artifactId>
-                                <version>9.9.9-SNAPSHOT</version>
+                                <version>9.9.9</version>
                             </dependency>
                         </dependencies>
                     </plugin>

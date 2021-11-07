@@ -6,7 +6,7 @@
 
     <groupId>com.pragmaticobjects</groupId>
     <artifactId>pragmaticobjects</artifactId>
-    <version>9.9.9-SNAPSHOT</version>
+    <version>9.9.9</version>
     <packaging>pom</packaging>
 
     <profiles>

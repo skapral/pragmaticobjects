@@ -6,7 +6,7 @@
 
     <groupId>com.pragmaticobjects</groupId>
     <artifactId>build-tools</artifactId>
-    <version>9.9.9-SNAPSHOT</version>
+    <version>9.9.9</version>
     <modules>
         <module>parent</module>
         <module>checkstyle</module>
