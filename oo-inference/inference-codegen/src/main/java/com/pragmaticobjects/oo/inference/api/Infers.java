@@ -37,6 +37,20 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface Infers {
+    /**
+     * @return the name of the class, that will be generated
+     */
     String value();
+
+    /**
+     *
+     * @return whether memoization support should be generated, or not.
+     */
     boolean memoized() default false;
+
+    /**
+     *
+     * @return explicit base type to use for inference.
+     */
+    Class<?> using() default Object.class;
 }

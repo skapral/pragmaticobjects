@@ -1,4 +1,4 @@
-package com.test;
+package com.test.inferred1;
 
 public interface Fraction {
     int numerator();

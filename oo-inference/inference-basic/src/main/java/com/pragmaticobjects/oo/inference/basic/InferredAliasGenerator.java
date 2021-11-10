@@ -27,33 +27,24 @@ package com.pragmaticobjects.oo.inference.basic;
 
 import com.pragmaticobjects.oo.inference.api.Infers;
 import com.pragmaticobjects.oo.inference.codegen.model.InferredAliasModel;
+import com.pragmaticobjects.oo.inference.hack.Hacks;
 import com.pragmaticobjects.oo.meta.freemarker.FreemarkerArtifact;
-import com.pragmaticobjects.oo.meta.model.Argument;
-import com.pragmaticobjects.oo.meta.model.ArgumentFromVariableElement;
-import com.pragmaticobjects.oo.meta.model.Type;
-import com.pragmaticobjects.oo.meta.model.TypeFromDeclaredType;
-import com.pragmaticobjects.oo.meta.model.TypeFromTypeMirror;
-import com.pragmaticobjects.oo.meta.model.TypeReferential;
+import com.pragmaticobjects.oo.meta.model.*;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
+
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.*;
+import javax.lang.model.type.DeclaredType;
+import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.PackageElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.DeclaredType;
-import javax.tools.JavaFileObject;
 
 /**
  *
@@ -62,7 +53,6 @@ import javax.tools.JavaFileObject;
 @SupportedAnnotationTypes({
     "com.pragmaticobjects.oo.inference.api.Infers"
 })
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class InferredAliasGenerator extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -83,11 +73,14 @@ public class InferredAliasGenerator extends AbstractProcessor {
                     .map(e -> (VariableElement) e)
                     .map(e -> new ArgumentFromVariableElement(e));
             String packageName = ((PackageElement)elem.getEnclosingElement()).getQualifiedName().toString();
-            String inferredImplementationName = iface.asElement().getSimpleName().toString() + "Inferred";
+            DeclaredType usingValue = Hacks.extractType(anno::using);
+            Type inferredImplementation = usingValue.asElement().getSimpleName().toString().equals("Object")
+                ? new TypeReferential(packageName, iface.asElement().getSimpleName().toString() + "Inferred")
+                : new TypeFromDeclaredType(usingValue);
             String aliasName = anno.value();
             InferredAliasModel model = new InferredAliasModel(
                 new TypeReferential(packageName, aliasName),
-                new TypeReferential(packageName, inferredImplementationName),
+                inferredImplementation,
                 new TypeFromDeclaredType(iface),
                 new TypeFromTypeMirror(((TypeElement) elem).asType()),
                 args
@@ -107,5 +100,10 @@ public class InferredAliasGenerator extends AbstractProcessor {
             }
         }
         return false;
+    }
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latest();
     }
 }

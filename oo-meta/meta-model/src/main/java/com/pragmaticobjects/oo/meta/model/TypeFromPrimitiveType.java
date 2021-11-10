@@ -25,14 +25,14 @@
  */
 package com.pragmaticobjects.oo.meta.model;
 
-import javax.lang.model.type.PrimitiveType;
+import javax.lang.model.type.TypeMirror;
 
 /**
  *
  * @author skapral
  */
 public class TypeFromPrimitiveType extends TypeInferred {
-    public TypeFromPrimitiveType(PrimitiveType t) {
+    public TypeFromPrimitiveType(TypeMirror t) {
         super(
             new Inference<Type>() {
                 @Override

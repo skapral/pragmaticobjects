@@ -16,10 +16,30 @@ Annotation processor for generating inferred objects. For information about what
 </dependencies>
 ```
 
-2. Define and annotate an inference:
+2. Assuming you have certain object's contract
 
 ```java
-public @Infers(value = "GithubUser", memoized = true) class GithubUserInference implements Inference<User> {
+interface User {
+    String name();
+    List<String> emails();
+} 
+```
+
+3. Generate Inferred implementaiton for it by annotating a package, where you want it to be placed:
+
+```java
+// inside package-json.java
+@GenerateInferred(User.class)
+package com.somepackage;
+
+import com.pragmaticobjects.oo.inference.api.GenerateInferred;
+```
+
+
+4. Define and annotate an inference:
+
+```java
+public @Infers(value = "GithubUser", memoized = true, using = com.somepackage.UserInferred.class) class GithubUserInference implements Inference<User> {
     private final String apiToken;
 
     public GithubUserInference(String apiToken) {
@@ -39,12 +59,13 @@ public @Infers(value = "GithubUser", memoized = true) class GithubUserInference 
 }
 ```
 
-3. Build the project
+5. Build the project
 
 During the project build, sources for inferred class (`UserInferred`) and inferred alias (`GithubUser`) for the
 defined inference will automatically be generated.
 
-4. Use generated sources
+6. Use generated sources. The behavior of `GithubUser` will be inferred from the original `GithubUserInference`, but for outer code
+it looks and feels like an ordinary `User`'s implementation.
 
 ```java
 public class App {

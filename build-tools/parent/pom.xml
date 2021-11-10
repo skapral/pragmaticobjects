@@ -177,6 +177,9 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <properties>
+                <pmd.excludes/>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -225,6 +228,7 @@
                         <inherited>true</inherited>
                         <configuration>
                             <printFailingErrors>true</printFailingErrors>
+                            <excludes>${pmd.excludes}</excludes>
                             <rulesets>
                                 <ruleset>/rulesets/java/pmd.xml</ruleset>
                             </rulesets>

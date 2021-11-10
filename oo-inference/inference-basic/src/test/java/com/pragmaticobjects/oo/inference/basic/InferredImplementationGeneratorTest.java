@@ -25,11 +25,12 @@
  */
 package com.pragmaticobjects.oo.inference.basic;
 
-import com.pragmaticobjects.oo.meta.anno.procesor.AssertAnnotationProcessorGeneratesFiles;
+import assertions.AssertAnnotationProcessorGeneratesFiles;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.List;
-import java.nio.file.Paths;
+
+import static assertions.AssertAnnotationProcessorGeneratesFiles.*;
 
 /**
  *
@@ -42,58 +43,38 @@ public class InferredImplementationGeneratorTest extends TestsSuite {
                 "Fraction inference alias",
                 new AssertAnnotationProcessorGeneratesFiles(
                     new InferredImplementationGenerator(),
-                    Paths.get("com","test", "FracFromStringInference.java"),
-                    String.join("\r\n",
-                        "package com.test;",
-                        "import com.pragmaticobjects.oo.inference.api.Infers;",
-                        "import com.pragmaticobjects.oo.inference.api.Inference;",
-                        "import com.test.Fraction;",
-                        "import com.test.FracFixed;",
-                        "public @Infers(\"FracFromString\") class FracFromStringInference implements Inference<Fraction> {",
-                        "    private final String str;",
-
-                        "    public FracFromStringInference(String str) {",
-                        "        this.str = str;",
-                        "    }",
-
-                        "    @Override",
-                        "    public final Fraction inferredInstance() {",
-                        "        return new FracFixed(",
-                        "            Integer.parseInt(str.split(\"/\")[0]),",
-                        "            Integer.parseInt(str.split(\"/\")[1])",
-                        "        );",
-                        "    }",
-                        "}"
+                    List.of(
+                        new SourceFile("com/test/inferred1/package-info.java"),
+                        new SourceFile("com/test/inferred1/Fraction.java")
                     ),
                     List.of(
-                        new AssertAnnotationProcessorGeneratesFiles.File(
-                            Paths.get("com", "test", "FractionInferred.java"),
-                            String.join("\r\n",
-                                "package com.test;",
-                                "",
-                                "import com.pragmaticobjects.oo.inference.api.Inference;",
-                                "",
-                                "public class FractionInferred implements Fraction {",
-                                "    private final Inference<Fraction> inference;",
-                                "",
-                                "    public FractionInferred(Inference<Fraction> inference) {",
-                                "        this.inference = inference;",
-                                "    }",
-                                "",
-                                "    @Override",
-                                "    public final int numerator() {",
-                                "        return inference.inferredInstance().numerator();",
-                                "    }",
-                                "",
-                                "    @Override",
-                                "    public final int denumenator() {",
-                                "        return inference.inferredInstance().denumenator();",
-                                "    }",
-                                "",
-                                "}",
-                                ""
-                            )
-                        )
+                        new SourceFile("com/test/inferred1/FractionInferred.java")
+                    )
+                )
+            ),
+            new TestCase(
+                "Fraction inference alias in package different than interface",
+                new AssertAnnotationProcessorGeneratesFiles(
+                    new InferredImplementationGenerator(),
+                    List.of(
+                        new SourceFile("com/test/inferred2/package-info.java"),
+                        new SourceFile("com/test/inferred1/Fraction.java")
+                    ),
+                    List.of(
+                        new SourceFile("com/test/inferred2/FractionInferred.java")
+                    )
+                )
+            ),
+            new TestCase(
+                "Fraction inference alias with void method",
+                new AssertAnnotationProcessorGeneratesFiles(
+                    new InferredImplementationGenerator(),
+                    List.of(
+                        new SourceFile("com/test/inferred3/package-info.java"),
+                        new SourceFile("com/test/inferred3/Operation.java")
+                    ),
+                    List.of(
+                        new SourceFile("com/test/inferred3/OperationInferred.java")
                     )
                 )
             )

@@ -25,11 +25,12 @@
  */
 package com.pragmaticobjects.oo.inference.basic;
 
-import com.pragmaticobjects.oo.meta.anno.procesor.AssertAnnotationProcessorGeneratesFiles;
+import assertions.AssertAnnotationProcessorGeneratesFiles;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.List;
-import java.nio.file.Paths;
+
+import static assertions.AssertAnnotationProcessorGeneratesFiles.SourceFile;
 
 /**
  *
@@ -42,47 +43,26 @@ public class InferredAliasGeneratorTest extends TestsSuite {
                 "Fraction inference alias",
                 new AssertAnnotationProcessorGeneratesFiles(
                     new InferredAliasGenerator(),
-                    Paths.get("com","test", "FracFromStringInference.java"),
-                    String.join("\r\n",
-                        "package com.test;",
-                        "import com.pragmaticobjects.oo.inference.api.Infers;",
-                        "import com.pragmaticobjects.oo.inference.api.Inference;",
-                        "import com.test.Fraction;",
-                        "import com.test.FracFixed;",
-                        "public @Infers(\"FracFromString\") class FracFromStringInference implements Inference<Fraction> {",
-                        "    private final String str;",
-
-                        "    public FracFromStringInference(String str) {",
-                        "        this.str = str;",
-                        "    }",
-
-                        "    @Override",
-                        "    public final Fraction inferredInstance() {",
-                        "        return new FracFixed(",
-                        "            Integer.parseInt(str.split(\"/\")[0]),",
-                        "            Integer.parseInt(str.split(\"/\")[1])",
-                        "        );",
-                        "    }",
-                        "}"
+                    List.of(
+                        new SourceFile("com/test/Fraction.java"),
+                        new SourceFile("com/test/FracFromStringInference.java")
                     ),
                     List.of(
-                        new AssertAnnotationProcessorGeneratesFiles.File(
-                            Paths.get("com", "test", "FracFromString.java"),
-                            String.join("\r\n",
-                                "package com.test;",
-                                "",
-                                "import com.pragmaticobjects.oo.inference.api.Inference;",
-                                "",
-                                "public class FracFromString extends FractionInferred {",
-                                "    public FracFromString(String str) {",
-                                "        super(",
-                                "            new FracFromStringInference(str)",
-                                "        );",
-                                "    }",
-                                "}",
-                                ""
-                            )
-                        )
+                        new SourceFile("com/test/FracFromString.java")
+                    )
+                )
+            ),
+            new TestCase(
+                "Fraction inference alias with explicit base class",
+                new AssertAnnotationProcessorGeneratesFiles(
+                    new InferredAliasGenerator(),
+                    List.of(
+                        new SourceFile("com/test/Fraction.java"),
+                        new SourceFile("com/test/FracFromStringExplicitInference.java"),
+                        new SourceFile("com/test/FractionInferred.java")
+                    ),
+                    List.of(
+                        new SourceFile("com/test/FracFromStringExplicit.java")
                     )
                 )
             ),
@@ -90,52 +70,12 @@ public class InferredAliasGeneratorTest extends TestsSuite {
                 "Fraction memoized alias",
                 new AssertAnnotationProcessorGeneratesFiles(
                     new InferredAliasGenerator(),
-                    Paths.get("com","test", "FracFromStringInference.java"),
-                    String.join("\r\n",
-                        "package com.test;",
-                        "import com.pragmaticobjects.oo.inference.api.Infers;",
-                        "import com.pragmaticobjects.oo.inference.api.Inference;",
-                        "import com.test.Fraction;",
-                        "import com.test.FracFixed;",
-                        "public @Infers(value = \"FracFromString\", memoized = true) class FracFromStringInference implements Inference<Fraction> {",
-                        "    private final String str;",
-
-                        "    public FracFromStringInference(String str) {",
-                        "        this.str = str;",
-                        "    }",
-
-                        "    @Override",
-                        "    public final Fraction inferredInstance() {",
-                        "        return new FracFixed(",
-                        "            Integer.parseInt(str.split(\"/\")[0]),",
-                        "            Integer.parseInt(str.split(\"/\")[1])",
-                        "        );",
-                        "    }",
-                        "}"
+                    List.of(
+                        new SourceFile("com/test/Fraction.java"),
+                        new SourceFile("com/test/FracFromStringInferenceMemoized.java")
                     ),
                     List.of(
-                        new AssertAnnotationProcessorGeneratesFiles.File(
-                            Paths.get("com", "test", "FracFromString.java"),
-                            String.join("\r\n",
-                                "package com.test;",
-                                "",
-                                "import com.pragmaticobjects.oo.inference.api.Inference;",
-                                "import com.pragmaticobjects.oo.inference.api.MemoizedInference;",
-                                "import com.pragmaticobjects.oo.memoized.core.Memory;",
-                                "",
-                                "public class FracFromString extends FractionInferred {",
-                                "    public FracFromString(String str, Memory memory) {",
-                                "        super(",
-                                "            new MemoizedInference(",
-                                "                new FracFromStringInference(str),",
-                                "                memory",
-                                "            )",
-                                "        );",
-                                "    }",
-                                "}",
-                                ""
-                            )
-                        )
+                        new SourceFile("com/test/FracFromStringMemoized.java")
                     )
                 )
             ),
@@ -143,54 +83,12 @@ public class InferredAliasGeneratorTest extends TestsSuite {
                 "Fraction alias with attribute that requires importing",
                 new AssertAnnotationProcessorGeneratesFiles(
                     new InferredAliasGenerator(),
-                    Paths.get("com", "test", "RandomFracInference.java"),
-                    String.join("\r\n",
-                            "package com.test;",
-                            "import com.pragmaticobjects.oo.inference.api.Infers;",
-                            "import com.pragmaticobjects.oo.inference.api.Inference;",
-                            "import com.test.Fraction;",
-                            "import com.test.FracFixed;",
-                            "import java.util.Random;",
-                            "public @Infers(value = \"RandomFrac\", memoized = true) class RandomFracInference implements Inference<Fraction> {",
-                            "    private final Random random;",
-
-                            "    public RandomFracInference(Random random) {",
-                            "        this.random = random;",
-                            "    }",
-
-                            "    @Override",
-                            "    public final Fraction inferredInstance() {",
-                            "        return new FracFixed(",
-                            "            random.nextInt(),",
-                            "            random.nextInt()",
-                            "        );",
-                            "    }",
-                            "}"
+                    List.of(
+                        new SourceFile("com/test/Fraction.java"),
+                        new SourceFile("com/test/RandomFracInference.java")
                     ),
                     List.of(
-                        new AssertAnnotationProcessorGeneratesFiles.File(
-                            Paths.get("com", "test", "RandomFrac.java"),
-                            String.join("\r\n",
-                                    "package com.test;",
-                                    "",
-                                    "import com.pragmaticobjects.oo.inference.api.Inference;",
-                                    "import com.pragmaticobjects.oo.inference.api.MemoizedInference;",
-                                    "import com.pragmaticobjects.oo.memoized.core.Memory;",
-                                    "import java.util.Random;",
-                                    "",
-                                    "public class RandomFrac extends FractionInferred {",
-                                    "    public RandomFrac(Random random, Memory memory) {",
-                                    "        super(",
-                                    "            new MemoizedInference(",
-                                    "                new RandomFracInference(random),",
-                                    "                memory",
-                                    "            )",
-                                    "        );",
-                                    "    }",
-                                    "}",
-                                    ""
-                            )
-                        )
+                        new SourceFile("com/test/RandomFrac.java")
                     )
                 )
             )

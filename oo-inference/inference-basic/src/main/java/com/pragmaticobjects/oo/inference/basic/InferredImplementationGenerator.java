@@ -25,7 +25,9 @@
  */
 package com.pragmaticobjects.oo.inference.basic;
 
+import com.pragmaticobjects.oo.inference.api.GenerateInferred;
 import com.pragmaticobjects.oo.inference.codegen.model.InferredClassModel;
+import com.pragmaticobjects.oo.inference.hack.Hacks;
 import com.pragmaticobjects.oo.meta.freemarker.FreemarkerArtifact;
 import com.pragmaticobjects.oo.meta.model.MethodFromExecutableElement;
 import com.pragmaticobjects.oo.meta.model.Type;
@@ -33,45 +35,40 @@ import com.pragmaticobjects.oo.meta.model.TypeFromDeclaredType;
 import com.pragmaticobjects.oo.meta.model.TypeReferential;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.tools.JavaFileObject;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author skapral
  */
 @SupportedAnnotationTypes({
-    "com.pragmaticobjects.oo.inference.api.Infers"
+    "com.pragmaticobjects.oo.inference.api.GenerateInferred"
 })
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class InferredImplementationGenerator extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        HashSet<DeclaredType> ifaces = HashSet.ofAll(annotations)
-                .flatMap(a -> roundEnv.getElementsAnnotatedWith(a))
-                .map(a -> (TypeElement) a)
-                .map(a -> a.getInterfaces())
-                .filter(i -> i.size() == 1)
-                .map(i -> i.get(0))
-                .map(i -> (DeclaredType) i)
-                .map(i -> i.getTypeArguments().get(0))
-                .map(i -> (DeclaredType) i);
-        for(DeclaredType iface : ifaces) {
-            PackageElement pe = (PackageElement) processingEnv.getTypeUtils().asElement(iface).getEnclosingElement();
+        for(PackageElement pe : HashSet.ofAll(annotations)
+            .flatMap(anno -> roundEnv.getElementsAnnotatedWith(anno))
+            .map(e -> (PackageElement) e)) {
+            GenerateInferred anno = pe.getAnnotation(GenerateInferred.class);
+
+            DeclaredType iface = Hacks.extractType(anno::value);
+
             String packageName = pe.getQualifiedName().toString();
             String inferredImplementationName = iface.asElement().getSimpleName().toString() + "Inferred";
             InferredClassModel model = new InferredClassModel(
@@ -97,5 +94,10 @@ public class InferredImplementationGenerator extends AbstractProcessor {
             }
         }
         return false;
+    }
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latest();
     }
 }
