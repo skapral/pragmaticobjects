@@ -90,6 +90,19 @@ public class InferredImplementationGeneratorTest extends TestsSuite {
                         new SourceFile("com/test/inferred4/OperationInferred.java")
                     )
                 )
+            ),
+            new TestCase(
+                "Generator takes into account 'throws' in method signatures",
+                new AssertAnnotationProcessorGeneratesFiles(
+                    new InferredImplementationGenerator(),
+                    List.of(
+                        new SourceFile("com/test/inferred5/Assertion.java"),
+                        new SourceFile("com/test/inferred5/package-info.java")
+                    ),
+                    List.of(
+                        new SourceFile("com/test/inferred5/AssertionInferred.java")
+                    )
+                )
             )
         );
     }

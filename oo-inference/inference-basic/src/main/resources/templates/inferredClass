@@ -14,7 +14,7 @@ public class ${this.name} implements ${interface.name} {
 
     <#list methods as method>
     @Override
-    public final ${method.returns.name} ${method.name}(<#list method.args as arg>${arg.type.name} ${arg.name}</#list>) {
+    public final ${method.declaration} {
         <#if method.returns.name != "void">
         return inference.inferredInstance().${method.name}(<#list method.args as arg>${arg.name}</#list>);
         <#else>

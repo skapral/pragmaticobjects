@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.meta.model;
 
 import io.vavr.collection.List;
+
 import javax.lang.model.element.ExecutableElement;
 
 /**
@@ -47,7 +48,10 @@ public class MethodFromExecutableElement extends MethodInferred {
                             .map(tm -> new ArgumentFixed(
                                 new TypeFromTypeMirror(tm.asType()),
                                 tm.getSimpleName().toString()
-                            ))
+                            )),
+                        List.of(t)
+                            .flatMap(_t -> _t.getThrownTypes())
+                            .map(TypeFromTypeMirror::new)
                     );
                 }
             }

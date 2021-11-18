@@ -33,4 +33,6 @@ public interface Method extends ImportsProvider {
     Type returns();
     String name();
     Iterable<Argument> args();
+    Iterable<Type> throwsExceptions();
+    String declaration();
 }

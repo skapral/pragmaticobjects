@@ -54,6 +54,16 @@ public class MethodInferred implements Method {
     }
 
     @Override
+    public final Iterable<Type> throwsExceptions() {
+        return inference.inferredInstance().throwsExceptions();
+    }
+
+    @Override
+    public final String declaration() {
+        return inference.inferredInstance().declaration();
+    }
+
+    @Override
     public final Collection<Type> getImports() {
         return inference.inferredInstance().getImports();
     }
