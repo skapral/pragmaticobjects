@@ -40,11 +40,11 @@ public class InferredAliasGeneratorGenericsSupportTest extends TestsSuite {
                 new AssertAnnotationProcessorGeneratesFiles(
                     new InferredAliasGenerator(),
                     List.of(
-                        new SourceFile("com/test/Fraction.java"),
-                        new SourceFile("com/test/FracFromListInference.java")
+                        new SourceFile("com/test/generics1/Fraction.java"),
+                        new SourceFile("com/test/generics1/FracFromListInference.java")
                     ),
                     List.of(
-                        new SourceFile("com/test/FracFromList.java")
+                        new SourceFile("com/test/generics1/FracFromList.java")
                     )
                 )
             ),
@@ -53,11 +53,12 @@ public class InferredAliasGeneratorGenericsSupportTest extends TestsSuite {
                 new AssertAnnotationProcessorGeneratesFiles(
                     new InferredAliasGenerator(),
                     List.of(
-                        new SourceFile("com/test/Fraction.java"),
-                        new SourceFile("com/test/FracFromListInferenceWithWildcardGenerics.java")
+                        new SourceFile("com/test/generics2/Fraction.java"),
+                        new SourceFile("com/test/generics2/FractionInferred.java"),
+                        new SourceFile("com/test/generics2/FracFromListInferenceWithWildcardGenerics.java")
                     ),
                     List.of(
-                        new SourceFile("com/test/FracFromListWithWildcardGenerics.java")
+                        new SourceFile("com/test/generics2/FracFromListWithWildcardGenerics.java")
                     )
                 )
             )

@@ -1,15 +1,16 @@
-package com.test;
+package com.test.generics1;
 
 import com.pragmaticobjects.oo.inference.api.Inference;
 import com.pragmaticobjects.oo.inference.api.Infers;
 
+
 import java.util.List;
 
-public @Infers(value = "FracFromListWithWildcardGenerics", memoized = true)
-class FracFromListInferenceWithWildcardGenerics implements Inference<Fraction> {
-    private final List<? extends Integer> list;
+public @Infers(value = "FracFromList", memoized = true)
+class FracFromListInference implements Inference<Fraction> {
+    private final List<Integer> list;
 
-    public FracFromListInferenceWithWildcardGenerics(List<? extends Integer> list) {
+    public FracFromListInference(List<Integer> list) {
         this.list = list;
     }
 

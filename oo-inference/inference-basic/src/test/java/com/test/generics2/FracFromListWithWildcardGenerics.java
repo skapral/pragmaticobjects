@@ -1,4 +1,4 @@
-package com.test;
+package com.test.generics2;
 
 import com.pragmaticobjects.oo.inference.api.Inference;
 import com.pragmaticobjects.oo.inference.api.MemoizedInference;
