@@ -4,20 +4,19 @@ import com.pragmaticobjects.oo.inference.api.Inference;
 import com.pragmaticobjects.oo.inference.api.Infers;
 import io.vavr.collection.List;
 
+import java.util.UUID;
 import java.util.function.Function;
 
 @Infers("CompositeOperation")
 public class CompositeOperationInference implements Inference<Operation> {
-    private final List<Integer> digits;
-    private final Function<List<Integer>, Integer> digitsFunction;
+    private final Function<List<UUID>, Integer> digitsFunction;
 
-    public CompositeOperationInference(List<Integer> digits, Function<List<Integer>, Integer> digitsFunction) {
-        this.digits = digits;
+    public CompositeOperationInference(Function<List<UUID>, Integer> digitsFunction) {
         this.digitsFunction = digitsFunction;
     }
 
     @Override
     public final Operation inferredInstance() {
-        return () -> digitsFunction.apply(digits);
+        return () -> digitsFunction.apply(List.of(UUID.randomUUID()));
     }
 }

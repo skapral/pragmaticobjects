@@ -25,8 +25,9 @@
  */
 package com.pragmaticobjects.oo.meta.model;
 
+import io.vavr.collection.List;
+
 import java.util.Collection;
-import java.util.Collections;
 
 public class GenericType implements Generic {
     private final Type type;
@@ -42,6 +43,8 @@ public class GenericType implements Generic {
 
     @Override
     public final Collection<Type> getImports() {
-        return Collections.singleton(type);
+        return List.ofAll(type.getImports())
+            .append(type)
+            .asJava();
     }
 }
