@@ -67,12 +67,13 @@ public class InferredImplementationGenerator extends AbstractProcessor {
             .map(e -> (PackageElement) e)) {
             GenerateInferred anno = pe.getAnnotation(GenerateInferred.class);
 
-            DeclaredType iface = Hacks.extractType(anno::value);
+            DeclaredType iface = (DeclaredType) Hacks.extractType(anno::value);
 
             String packageName = pe.getQualifiedName().toString();
             String inferredImplementationName = iface.asElement().getSimpleName().toString() + "Inferred";
+            Type generatedType = new TypeReferential(packageName, inferredImplementationName);
             InferredClassModel model = new InferredClassModel(
-                new TypeReferential(packageName, inferredImplementationName),
+                generatedType,
                 new TypeFromDeclaredType(iface),
                 List.of(iface.asElement())
                     .flatMap(i -> i.getEnclosedElements())

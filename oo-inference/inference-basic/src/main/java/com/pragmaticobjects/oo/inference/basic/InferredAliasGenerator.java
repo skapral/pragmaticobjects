@@ -73,10 +73,11 @@ public class InferredAliasGenerator extends AbstractProcessor {
                     .map(e -> (VariableElement) e)
                     .map(e -> new ArgumentFromVariableElement(e));
             String packageName = ((PackageElement)elem.getEnclosingElement()).getQualifiedName().toString();
-            DeclaredType usingValue = Hacks.extractType(anno::using);
+            DeclaredType usingValue = (DeclaredType) Hacks.extractType(anno::using);
+
             Type inferredImplementation = usingValue.asElement().getSimpleName().toString().equals("Object")
                 ? new TypeReferential(packageName, iface.asElement().getSimpleName().toString() + "Inferred")
-                : new TypeFromDeclaredType(usingValue);
+                : Hacks.deduceInferenceImplementation(roundEnv).getOrElse(usingValue.asElement().getSimpleName().toString(), new TypeFromDeclaredType(usingValue));
             String aliasName = anno.value();
             InferredAliasModel model = new InferredAliasModel(
                 new TypeReferential(packageName, aliasName),
