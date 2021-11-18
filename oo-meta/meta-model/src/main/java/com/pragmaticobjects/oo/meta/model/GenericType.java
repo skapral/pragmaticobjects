@@ -37,7 +37,7 @@ public class GenericType implements Generic {
 
     @Override
     public final String asString() {
-        return type.name();
+        return type.declaration();
     }
 
     @Override

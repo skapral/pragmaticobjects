@@ -61,6 +61,20 @@ public class InferredAliasGeneratorGenericsSupportTest extends TestsSuite {
                         new SourceFile("com/test/generics2/FracFromListWithWildcardGenerics.java")
                     )
                 )
+            ),
+            new TestCase(
+                "Complex generic",
+                new AssertAnnotationProcessorGeneratesFiles(
+                    new InferredAliasGenerator(),
+                    List.of(
+                        new SourceFile("com/test/generics3/Operation.java"),
+                        new SourceFile("com/test/generics3/OperationInferred.java"),
+                        new SourceFile("com/test/generics3/CompositeOperationInference.java")
+                    ),
+                    List.of(
+                        new SourceFile("com/test/generics3/CompositeOperation.java")
+                    )
+                )
             )
         );
     }
