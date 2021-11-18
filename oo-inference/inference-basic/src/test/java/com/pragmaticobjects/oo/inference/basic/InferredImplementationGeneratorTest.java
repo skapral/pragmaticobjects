@@ -77,6 +77,19 @@ public class InferredImplementationGeneratorTest extends TestsSuite {
                         new SourceFile("com/test/inferred3/OperationInferred.java")
                     )
                 )
+            ),
+            new TestCase(
+                "Generator ignores inner classes when generating inference",
+                new AssertAnnotationProcessorGeneratesFiles(
+                    new InferredImplementationGenerator(),
+                    List.of(
+                        new SourceFile("com/test/inferred4/package-info.java"),
+                        new SourceFile("com/test/inferred4/Operation.java")
+                    ),
+                    List.of(
+                        new SourceFile("com/test/inferred4/OperationInferred.java")
+                    )
+                )
             )
         );
     }

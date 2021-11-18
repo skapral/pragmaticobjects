@@ -76,6 +76,7 @@ public class InferredImplementationGenerator extends AbstractProcessor {
                 new TypeFromDeclaredType(iface),
                 List.of(iface.asElement())
                     .flatMap(i -> i.getEnclosedElements())
+                    .filter(i -> i instanceof ExecutableElement)
                     .map(e -> new MethodFromExecutableElement((ExecutableElement) e))
                     .toJavaStream().collect(Collectors.toList())
             );
