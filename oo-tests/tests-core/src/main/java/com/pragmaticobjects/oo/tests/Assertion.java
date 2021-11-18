@@ -32,18 +32,6 @@ package com.pragmaticobjects.oo.tests;
  */
 public interface Assertion {
     /**
-     * {@link Assertion} inference.
-     *
-     * @author Kapralov Sergey
-     */
-    interface Inference {
-        /**
-         * @return Inferred {@link Assertion}
-         */
-        Assertion assertion();
-    }
-
-    /**
      * Check the assertion.
      *
      * @throws Exception if assertion was wrong.
