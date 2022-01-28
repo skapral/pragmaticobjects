@@ -2,7 +2,7 @@
 
 ## Overview
 
-A pair of class instances `A` and `B`, for which is guaranteed that for each code call using object `A`, substituting `B` in place
+A pair of class instances `A` and `B` is called *equivalent*, if it is guaranteed that for each code call using object `A`, substituting `B` in place
 of `A` changes nothing in the logic behaviour and side effects.
 
 Main purpose of OO-Equivalence is to make sure that classes, for which the term "equivalence" can be applied, have 
