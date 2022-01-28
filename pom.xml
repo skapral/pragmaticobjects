@@ -18,6 +18,9 @@
         </profile>
         <profile>
             <id>modules</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <modules>
                 <module>oo-equivalence</module>
                 <module>oo-tests</module>
