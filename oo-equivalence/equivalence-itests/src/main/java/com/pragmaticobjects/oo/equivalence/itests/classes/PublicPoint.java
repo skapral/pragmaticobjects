@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * equivalence-itests
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,45 +23,14 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+package com.pragmaticobjects.oo.equivalence.itests.classes;
 
-import java.util.stream.Collectors;
-import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatcher;
-import net.bytebuddy.matcher.ElementMatchers;
+public class PublicPoint {
+    public final int x;
+    public final int z;
 
-/**
- *
- * @author skapral
- */
-public class AttributesStandForIdentity implements ElementMatcher<TypeDescription> {
-
-    @Override
-    public boolean matches(TypeDescription td) {
-        final ElementMatcher<FieldDescription> visibilityMatcher = new DisjunctionMatcher<>(
-            td.isAbstract() ?
-                ElementMatchers.isProtected() :
-                ElementMatchers.isPrivate(),
-            ElementMatchers.isPublic()
-        );
-        return td.getDeclaredFields().stream()
-                .filter(
-                    ElementMatchers.not(
-                        ElementMatchers.isSynthetic()
-                    )::matches
-                )
-                .filter(
-                    ElementMatchers.not(
-                        ElementMatchers.isStatic()
-                    )::matches
-                )
-                .map(
-                    new ConjunctionMatcher<>(
-                        visibilityMatcher,
-                        ElementMatchers.isFinal()
-                    )::matches
-                )
-                .collect(Collectors.reducing(true, Boolean::logicalAnd));
+    public PublicPoint(int x, int z) {
+        this.x = x;
+        this.z = z;
     }
 }
