@@ -25,9 +25,8 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests;
 
-import com.pragmaticobjects.oo.equivalence.assertions.AssertTwoObjectsEquality;
-import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
-import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import com.pragmaticobjects.oo.equivalence.assertions.*;
+import com.pragmaticobjects.oo.equivalence.itests.classes.GenericsTest;
 import com.pragmaticobjects.oo.equivalence.itests.classes.TreeNode;
 
 /**
@@ -75,6 +74,15 @@ public class TestClassesWithGenerics extends TestsSuite {
                     new TreeNode<>(1, new TreeNode<>(2), new TreeNode<>(3)),
                     new TreeNode<>(1, new TreeNode<>(2), new TreeNode<>(4)),
                     false
+                )
+            ),
+            new TestCase(
+                "Issue 3 regression test: see https://github.com/skapral/pragmaticobjects/issues/3",
+                new AssertAssertionPasses(
+                    new AssertImplements(
+                        GenericsTest.class,
+                        "com.pragmaticobjects.oo.equivalence.itests.classes.GenericsTestIface<io.vavr.collection.Map<java.lang.String, java.lang.Object>>"
+                    )
                 )
             )
         );

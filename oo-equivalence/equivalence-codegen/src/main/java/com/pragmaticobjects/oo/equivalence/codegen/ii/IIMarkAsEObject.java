@@ -38,12 +38,16 @@ import net.bytebuddy.jar.asm.signature.SignatureVisitor;
 import net.bytebuddy.jar.asm.signature.SignatureWriter;
 import net.bytebuddy.pool.TypePool;
 import net.bytebuddy.utility.OpenedClassReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author skapral
  */
 public class IIMarkAsEObject implements InstrumentationIteration {
+    private final static Logger log = LoggerFactory.getLogger(IIMarkAsEObject.class);
+
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
 
@@ -77,23 +81,40 @@ public class IIMarkAsEObject implements InstrumentationIteration {
                                 superName = "com/pragmaticobjects/oo/equivalence/base/EObject";
                                 if (signature != null) {
                                     SignatureWriter sw = new SignatureWriter() {
-                                        private boolean typeArg = false;
+                                        private boolean superclass = false;
 
                                         @Override
                                         public void visitFormalTypeParameter(String name) {
-                                            typeArg = true;
+                                            log.debug("visitFormalTypeParameter: " + name + " " + superclass);
+                                            superclass = false;
                                             super.visitFormalTypeParameter(name);
                                         }
 
                                         @Override
                                         public SignatureVisitor visitSuperclass() {
-                                            typeArg = false;
+                                            log.debug("visitSuperclass: " + superclass);
+                                            superclass = true;
                                             return super.visitSuperclass();
                                         }
 
                                         @Override
+                                        public void visitEnd() {
+                                            log.debug("visitEnd: " + superclass);
+                                            superclass = false;
+                                            super.visitEnd();
+                                        }
+
+                                        @Override
+                                        public SignatureVisitor visitInterface() {
+                                            log.debug("visitInterface: " + superclass);
+                                            superclass = false;
+                                            return super.visitInterface();
+                                        }
+
+                                        @Override
                                         public void visitClassType(String name) {
-                                            if (!typeArg && "java/lang/Object".equals(name)) {
+                                            log.debug("visitClassType: " + name + " " + superclass);
+                                            if (superclass && "java/lang/Object".equals(name)) {
                                                 name = "com/pragmaticobjects/oo/equivalence/base/EObject";
                                             }
                                             super.visitClassType(name);
