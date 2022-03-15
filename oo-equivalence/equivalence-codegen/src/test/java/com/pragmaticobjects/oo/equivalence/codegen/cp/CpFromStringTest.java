@@ -25,33 +25,21 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.cp;
 
-import io.vavr.collection.List;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
-
-/**
- * Class path, parsed from Java -cp string.
- *
- * @author Kapralov Sergey
- */
-public class CpFromString implements ClassPath {
-    private final String string;
-
-    /**
-     * Ctor.
-     * @param string -cp-like string, containing a set of paths, separated by a colon.
-     */
-    public CpFromString(final String string) {
-        this.string = string;
-    }
-
-    @Override
-    public final List<Path> paths() {
-        return List
-            .of(string.split(";"))
-            .filter(Objects::nonNull)
-            .map(Paths::get);
+public class CpFromStringTest extends TestsSuite {
+    public CpFromStringTest() {
+        super(
+            new TestCase(
+                "Windows paths support - issue-8",
+                new AssertClassPathContents(
+                    new CpFromString("C:\\dep1.jar;C:\\dep2.jar;C:\\dep3.jar"),
+                    "C:\\dep1.jar",
+                    "C:\\dep2.jar",
+                    "C:\\dep3.jar"
+                )
+            )
+        );
     }
 }

@@ -61,7 +61,7 @@ public abstract class BaseMojo extends AbstractMojo {
                     .addAll(pluginDescriptor.getArtifacts())
                     .map(Artifact::getFile)
                     .map(File::toString)
-                    .collect(Collectors.joining(":"));
+                    .collect(Collectors.joining(";"));
         ClassPath cp = new CpFromString(classPath);
         return cp;
     }

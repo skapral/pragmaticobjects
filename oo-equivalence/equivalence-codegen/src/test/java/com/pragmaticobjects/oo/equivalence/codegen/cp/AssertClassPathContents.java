@@ -25,33 +25,28 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.cp;
 
+import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
 import io.vavr.collection.List;
+import org.assertj.core.api.Assertions;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
 
-/**
- * Class path, parsed from Java -cp string.
- *
- * @author Kapralov Sergey
- */
-public class CpFromString implements ClassPath {
-    private final String string;
+public class AssertClassPathContents implements Assertion {
+    private final ClassPath cpUnderTest;
+    private final List<String> expectedPaths;
 
-    /**
-     * Ctor.
-     * @param string -cp-like string, containing a set of paths, separated by a colon.
-     */
-    public CpFromString(final String string) {
-        this.string = string;
+    public AssertClassPathContents(ClassPath cpUnderTest, List<String> expectedPaths) {
+        this.cpUnderTest = cpUnderTest;
+        this.expectedPaths = expectedPaths;
+    }
+
+    public AssertClassPathContents(ClassPath cpUnderTest, String... expectedPaths) {
+        this(cpUnderTest, List.of(expectedPaths));
     }
 
     @Override
-    public final List<Path> paths() {
-        return List
-            .of(string.split(";"))
-            .filter(Objects::nonNull)
-            .map(Paths::get);
+    public final void check() throws Exception {
+        Assertions.assertThat(cpUnderTest.paths().map(Path::toString))
+            .containsExactlyInAnyOrderElementsOf(expectedPaths);
     }
 }
