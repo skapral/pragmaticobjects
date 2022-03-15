@@ -24,34 +24,3 @@
  * ============================================================================
  */
 package com.pragmaticobjects.oo.equivalence.codegen.cp;
-
-import io.vavr.collection.List;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
-
-/**
- * Class path, parsed from Java -cp string.
- *
- * @author Kapralov Sergey
- */
-public class CpFromString implements ClassPath {
-    private final String string;
-
-    /**
-     * Ctor.
-     * @param string -cp-like string, containing a set of paths, separated by a colon.
-     */
-    public CpFromString(final String string) {
-        this.string = string;
-    }
-
-    @Override
-    public final List<Path> paths() {
-        return List
-            .of(string.split(";"))
-            .filter(Objects::nonNull)
-            .map(Paths::get);
-    }
-}
