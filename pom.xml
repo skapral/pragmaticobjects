@@ -27,6 +27,7 @@
                 <module>oo-meta</module>
                 <module>oo-inference</module>
                 <module>oo-memoized</module>
+                <module>bom</module>
             </modules>
         </profile>
     </profiles>
