@@ -120,7 +120,7 @@ public abstract class EObject {
     };
 
     protected static boolean hasIdentity(Object obj) {
-        return obj == null || obj instanceof EObject || NATURALLY_EQUIVALENT.contains(obj.getClass());
+        return obj == null || obj instanceof EObject || obj instanceof Enum || NATURALLY_EQUIVALENT.contains(obj.getClass());
     }
     
     protected static boolean equal(Object object1, Object object2) {

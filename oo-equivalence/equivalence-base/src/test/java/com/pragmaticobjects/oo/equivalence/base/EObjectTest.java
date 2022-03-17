@@ -25,12 +25,8 @@
  */
 package com.pragmaticobjects.oo.equivalence.base;
 
-import com.pragmaticobjects.oo.equivalence.assertions.AssertCombined;
-import com.pragmaticobjects.oo.equivalence.assertions.AssertObjectHashCode;
+import com.pragmaticobjects.oo.equivalence.assertions.*;
 import com.pragmaticobjects.oo.equivalence.base.testobjects.ETuple;
-import com.pragmaticobjects.oo.equivalence.assertions.AssertTwoObjectsEquality;
-import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
-import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 
 /**
  *
@@ -159,6 +155,14 @@ public class EObjectTest extends TestsSuite {
                     new AssertObjectHashCode(new ETuple(new ETuple(42)), 765432),
                     new AssertObjectHashCode(new ETuple(new Object()), 1064259706),
                     new AssertObjectHashCode(new ETuple((Object) null), 382695)
+                )
+            ),
+            new TestCase(
+                "toString",
+                new AssertCombined(
+                    new AssertObjectToString(new ETuple(42), "ETuple(42)"),
+                    new AssertObjectToStringMatchesRegex(new ETuple(new Object()), "ETuple\\(java\\.lang\\.Object\\#\\p{Digit}+\\)"),
+                    new AssertObjectToString(new ETuple(TestEnum.B), "ETuple(B)")
                 )
             )
         );
