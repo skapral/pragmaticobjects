@@ -27,8 +27,6 @@ package com.pragmaticobjects.oo.equivalence.assertions;
 
 import org.assertj.core.api.Assertions;
 
-import java.util.regex.Pattern;
-
 /**
  *
  * @author skapral
