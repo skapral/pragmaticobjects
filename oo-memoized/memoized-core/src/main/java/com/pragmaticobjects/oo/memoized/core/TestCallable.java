@@ -25,26 +25,20 @@
  */
 package com.pragmaticobjects.oo.memoized.core;
 
-import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
-import com.pragmaticobjects.oo.tests.TestCase;
-import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import java.util.Optional;
+// NOTE: equals, hashCode and toString are implicitly generated
+// by equivalence-maven-plugin
+class TestCallable implements MemoizedCallable {
+    private final AtomicInteger counter;
 
+    public TestCallable(AtomicInteger counter) {
+        this.counter = counter;
+    }
 
-public class AssertCallTimesTest extends TestsSuite {
-    public AssertCallTimesTest() {
-        super(
-            new TestCase(
-                "blunt count",
-                new AssertAssertionPasses(
-                    new AssertCallTimes(
-                        new BluntMemory(),
-                            10,
-                            10
-                    )
-                )
-            )
-        );
+    @Override
+    public final Object call() {
+        counter.incrementAndGet();
+        return null;
     }
 }

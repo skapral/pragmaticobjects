@@ -25,26 +25,24 @@
  */
 package com.pragmaticobjects.oo.memoized.core;
 
-import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
-import com.pragmaticobjects.oo.tests.TestCase;
-import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
-
 import java.util.Optional;
 
+/**
+ * Test {@link Memory} implementation that memoises nothing
+ */
+class BluntMemory implements Memory {
+    @Override
+    public final <T> T memoized(MemoizedCallable<T> callable) {
+        return callable.call();
+    }
 
-public class AssertCallTimesTest extends TestsSuite {
-    public AssertCallTimesTest() {
-        super(
-            new TestCase(
-                "blunt count",
-                new AssertAssertionPasses(
-                    new AssertCallTimes(
-                        new BluntMemory(),
-                            10,
-                            10
-                    )
-                )
-            )
-        );
+    @Override
+    public final <T> Optional<T> dispose(MemoizedCallable<T> callable) {
+        return Optional.empty();
+    }
+
+    @Override
+    public final void clean() {
+        // Do Nothing
     }
 }

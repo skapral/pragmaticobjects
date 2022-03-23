@@ -27,24 +27,72 @@ package com.pragmaticobjects.oo.memoized.chm;
 
 
 import com.pragmaticobjects.oo.memoized.core.AssertCallTimes;
+import com.pragmaticobjects.oo.memoized.core.AssertDisposal;
+import com.pragmaticobjects.oo.memoized.core.MemoizedCallable;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
+import io.vavr.collection.List;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+
+class TestCallable implements MemoizedCallable<Integer> {
+    private final int id;
+
+    public TestCallable(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public final Integer call() {
+        return id;
+    }
+}
+
 
 class MemoryCHMTest extends TestsSuite {
     public MemoryCHMTest() {
         super(
-                new TestCase(
-                        "Check at most once call",
-                        new AssertCallTimes(
-                                new MemoryCHM(
-                                        new ConcurrentHashMap<>()
-                                ),
-                                10,
-                                1
-                        )
+            new TestCase(
+                "Check at most once call",
+                new AssertCallTimes(
+                    new MemoryCHM(
+                        new ConcurrentHashMap<>()
+                    ),
+                    10,
+                    1
                 )
+            ),
+            new TestCase(
+                "Check disposal of existing value",
+                new AssertDisposal(
+                    new MemoryCHM(
+                        new ConcurrentHashMap<>()
+                    ),
+                    List.of(
+                        new TestCallable(1),
+                        new TestCallable(2),
+                        new TestCallable(3)
+                    ),
+                    new TestCallable(1),
+                    Optional.of(1)
+                )
+            ),
+            new TestCase(
+                "Check disposal of inexisting value",
+                new AssertDisposal(
+                    new MemoryCHM(
+                        new ConcurrentHashMap<>()
+                    ),
+                    List.of(
+                        new TestCallable(1),
+                        new TestCallable(2),
+                        new TestCallable(3)
+                    ),
+                    new TestCallable(4),
+                    Optional.empty()
+                )
+            )
         );
     }
 }
