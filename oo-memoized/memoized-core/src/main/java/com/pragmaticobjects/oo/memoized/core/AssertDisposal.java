@@ -25,26 +25,29 @@
  */
 package com.pragmaticobjects.oo.memoized.core;
 
-import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
-import com.pragmaticobjects.oo.tests.TestCase;
-import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
+import com.pragmaticobjects.oo.tests.Assertion;
+import io.vavr.collection.List;
+import org.assertj.core.api.Assertions;
 
 import java.util.Optional;
 
+public class AssertDisposal implements Assertion {
+    private final Memory memoryUnderTest;
+    private final List<MemoizedCallable<?>> preparationCallables;
+    private final MemoizedCallable<?> callableToDispose;
+    private final Optional<?> expectedDisposedValue;
 
-public class AssertCallTimesTest extends TestsSuite {
-    public AssertCallTimesTest() {
-        super(
-            new TestCase(
-                "blunt count",
-                new AssertAssertionPasses(
-                    new AssertCallTimes(
-                        new BluntMemory(),
-                            10,
-                            10
-                    )
-                )
-            )
-        );
+    public AssertDisposal(Memory memoryUnderTest, List<MemoizedCallable<?>> preparationCallables, MemoizedCallable<?> callableToDispose, Optional<?> expectedDisposedValue) {
+        this.memoryUnderTest = memoryUnderTest;
+        this.preparationCallables = preparationCallables;
+        this.callableToDispose = callableToDispose;
+        this.expectedDisposedValue = expectedDisposedValue;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        preparationCallables.forEach(memoryUnderTest::memoized);
+        Optional<?> disposedValue = memoryUnderTest.dispose(callableToDispose);
+        Assertions.assertThat(disposedValue).isEqualTo(expectedDisposedValue);
     }
 }

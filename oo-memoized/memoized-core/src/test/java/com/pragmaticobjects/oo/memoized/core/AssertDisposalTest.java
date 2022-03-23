@@ -28,20 +28,24 @@ package com.pragmaticobjects.oo.memoized.core;
 import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
+import io.vavr.collection.List;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
-
-public class AssertCallTimesTest extends TestsSuite {
-    public AssertCallTimesTest() {
+public class AssertDisposalTest extends TestsSuite {
+    public AssertDisposalTest() {
         super(
             new TestCase(
-                "blunt count",
+                "blunt disposal",
                 new AssertAssertionPasses(
-                    new AssertCallTimes(
+                    new AssertDisposal(
                         new BluntMemory(),
-                            10,
-                            10
+                        List.empty(),
+                        new TestCallable(
+                            new AtomicInteger()
+                        ),
+                        Optional.empty()
                     )
                 )
             )

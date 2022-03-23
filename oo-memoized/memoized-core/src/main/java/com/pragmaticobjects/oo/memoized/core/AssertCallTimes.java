@@ -30,22 +30,6 @@ import org.assertj.core.api.Assertions;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-// NOTE: equals, hashCode and toString are implicitly generated
-// by equivalence-maven-plugin
-class TestCallable implements MemoizedCallable {
-    private final AtomicInteger counter;
-
-    public TestCallable(AtomicInteger counter) {
-        this.counter = counter;
-    }
-
-    @Override
-    public final Object call() {
-        counter.incrementAndGet();
-        return null;
-    }
-}
-
 public class AssertCallTimes implements Assertion {
     private final Memory memory;
     private final int callNums;
