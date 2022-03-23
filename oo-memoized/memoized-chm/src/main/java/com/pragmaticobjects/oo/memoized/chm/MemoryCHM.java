@@ -30,6 +30,7 @@ import com.pragmaticobjects.oo.memoized.core.Memory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.FutureTask;
 
@@ -73,6 +74,19 @@ public class MemoryCHM implements Memory {
         } catch(Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public final <T> Optional<T> dispose(MemoizedCallable<T> callable) {
+        return Optional.ofNullable(memoizedObjects.remove(callable))
+            .map(futureTask -> {
+                try {
+                    return futureTask.get();
+                } catch(Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            })
+            .map(v -> (T) v);
     }
 
     @Override

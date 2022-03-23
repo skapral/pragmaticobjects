@@ -25,6 +25,8 @@
  */
 package com.pragmaticobjects.oo.memoized.core;
 
+import java.util.Optional;
+
 /**
  * Abstraction for a place where memoized values are kept.
  * 
@@ -38,6 +40,15 @@ public interface Memory {
      * @return result
      */
     <T> T memoized(MemoizedCallable<T> callable);
+
+    /**
+     * Dispose memoized value, if anything was calculated, and return it to the caller
+     *
+     * @param <T> result type
+     * @param callable callable to memoize
+     * @return result
+     */
+    <T> Optional<T> dispose(MemoizedCallable<T> callable);
 
     /**
      * Drop all memoized values

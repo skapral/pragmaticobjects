@@ -29,6 +29,8 @@ import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 
+import java.util.Optional;
+
 /**
  * Test {@link Memory} implementation that memoises nothing
  */
@@ -36,6 +38,11 @@ class BluntMemory implements Memory {
     @Override
     public final <T> T memoized(MemoizedCallable<T> callable) {
         return callable.call();
+    }
+
+    @Override
+    public final <T> Optional<T> dispose(MemoizedCallable<T> callable) {
+        return Optional.empty();
     }
 
     @Override
