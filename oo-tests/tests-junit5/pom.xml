@@ -9,9 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.pragmaticobjects.oo.tests</groupId>
     <artifactId>tests-junit5</artifactId>
-
+    <name>${project.artifactId}</name>
     <dependencies>
         <dependency>
             <groupId>com.pragmaticobjects.oo.tests</groupId>

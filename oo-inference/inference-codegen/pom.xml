@@ -8,7 +8,7 @@
     </parent>
     <artifactId>inference-codegen</artifactId>
     <packaging>jar</packaging>
-    
+    <name>${project.artifactId}</name>
     <dependencies>
         <dependency>
             <groupId>com.pragmaticobjects.oo.memoized</groupId>

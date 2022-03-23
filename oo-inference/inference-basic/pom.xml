@@ -8,7 +8,7 @@
     </parent>
     <artifactId>inference-basic</artifactId>
     <packaging>jar</packaging>
-
+    <name>${project.artifactId}</name>
     <properties>
         <!-- license headers break assertions on com/test samples -->
         <license.excludes>test/java/com/test/**/**.java</license.excludes>
