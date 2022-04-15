@@ -11,6 +11,7 @@
         <module>checkstyle</module>
         <module>pmd</module>
         <module>parent</module>
+        <module>owasp-suppressions</module>
     </modules>
     <packaging>pom</packaging>
 
