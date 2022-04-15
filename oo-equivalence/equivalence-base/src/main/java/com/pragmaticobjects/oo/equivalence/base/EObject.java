@@ -82,9 +82,10 @@ public abstract class EObject {
     @Override
     public final int hashCode() {
         final Object[] attrs = attributes();
-        int result = hash(hashSeed());
+        final int hashSeed = hashSeed();
+        int result = hash(hashSeed);
         for (Object attr : attrs) {
-            result = 31 * result + hash(attr);
+            result = hashSeed * result + hash(attr);
         }
         return result;
     }

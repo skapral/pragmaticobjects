@@ -39,6 +39,18 @@ import net.bytebuddy.matcher.ElementMatchers;
  * @author skapral
  */
 public class IIImplementEObjectHashSeed implements InstrumentationIteration {
+    private final int seedValue;
+
+    public IIImplementEObjectHashSeed(int seedValue) {
+        this.seedValue = seedValue;
+    }
+
+    public IIImplementEObjectHashSeed() {
+        this(
+            92821 // taken from here https://stackoverflow.com/a/2816747/3223300
+        );
+    }
+
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
         if(!typeDescription.getDeclaredMethods()
@@ -47,7 +59,7 @@ public class IIImplementEObjectHashSeed implements InstrumentationIteration {
             return builder;
         }
         StackManipulation baseTypeImpl = new StackManipulation.Compound(
-            IntegerConstant.forValue(1),
+            IntegerConstant.forValue(seedValue),
             MethodReturn.INTEGER
         );
         return builder
