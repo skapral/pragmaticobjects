@@ -332,12 +332,20 @@
                                 <goals>
                                     <goal>check</goal>
                                 </goals>
-                                <configuration>
-                                    <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                                    <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
-                                </configuration>
                             </execution>
                         </executions>
+                        <configuration>
+                            <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+                            <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
+                            <suppressionFile>suppression.xml</suppressionFile>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.pragmaticobjects</groupId>
+                                <artifactId>owasp-suppressions</artifactId>
+                                <version>9.9.9</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
