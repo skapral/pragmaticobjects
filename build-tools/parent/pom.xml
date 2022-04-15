@@ -316,6 +316,33 @@
             </reporting>
         </profile>
         <profile>
+            <id>dependencies-check</id>
+            <activation>
+                <file>
+                    <exists>pom.xml</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                                <configuration>
+                                    <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+                                    <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>ossrh</id>
             <distributionManagement>
                 <snapshotRepository>
