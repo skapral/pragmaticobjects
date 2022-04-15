@@ -44,7 +44,7 @@ public class AssertHashCodeResult implements Assertion {
     public final void check() throws Exception {
         int hash = obj.hashCode();
         Assertions.assertThat(obj.hashCode())
-                .withFailMessage("Expected object's hashCode to be equal to <%s>\r\n obj <%s>", hash, obj)
+                .withFailMessage("Expected object's hashCode to be equal to <%s>\r\n obj <%s>\r\n actual value <%s>", hashCode, obj, hash)
                 .isEqualTo(hashCode);
     }
 }

@@ -151,10 +151,10 @@ public class EObjectTest extends TestsSuite {
             new TestCase(
                 "HashCodes",
                 new AssertCombined(
-                    new AssertObjectHashCode(new ETuple(42), 382737),
-                    new AssertObjectHashCode(new ETuple(new ETuple(42)), 765432),
-                    new AssertObjectHashCode(new ETuple(new Object()), 1064259706),
-                    new AssertObjectHashCode(new ETuple((Object) null), 382695)
+                    new AssertObjectHashCode(new ETuple(42), 152399067),
+                    new AssertObjectHashCode(new ETuple(new ETuple(42)), 304798092),
+                    new AssertObjectHashCode(new ETuple(new Object()), 1216276036),
+                    new AssertObjectHashCode(new ETuple((Object) null), 152399025)
                 )
             ),
             new TestCase(
