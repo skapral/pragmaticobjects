@@ -33,17 +33,17 @@ import java.util.stream.Collectors;
 
 /**
  * Base class for all equivalence-compliant objects
- * 
+ *
  * @author skapral
  */
 public abstract class EObject {
     private static final boolean FIXED_STATIC_IDENTITY = System.getProperty("fixedStaticIdentity") != null;
-    
+
     /**
      * @return Object's attributes
      */
     protected abstract Object[] attributes();
-    
+
     /**
      * @return Object's hash seed
      */
@@ -62,15 +62,15 @@ public abstract class EObject {
         if (obj == null) {
             return false;
         }
-        if (obj instanceof EObject && (this.baseType() == ((EObject)obj).baseType())) {
+        if (obj instanceof EObject && (this.baseType() == ((EObject) obj).baseType())) {
             final Object[] thisAttrs = attributes();
             final Object[] objAttrs = ((EObject) obj).attributes();
             int length = thisAttrs.length == objAttrs.length ? thisAttrs.length : -1;
-            if(length < 0) {
+            if (length < 0) {
                 return false;
             }
-            for(int i = 0; i < thisAttrs.length; i++) {
-                if(!equal(thisAttrs[i], objAttrs[i])) {
+            for (int i = 0; i < thisAttrs.length; i++) {
+                if (!equal(thisAttrs[i], objAttrs[i])) {
                     return false;
                 }
             }
@@ -96,7 +96,7 @@ public abstract class EObject {
         sb.append(baseType().getSimpleName());
         sb.append("(");
         sb.append(
-                Arrays.stream(attrs)
+            Arrays.stream(attrs)
                 .map(EObject::toString)
                 .collect(Collectors.joining(", "))
         );
@@ -104,25 +104,27 @@ public abstract class EObject {
         return sb.toString();
     }
 
-    private final static HashSet<Class<?>> NATURALLY_EQUIVALENT = new HashSet<Class<?>>() {
-        {
-            add(String.class);
-            add(Boolean.class);
-            add(Byte.class);
-            add(Short.class);
-            add(Integer.class);
-            add(Long.class);
-            add(Float.class);
-            add(Double.class);
-            add(UUID.class);
-            add(Optional.class);
-        }
-    };
+    private final static HashSet<Class<?>> NATURALLY_EQUIVALENT = new HashSet<Class<?>>();
+
+    static {
+        NATURALLY_EQUIVALENT.add(String.class);
+        NATURALLY_EQUIVALENT.add(Boolean.class);
+        NATURALLY_EQUIVALENT.add(Byte.class);
+        NATURALLY_EQUIVALENT.add(Short.class);
+        NATURALLY_EQUIVALENT.add(Integer.class);
+        NATURALLY_EQUIVALENT.add(Long.class);
+        NATURALLY_EQUIVALENT.add(Float.class);
+        NATURALLY_EQUIVALENT.add(Double.class);
+        NATURALLY_EQUIVALENT.add(UUID.class);
+        NATURALLY_EQUIVALENT.add(Optional.class);
+    }
+
+    ;
 
     protected static boolean hasIdentity(Object obj) {
         return obj == null || obj instanceof EObject || obj instanceof Enum || NATURALLY_EQUIVALENT.contains(obj.getClass());
     }
-    
+
     protected static boolean equal(Object object1, Object object2) {
         if (object1 == null) {
             return object2 == null;
@@ -130,24 +132,24 @@ public abstract class EObject {
         if (object1 == object2) {
             return true;
         }
-        if(hasIdentity(object1)) {
+        if (hasIdentity(object1)) {
             return object1.equals(object2);
         }
         return false;
     }
-    
+
     protected static int hash(Object element) {
-        if(element == null) {
+        if (element == null) {
             return 0;
         }
-        if(hasIdentity(element)) {
+        if (hasIdentity(element)) {
             return element.hashCode();
         }
         return systemIdentity(element);
     }
 
     protected static int systemIdentity(Object element) {
-        if(FIXED_STATIC_IDENTITY) {
+        if (FIXED_STATIC_IDENTITY) {
             return element.getClass().getName().hashCode();
         } else {
             return System.identityHashCode(element);
@@ -155,7 +157,7 @@ public abstract class EObject {
     }
 
     protected static String toString(Object value) {
-        if(hasIdentity(value)) {
+        if (hasIdentity(value)) {
             return value == null ? "null" : value.toString();
         } else {
             return value.getClass().getName() + "#" + systemIdentity(value);
