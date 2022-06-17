@@ -28,15 +28,16 @@ package com.pragmaticobjects.oo.equivalence.base;
 import com.pragmaticobjects.oo.equivalence.assertions.*;
 import com.pragmaticobjects.oo.equivalence.base.testobjects.ETuple;
 
+import java.time.LocalDate;
+
 /**
- *
  * @author skapral
  */
 public class EObjectTest extends TestsSuite {
     private static final ETuple CONSTANT = new ETuple();
     private static final Object CONSTANT_OBJ = new Object();
-    private static final EObject[] CONSTANT_ARRAY = new EObject[] {};
-    
+    private static final EObject[] CONSTANT_ARRAY = new EObject[]{};
+
     public EObjectTest() {
         super(
             new TestCase(
@@ -126,11 +127,38 @@ public class EObjectTest extends TestsSuite {
                 )
             ),
             new TestCase(
+                "enforced equivalence",
+                new AssertCombined(
+                    new AssertTwoObjectsEquality(
+                        new ETuple(
+                            LocalDate.of(2022, 12, 1)
+                        ),
+                        new ETuple(
+                            LocalDate.of(2022, 12, 1)
+                        ),
+                        false
+                    ),
+                    new AssertTwoObjectsEquality(
+                        new ETuple(
+                            new NaturallyEquivalent(
+                                LocalDate.of(2022, 12, 1)
+                            )
+                        ),
+                        new ETuple(
+                            new NaturallyEquivalent(
+                                LocalDate.of(2022, 12, 1)
+                            )
+                        ),
+                        true
+                    )
+                )
+            ),
+            new TestCase(
                 "Arrays identity",
                 new AssertCombined(
                     new AssertTwoObjectsEquality(
-                        new ETuple((Object) new EObject[] {}),
-                        new ETuple((Object) new EObject[] {}),
+                        new ETuple((Object) new EObject[]{}),
+                        new ETuple((Object) new EObject[]{}),
                         false
                     ),
                     new AssertTwoObjectsEquality(
