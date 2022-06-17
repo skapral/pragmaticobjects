@@ -140,6 +140,22 @@ are equivalence-compliant.
 A list of naturally-equivalent classes is currently hardcoded in [EObject](equivalence-base/src/main/java/com/pragmaticobjects/oo/equivalence/base/EObject.java).
 Hardcode is a temporal measure.
 
+Also, it is possible to enforce equivalence check for a certain attribute of an object, annotating it with @EquivalenceHint annotation, like in example below:
+
+```java
+public class TimeRange {
+    public final @EquivalenceHint(enabled = true) LocalDate beginDate;
+    public final @EquivalenceHint(enabled = true) LocalDate endDate;
+
+    public TimeRange(LocalDate beginDate, LocalDate endDate) {
+        this.beginDate = beginDate;
+        this.endDate = endDate;
+    }
+}
+```
+
+After instrumentation, `TimeRange` will compare `beginDate` and `endDate` attributes assuming natural equivalence for them.
+
 ## EObject::hashCode
 
 Returns hash code for `EObject`, which is consistent with equivalence results. If `this` is equivalent to the `hashCode` argument, the `hashCode` is guaranteed to be the same.
