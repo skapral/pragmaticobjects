@@ -30,15 +30,17 @@ import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import com.pragmaticobjects.oo.equivalence.itests.classes.Counter;
 import com.pragmaticobjects.oo.equivalence.itests.classes.GuestList;
+import com.pragmaticobjects.oo.equivalence.itests.classes.TimeRange;
+
+import java.time.LocalDate;
 import java.util.HashSet;
 
 /**
- *
  * @author skapral
  */
 public class TestSimpleClasses extends TestsSuite {
     private static final HashSet<String> HASH_SET = new HashSet<>();
-    
+
     public TestSimpleClasses() {
         super(
             new TestCase(
@@ -70,6 +72,20 @@ public class TestSimpleClasses extends TestsSuite {
                 new AssertTwoObjectsEquality(
                     new GuestList(HASH_SET),
                     new GuestList(HASH_SET),
+                    true
+                )
+            ),
+            new TestCase(
+                "naturally equivalent atributtes annotated explicitly",
+                new AssertTwoObjectsEquality(
+                    new TimeRange(
+                        LocalDate.of(2020, 1, 1),
+                        LocalDate.of(2030, 1, 1)
+                    ),
+                    new TimeRange(
+                        LocalDate.of(2020, 1, 1),
+                        LocalDate.of(2030, 1, 1)
+                    ),
                     true
                 )
             )

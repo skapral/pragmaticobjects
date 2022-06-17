@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  *
  * @author skapral
  */
-public abstract class EObject {
+public abstract class EObject implements EquivalenceCompliant {
     private static final boolean FIXED_STATIC_IDENTITY = System.getProperty("fixedStaticIdentity") != null;
 
     /**
@@ -120,10 +120,11 @@ public abstract class EObject {
         NATURALLY_EQUIVALENT.add(Optional.class);
     }
 
-    ;
-
     protected static boolean hasIdentity(Object obj) {
-        return obj == null || obj instanceof EObject || obj instanceof Enum || NATURALLY_EQUIVALENT.contains(obj.getClass());
+        return obj == null
+            || obj instanceof EquivalenceCompliant
+            || obj instanceof Enum
+            || NATURALLY_EQUIVALENT.contains(obj.getClass());
     }
 
     protected static boolean equal(Object object1, Object object2) {
