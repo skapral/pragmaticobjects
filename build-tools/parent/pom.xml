@@ -318,7 +318,7 @@
             </reporting>
         </profile>
         <profile>
-            <id>dependencies-check</id>
+            <id>check-dependencies</id>
             <activation>
                 <file>
                     <exists>pom.xml</exists>
