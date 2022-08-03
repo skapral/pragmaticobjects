@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * memoized-core
+ * memoized-assertions
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,31 +23,32 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.memoized.core;
+package com.pragmaticobjects.oo.memoized.assertions;
 
-import com.pragmaticobjects.oo.tests.Assertion;
+import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
+import com.pragmaticobjects.oo.tests.TestCase;
+import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.List;
-import org.assertj.core.api.Assertions;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class AssertDisposal implements Assertion {
-    private final Memory memoryUnderTest;
-    private final List<MemoizedCallable<?>> preparationCallables;
-    private final MemoizedCallable<?> callableToDispose;
-    private final Optional<?> expectedDisposedValue;
-
-    public AssertDisposal(Memory memoryUnderTest, List<MemoizedCallable<?>> preparationCallables, MemoizedCallable<?> callableToDispose, Optional<?> expectedDisposedValue) {
-        this.memoryUnderTest = memoryUnderTest;
-        this.preparationCallables = preparationCallables;
-        this.callableToDispose = callableToDispose;
-        this.expectedDisposedValue = expectedDisposedValue;
-    }
-
-    @Override
-    public final void check() throws Exception {
-        preparationCallables.forEach(memoryUnderTest::memoized);
-        Optional<?> disposedValue = memoryUnderTest.dispose(callableToDispose);
-        Assertions.assertThat(disposedValue).isEqualTo(expectedDisposedValue);
+public class AssertDisposalTest extends TestsSuite {
+    public AssertDisposalTest() {
+        super(
+            new TestCase(
+                "blunt disposal",
+                new AssertAssertionPasses(
+                    new AssertDisposal(
+                        new BluntMemory(),
+                        List.empty(),
+                        new TestCallable(
+                            new AtomicInteger()
+                        ),
+                        Optional.empty()
+                    )
+                )
+            )
+        );
     }
 }

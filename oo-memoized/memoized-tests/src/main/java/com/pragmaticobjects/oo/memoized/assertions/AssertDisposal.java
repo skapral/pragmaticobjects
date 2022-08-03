@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * memoized-core
+ * memoized-assertions
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,4 +23,33 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.memoized.core;
+package com.pragmaticobjects.oo.memoized.assertions;
+
+import com.pragmaticobjects.oo.memoized.core.MemoizedCallable;
+import com.pragmaticobjects.oo.memoized.core.Memory;
+import com.pragmaticobjects.oo.tests.Assertion;
+import io.vavr.collection.List;
+import org.assertj.core.api.Assertions;
+
+import java.util.Optional;
+
+public class AssertDisposal implements Assertion {
+    private final Memory memoryUnderTest;
+    private final List<MemoizedCallable<?>> preparationCallables;
+    private final MemoizedCallable<?> callableToDispose;
+    private final Optional<?> expectedDisposedValue;
+
+    public AssertDisposal(Memory memoryUnderTest, List<MemoizedCallable<?>> preparationCallables, MemoizedCallable<?> callableToDispose, Optional<?> expectedDisposedValue) {
+        this.memoryUnderTest = memoryUnderTest;
+        this.preparationCallables = preparationCallables;
+        this.callableToDispose = callableToDispose;
+        this.expectedDisposedValue = expectedDisposedValue;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        preparationCallables.forEach(memoryUnderTest::memoized);
+        Optional<?> disposedValue = memoryUnderTest.dispose(callableToDispose);
+        Assertions.assertThat(disposedValue).isEqualTo(expectedDisposedValue);
+    }
+}
