@@ -38,6 +38,7 @@
     <modules>
         <module>memoized-core</module>
         <module>memoized-chm</module>
+        <module>memoized-tests</module>
     </modules>
     
     <dependencyManagement>
@@ -45,6 +46,16 @@
             <dependency>
                 <groupId>com.pragmaticobjects.oo.memoized</groupId>
                 <artifactId>memoized-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pragmaticobjects.oo.memoized</groupId>
+                <artifactId>memoized-assertions</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pragmaticobjects.oo.memoized</groupId>
+                <artifactId>memoized-chm</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

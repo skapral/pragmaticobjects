@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * memoized-chm
+ * memoized-assertions
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,4 +23,32 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.memoized.chm;
+package com.pragmaticobjects.oo.memoized.assertions;
+
+import com.pragmaticobjects.oo.tests.Assertion;
+import org.assertj.core.api.Assertions;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+import com.pragmaticobjects.oo.memoized.core.Memory;
+
+public class AssertCallTimes implements Assertion {
+    private final Memory memory;
+    private final int callNums;
+    private final int expectedNumCalls;
+
+    public AssertCallTimes(Memory memory, int callNums, int expectedNumCalls) {
+        this.memory = memory;
+        this.callNums = callNums;
+        this.expectedNumCalls = expectedNumCalls;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        AtomicInteger counter = new AtomicInteger();
+        for (int i = 0; i < callNums; i++) {
+            memory.memoized(new TestCallable(counter));
+        }
+        Assertions.assertThat(counter).hasValue(expectedNumCalls);
+    }
+}

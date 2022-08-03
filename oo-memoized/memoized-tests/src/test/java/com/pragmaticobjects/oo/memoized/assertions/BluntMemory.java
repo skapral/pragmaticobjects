@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * memoized-core
+ * memoized-assertions
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,30 +23,30 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.memoized.core;
+package com.pragmaticobjects.oo.memoized.assertions;
 
-import com.pragmaticobjects.oo.tests.Assertion;
-import org.assertj.core.api.Assertions;
+import com.pragmaticobjects.oo.memoized.core.MemoizedCallable;
+import com.pragmaticobjects.oo.memoized.core.Memory;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Optional;
 
-public class AssertCallTimes implements Assertion {
-    private final Memory memory;
-    private final int callNums;
-    private final int expectedNumCalls;
 
-    public AssertCallTimes(Memory memory, int callNums, int expectedNumCalls) {
-        this.memory = memory;
-        this.callNums = callNums;
-        this.expectedNumCalls = expectedNumCalls;
+/**
+ * Test {@link Memory} implementation that memoises nothing
+ */
+class BluntMemory implements Memory {
+    @Override
+    public final <T> T memoized(MemoizedCallable<T> callable) {
+        return callable.call();
     }
 
     @Override
-    public final void check() throws Exception {
-        AtomicInteger counter = new AtomicInteger();
-        for(int i = 0; i < callNums; i++) {
-            memory.memoized(new TestCallable(counter));
-        }
-        Assertions.assertThat(counter).hasValue(expectedNumCalls);
+    public final <T> Optional<T> dispose(MemoizedCallable<T> callable) {
+        return Optional.empty();
+    }
+
+    @Override
+    public final void clean() {
+        // Do Nothing
     }
 }

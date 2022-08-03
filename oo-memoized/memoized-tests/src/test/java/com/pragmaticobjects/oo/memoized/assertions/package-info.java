@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * memoized-core
+ * memoized-assertions
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,32 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.memoized.core;
-
-import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
-import com.pragmaticobjects.oo.tests.TestCase;
-import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
-import io.vavr.collection.List;
-
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-
-public class AssertDisposalTest extends TestsSuite {
-    public AssertDisposalTest() {
-        super(
-            new TestCase(
-                "blunt disposal",
-                new AssertAssertionPasses(
-                    new AssertDisposal(
-                        new BluntMemory(),
-                        List.empty(),
-                        new TestCallable(
-                            new AtomicInteger()
-                        ),
-                        Optional.empty()
-                    )
-                )
-            )
-        );
-    }
-}
+package com.pragmaticobjects.oo.memoized.assertions;

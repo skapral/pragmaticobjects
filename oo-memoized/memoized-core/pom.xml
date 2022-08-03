@@ -9,23 +9,4 @@
     <artifactId>memoized-core</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.pragmaticobjects.oo.tests</groupId>
-            <artifactId>tests-junit5</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-        </dependency>
-    </dependencies>
 </project>

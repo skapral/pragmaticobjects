@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * memoized-chm
+ * memoized-assertions
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,8 +26,8 @@
 package com.pragmaticobjects.oo.memoized.chm;
 
 
-import com.pragmaticobjects.oo.memoized.core.AssertCallTimes;
-import com.pragmaticobjects.oo.memoized.core.AssertDisposal;
+import com.pragmaticobjects.oo.memoized.assertions.AssertCallTimes;
+import com.pragmaticobjects.oo.memoized.assertions.AssertDisposal;
 import com.pragmaticobjects.oo.memoized.core.MemoizedCallable;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
