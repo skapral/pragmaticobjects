@@ -6,9 +6,14 @@
         <artifactId>oo-equivalence</artifactId>
         <version>0.0.0-SNAPSHOT</version>
     </parent>
+    <groupId>com.pragmaticobjects.oo.equivalence.itests</groupId>
     <artifactId>equivalence-itests</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <name>${project.artifactId}</name>
+    
+    <modules>
+        <module>test-cases</module>
+    </modules>
     
     <dependencies>
         <dependency>
@@ -24,6 +29,7 @@
             <artifactId>byte-buddy</artifactId>
         </dependency>
     </dependencies>
+    
     <build>
         <plugins>
             <plugin>
