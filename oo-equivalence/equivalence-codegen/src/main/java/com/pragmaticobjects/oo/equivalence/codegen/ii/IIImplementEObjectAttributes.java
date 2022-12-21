@@ -34,7 +34,6 @@ import com.pragmaticobjects.oo.equivalence.codegen.sets.AttributesFromTypeDescri
 import com.pragmaticobjects.oo.equivalence.codegen.sets.AttributesNonStatic;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.function.Function;
 
 import net.bytebuddy.description.annotation.AnnotationDescription;

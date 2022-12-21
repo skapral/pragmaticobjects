@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * memoized-assertions
+ * memoized-core
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,25 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.memoized.assertions;
-
-import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
-import com.pragmaticobjects.oo.tests.TestCase;
-import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
-
-public class AssertCallTimesTest extends TestsSuite {
-    public AssertCallTimesTest() {
-        super(
-            new TestCase(
-                "blunt count",
-                new AssertAssertionPasses(
-                    new AssertCallTimes(
-                        new BluntMemory(),
-                        10,
-                        10
-                    )
-                )
-            )
-        );
-    }
-}
+package com.pragmaticobjects.oo.memoized.core;

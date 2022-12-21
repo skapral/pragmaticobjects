@@ -23,6 +23,11 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.22.2</version>
                 </plugin>
@@ -61,11 +66,6 @@
                     <artifactId>maven-jxr-plugin</artifactId>
                     <version>3.1.1</version>
                 </plugin>
-                <plugin>
-                    <groupId>org.owasp</groupId>
-                    <artifactId>dependency-check-maven</artifactId>
-                    <version>7.1.1</version>
-                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -73,7 +73,9 @@
         <profile>
             <id>tests</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <file>
+                    <exists>pom.xml</exists>
+                </file>
             </activation>
             <build>
                 <plugins>
@@ -90,7 +92,9 @@
         <profile>
             <id>extras</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <file>
+                    <exists>pom.xml</exists>
+                </file>
             </activation>
             <build>
                 <plugins>
@@ -123,7 +127,9 @@
         <profile>
             <id>coverage</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <file>
+                    <exists>pom.xml</exists>
+                </file>
             </activation>
             <build>
                 <plugins>
@@ -155,10 +161,36 @@
             </build>
         </profile>
         <profile>
-            <id>lint</id>
+            <id>enforcer</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <file>
+                    <exists>pom.xml</exists>
+                </file>
             </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>enforce</id>
+                                <goals>
+                                    <goal>enforce</goal>
+                                </goals>
+                                <configuration>
+                                    <rules>
+                                        <banDuplicatePomDependencyVersions/>
+                                    </rules>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>lint</id>
             <build>
                 <plugins>
                     <plugin>
@@ -236,7 +268,9 @@
         <profile>
             <id>styling</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <file>
+                    <exists>pom.xml</exists>
+                </file>
             </activation>
             <properties>
                 <pmd.excludes/>
@@ -321,41 +355,6 @@
                     </plugin>
                 </plugins>
             </reporting>
-        </profile>
-        <profile>
-            <id>check-dependencies</id>
-            <activation>
-                <file>
-                    <exists>pom.xml</exists>
-                </file>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.owasp</groupId>
-                        <artifactId>dependency-check-maven</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                            <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
-                            <suppressionFile>suppression.xml</suppressionFile>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>com.pragmaticobjects</groupId>
-                                <artifactId>owasp-suppressions</artifactId>
-                                <version>9.9.9</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
         <profile>
             <id>ossrh</id>
