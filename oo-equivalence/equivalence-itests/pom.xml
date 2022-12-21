@@ -13,6 +13,7 @@
     
     <modules>
         <module>test-cases</module>
+        <module>test-module1</module>
     </modules>
     
     <dependencies>
