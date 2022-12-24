@@ -24,7 +24,7 @@
  * ============================================================================
  */
 package com.pragmaticobjects.oo.equivalence.assertions;
-F 
+
 public class AssertSubtypeOfTest extends TestsSuite {
     static class A {}
     static class B extends A {}
