@@ -24,21 +24,3 @@
  * ============================================================================
  */
 package com.pragmaticobjects.oo.equivalence.itests.abstractclasses;
-
-import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
-import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractNonEObject;
-
-/**
- * Should be restricted
- * @author skapral
- */
-@EObjectHint(enabled = true)
-public class NonEObjectExplicitlyEnabledImpl extends ExternalAbstractNonEObject {
-    public NonEObjectExplicitlyEnabledImpl(Object id) {
-        super(id);
-    }
-    
-    @Override
-    public void method() {
-    }    
-}

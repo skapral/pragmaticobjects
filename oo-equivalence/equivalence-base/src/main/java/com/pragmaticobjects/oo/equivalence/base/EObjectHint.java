@@ -31,20 +31,24 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A hint, telling equivalence instrumentor whether the class should (or should not) be subtype of EObject.
- * If the class is abstract, and if it is extended directly from {@link java.lang.Object}, its base class is replaced to
- * {@link EObject}, and instrumentor handles its non-abstract subtypes as EObjects.
+ * A hint, telling equivalence instrumentor whether the class should (or should not) be subtype of {@link EObject}.
  * 
- * The abstract EObject class must fit these requirements:
+ * The class, annotated by this annotation, is allowed to have only the {@link Object} superclass.
+ * Attempt to annotate and instrument a class that doesn't fit this requirement will be terminated by exception.
+ * 
+ * If the class is abstract, its base class is replaced to
+ * {@link EObject}, and instrumentor handles its non-abstract subtypes as EObjects. Abstract class, that is not annotated by {@link EObjectHint},
+ * is not considered as a candidate for instrumentation.
+ * 
+ * The abstract class with hint enabled must fit these requirements:
  * <ul>
  * <li>All its non-abstract methods should be final</li>
  * <li>All its non-static properties should be protected final</li>
  * </ul>
  * 
- * Instrumentation
- * post-checks will fail the instrumentation process, if any violation found.
+ * Instrumentation post-checks will fail the instrumentation process, if any violation found.
  * 
- * For non-abstract classes, the annotation is ignored, unless "enabled" property is set to false. In this case, the class will
+ * For non-abstract classes, the annotation is ignored, unless hint is explicitly disabled ("enabled" property is set to false). In this case, the class will
  * be left uninstrumented.
  *
  * EObjectHint, set on package level, is applied to all classes of package

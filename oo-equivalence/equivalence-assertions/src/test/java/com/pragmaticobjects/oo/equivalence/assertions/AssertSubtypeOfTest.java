@@ -24,46 +24,50 @@
  * ============================================================================
  */
 package com.pragmaticobjects.oo.equivalence.assertions;
-
-import org.assertj.core.api.Assertions;
-import static org.assertj.core.api.Assertions.*;
-
-/**
- *
- * @author skapral
- */
-public class AssertSubtypeOf implements Assertion {
-    private final Class<?> subtype;
-    private final Class<?> type;
-    private final boolean deepSearch;
-
-    public AssertSubtypeOf(Class<?> subtype, Class<?> type, boolean deepSearch) {
-        this.subtype = subtype;
-        this.type = type;
-        this.deepSearch = deepSearch;
-    }
-
-    public AssertSubtypeOf(Class<?> subtype, Class<?> type) {
-        this(subtype, type, false);
-    }
-
-    @Override
-    public final void check() throws Exception {
-        if(deepSearch) {
-            Class<?> supertype = subtype.getSuperclass();
-            while(supertype != null) {
-                if(supertype.equals(type)) {
-                    return;
-                }
-                supertype = supertype.getSuperclass();
-            }
-            Assertions.fail(
-                String.format("Expected %s to be subtype of %s", subtype.getName(), type.getName())
-            );
-        } else {
-            assertThat(subtype.getSuperclass())
-                .withFailMessage("Expected %s to be subtype of %s", subtype.getName(), type.getName())
-                .isEqualTo(type);
-        }
+F 
+public class AssertSubtypeOfTest extends TestsSuite {
+    static class A {}
+    static class B extends A {}
+    static class C extends B {}
+    
+    public AssertSubtypeOfTest() {
+        super(
+            new TestCase(
+                "Direct subtype",
+                new AssertCombined(
+                    new AssertAssertionPasses(
+                        new AssertSubtypeOf(
+                            B.class,
+                            A.class
+                        )
+                    ),
+                    new AssertAssertionFails(
+                        new AssertSubtypeOf(
+                            A.class,
+                            B.class
+                        )
+                    )   
+                )
+            ),
+            new TestCase(
+                "Indirect subtype",
+                new AssertCombined(
+                    new AssertAssertionPasses(
+                        new AssertSubtypeOf(
+                            C.class,
+                            A.class,
+                            true
+                        )
+                    ),
+                    new AssertAssertionFails(
+                        new AssertSubtypeOf(
+                            A.class,
+                            C.class,
+                            true
+                        )
+                    )   
+                )
+            )
+        );
     }
 }

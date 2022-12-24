@@ -25,16 +25,16 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests.abstractclasses;
 
-import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
+
 import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractEObject;
 
 /**
- * TODO: SHOULD BE RESTRICTED
+ * Should derive.
+ * 
  * @author skapral
  */
-@EObjectHint(enabled = false)
-public class EObjectExplicitlyDisabledImpl extends ExternalAbstractEObject {
-    public EObjectExplicitlyDisabledImpl(Object id) {
+public class EObjectImpl extends ExternalAbstractEObject {
+    public EObjectImpl(Object id) {
         super(id);
     }
 

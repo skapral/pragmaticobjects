@@ -23,58 +23,78 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.itests;
+package com.pragmaticobjects.oo.equivalence.itests.abstractclasses;
 
+import com.pragmaticobjects.oo.equivalence.assertions.AssertAssertionFails;
 import com.pragmaticobjects.oo.equivalence.assertions.AssertCombined;
 import com.pragmaticobjects.oo.equivalence.assertions.AssertSubtypeOf;
 import com.pragmaticobjects.oo.equivalence.assertions.AssertTwoObjectsEquality;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
-import com.pragmaticobjects.oo.equivalence.itests.classes.AbstractNode;
-import com.pragmaticobjects.oo.equivalence.itests.classes.BaseNode;
-import com.pragmaticobjects.oo.equivalence.itests.classes.LeafNode;
-import com.pragmaticobjects.oo.equivalence.itests.classes.NonHintedAbstractClass;
+import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractEObject;
+import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractNonEObject;
+import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractPlainObject;
 
-/**
- *
- * @author skapral
- */
-public class TestAbstractClasses extends TestsSuite {
-    public TestAbstractClasses() {
+public class TestExplicitAbstractClasses extends TestsSuite {
+    private static final Object KEY1 = new Object();
+    private static final Object KEY2 = new Object();
+    
+    
+    public TestExplicitAbstractClasses() {
         super(
             new TestCase(
                 "types hierarchy is preserved",
                 new AssertCombined(
                     new AssertSubtypeOf(
-                        AbstractNode.class,
-                        EObject.class
+                        PlainObjectImpl.class,
+                        ExternalAbstractPlainObject.class
                     ),
                     new AssertSubtypeOf(
-                        BaseNode.class,
-                        AbstractNode.class
+                        EObjectImpl.class,
+                        ExternalAbstractEObject.class
                     ),
                     new AssertSubtypeOf(
-                        LeafNode.class,
-                        AbstractNode.class
-                    ),
-                    new AssertSubtypeOf(
-                        NonHintedAbstractClass.class,
-                        Object.class
+                        NonEObjectImpl.class,
+                        ExternalAbstractNonEObject.class
                     )
                 )
             ),
             new TestCase(
-                "attributes of base class are participating in eqivalence calculation",
+                "EObject hints are taken into account",
+                new AssertCombined(
+                    new AssertAssertionFails(
+                        new AssertSubtypeOf(
+                            PlainObjectImpl.class,
+                            EObject.class,
+                            true
+                        )
+                    ),
+                    new AssertSubtypeOf(
+                        EObjectImpl.class,
+                        EObject.class,
+                        true
+                    ),
+                    new AssertAssertionFails(
+                        new AssertSubtypeOf(
+                            NonEObjectImpl.class,
+                            EObject.class,
+                            true
+                        )
+                    )
+                )
+            ),
+            new TestCase(
+                "attributes of base class(es) are participating in eqivalence calculation",
                 new AssertCombined(
                     new AssertTwoObjectsEquality(
-                        new LeafNode<Integer>(42),
-                        new LeafNode<Integer>(42),
+                        new EObjectImpl(KEY1),
+                        new EObjectImpl(KEY1),
                         true
                     ),
                     new AssertTwoObjectsEquality(
-                        new LeafNode<Integer>(42),
-                        new LeafNode<Integer>(24),
+                        new EObjectImpl(KEY1),
+                        new EObjectImpl(KEY2),
                         false
                     )
                 )

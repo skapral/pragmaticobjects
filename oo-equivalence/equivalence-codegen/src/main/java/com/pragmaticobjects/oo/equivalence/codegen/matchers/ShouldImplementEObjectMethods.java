@@ -26,6 +26,9 @@
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
 import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
+import java.lang.annotation.Annotation;
+import java.util.function.Function;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
 
@@ -34,13 +37,19 @@ import net.bytebuddy.matcher.ElementMatchers;
  * @author skapral
  */
 public class ShouldImplementEObjectMethods extends ConjunctionMatcher<TypeDescription> {
-    public ShouldImplementEObjectMethods() {
+    public <Hint extends Annotation> ShouldImplementEObjectMethods(Class<Hint> eobjectHint, Function<Hint, Boolean> hintStatus) {
         super(
-            ElementMatchers.not(
-                ElementMatchers.isAbstract()
+            new DisjunctionMatcher<>(
+                // We leave the methods unimplemented in abstract classes...
+                ElementMatchers.not(
+                    ElementMatchers.isAbstract()
+                ),
+                //...unless these classes have enabling hint
+                new HasHint<>(eobjectHint, hintStatus, true)
             ),
+            //...we implement EObject methods for all EObject inheritors (direct, or transitive)
             new MatchSuperClass(
-                new DisjunctionMatcher<TypeDescription>(
+                new DisjunctionMatcher<>(
                     ElementMatchers.is(EObject.class),
                     new ConjunctionMatcher<>(
                         ElementMatchers.isAbstract(),
@@ -51,5 +60,9 @@ public class ShouldImplementEObjectMethods extends ConjunctionMatcher<TypeDescri
                 )
             )
         );
+    }
+    
+    public ShouldImplementEObjectMethods() {
+        this(EObjectHint.class, EObjectHint::enabled);
     }
 }

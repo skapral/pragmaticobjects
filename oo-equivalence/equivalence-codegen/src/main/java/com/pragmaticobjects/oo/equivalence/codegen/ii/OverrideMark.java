@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-itests.test-cases
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,20 +23,17 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.itests.abstractclasses;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractNonEObject;
+import java.lang.annotation.Annotation;
 
 /**
- * Should derive
+ *
  * @author skapral
  */
-public class NonEObjectImplicitImpl extends ExternalAbstractNonEObject {
-    public NonEObjectImplicitImpl(Object id) {
-        super(id);
-    }
-    
+public class OverrideMark implements Override {
     @Override
-    public void method() {
-    }    
+    public final Class<? extends Annotation> annotationType() {
+        return Override.class;
+    }
 }
