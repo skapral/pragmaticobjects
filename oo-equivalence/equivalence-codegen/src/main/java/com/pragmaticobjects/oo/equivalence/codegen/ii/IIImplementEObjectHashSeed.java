@@ -33,12 +33,15 @@ import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 import net.bytebuddy.jar.asm.Opcodes;
 import net.bytebuddy.matcher.ElementMatchers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author skapral
  */
 public class IIImplementEObjectHashSeed implements InstrumentationIteration {
+    private static final Logger log = LoggerFactory.getLogger(IIImplementEObjectHashSeed.class);
     private final int seedValue;
 
     public IIImplementEObjectHashSeed(int seedValue) {
@@ -53,17 +56,24 @@ public class IIImplementEObjectHashSeed implements InstrumentationIteration {
 
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
+        log.debug("hashSeed() " + typeDescription.getActualName());
         if(!typeDescription.getDeclaredMethods()
                 .filter(ElementMatchers.named("hashSeed"))
                 .isEmpty()) {
+            // If for some reason the method is already defined, we skip instrumentation for it
+            log.debug("Skipping " + typeDescription);
             return builder;
+        }
+        int modifiers = Opcodes.ACC_PROTECTED;
+        if(!typeDescription.isAbstract()) {
+            modifiers = modifiers | Opcodes.ACC_FINAL;
         }
         StackManipulation baseTypeImpl = new StackManipulation.Compound(
             IntegerConstant.forValue(seedValue),
             MethodReturn.INTEGER
         );
         return builder
-                .defineMethod("hashSeed", int.class, Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL)
+                .defineMethod("hashSeed", int.class, modifiers)
                 .intercept(new Implementation(baseTypeImpl))
                 .annotateMethod(new GeneratedMark());
     }

@@ -25,20 +25,18 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests.abstractclasses;
 
-
-import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractEObject;
+import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractPlainObject;
 
 /**
- * Should derive.
- * 
+ *
  * @author skapral
  */
-public class EObjectImplicitImpl extends ExternalAbstractEObject {
-    public EObjectImplicitImpl(Object id) {
+public class PlainObjectImpl extends ExternalAbstractPlainObject {
+    public PlainObjectImpl(Object id) {
         super(id);
     }
 
     @Override
-    public final void method() {
-    }    
+    public void method() {
+    }
 }

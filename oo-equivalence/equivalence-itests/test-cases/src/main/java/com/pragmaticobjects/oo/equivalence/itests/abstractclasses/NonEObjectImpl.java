@@ -25,22 +25,18 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests.abstractclasses;
 
-
-import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
-import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractEObject;
+import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractNonEObject;
 
 /**
- * Should be eobject
- * 
+ * Should derive
  * @author skapral
  */
-@EObjectHint(enabled = true)
-public class EObjectExplicitlyEnabledImpl extends ExternalAbstractEObject {
-    public EObjectExplicitlyEnabledImpl(Object id) {
+public class NonEObjectImpl extends ExternalAbstractNonEObject {
+    public NonEObjectImpl(Object id) {
         super(id);
     }
-
+    
     @Override
-    public final void method() {
+    public void method() {
     }    
 }

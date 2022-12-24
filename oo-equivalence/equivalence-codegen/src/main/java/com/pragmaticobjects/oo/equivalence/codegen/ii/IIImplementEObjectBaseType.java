@@ -33,25 +33,36 @@ import net.bytebuddy.implementation.bytecode.constant.ClassConstant;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 import net.bytebuddy.jar.asm.Opcodes;
 import net.bytebuddy.matcher.ElementMatchers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author skapral
  */
 public class IIImplementEObjectBaseType implements InstrumentationIteration {
+    private static final Logger log = LoggerFactory.getLogger(IIImplementEObjectBaseType.class);
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
+        log.debug("baseType() " + typeDescription.getActualName());
         if(!typeDescription.getDeclaredMethods()
                 .filter(ElementMatchers.named("baseType"))
                 .isEmpty()) {
+            // If for some reason the method is already defined, we skip instrumentation for it
+            log.debug("Skipping " + typeDescription);
             return builder;
         }
+        int modifiers = Opcodes.ACC_PROTECTED;
+        if(!typeDescription.isAbstract()) {
+            modifiers = modifiers | Opcodes.ACC_FINAL;
+        }
+        
         StackManipulation baseTypeImpl = new StackManipulation.Compound(
             ClassConstant.of(typeDescription),
             MethodReturn.REFERENCE
         );
         return builder
-                .defineMethod("baseType", Class.class, Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL)
+                .defineMethod("baseType", Class.class, modifiers)
                 .intercept(new Implementation(baseTypeImpl))
                 .annotateMethod(new GeneratedMark());
     }

@@ -27,16 +27,18 @@ package com.pragmaticobjects.oo.equivalence.codegen.stage;
 
 import com.pragmaticobjects.oo.equivalence.codegen.banner.BnnrFromResource;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIConditional;
-import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectAttributes;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIMarkAsEObject;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIVerbose;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
+import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectAttributes2;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchSuperClass;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectBaseType;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectHashSeed;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IISequential;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AllMethodsAreFinal;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AttributesStandForIdentity;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.DisjunctionMatcher;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.ShouldBeMarkedAsEObject;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.ShouldImplementEObjectMethods;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.VerboseMatcher;
@@ -52,12 +54,27 @@ public class StandardInstrumentationStage extends SequenceStage {
      * Ctor.
      */
     public StandardInstrumentationStage() {
-        super(new ShowBannerStage(
+        super(
+            new ShowBannerStage(
                 new BnnrFromResource(
                     "banner"
                 )
             ),
             new ShowStatsStage(),
+            new ByteBuddyValidationStage(
+                "It's prohibited to place EObjectHint on inherited classes",
+                new MatchSuperClass(
+                    ElementMatchers.not(
+                        new DisjunctionMatcher<>(
+                            ElementMatchers.is(Object.class),
+                            ElementMatchers.is(EObject.class)
+                        )
+                    )
+                ),
+                ElementMatchers.not(
+                    ElementMatchers.isAnnotatedWith(EObjectHint.class)
+                )
+            ),
             new ByteBuddyTransformationStage(
                 new IIConditional(
                     new ShouldBeMarkedAsEObject(),
@@ -71,7 +88,7 @@ public class StandardInstrumentationStage extends SequenceStage {
                     new ShouldImplementEObjectMethods(),
                     new IISequential(
                         new IIVerbose(
-                            new IIImplementEObjectAttributes()
+                            new IIImplementEObjectAttributes2()
                         ),
                         new IIVerbose(
                             new IIImplementEObjectBaseType()
