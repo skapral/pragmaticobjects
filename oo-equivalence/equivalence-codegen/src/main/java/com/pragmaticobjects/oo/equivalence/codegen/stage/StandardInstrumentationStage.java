@@ -31,7 +31,7 @@ import com.pragmaticobjects.oo.equivalence.codegen.ii.IIMarkAsEObject;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIVerbose;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
-import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectAttributes2;
+import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectAttributes;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchSuperClass;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectBaseType;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectHashSeed;
@@ -88,7 +88,7 @@ public class StandardInstrumentationStage extends SequenceStage {
                     new ShouldImplementEObjectMethods(),
                     new IISequential(
                         new IIVerbose(
-                            new IIImplementEObjectAttributes2()
+                            new IIImplementEObjectAttributes()
                         ),
                         new IIVerbose(
                             new IIImplementEObjectBaseType()
