@@ -55,6 +55,10 @@ public class TestExplicitAbstractClasses extends TestsSuite {
                         ExternalAbstractEObject.class
                     ),
                     new AssertSubtypeOf(
+                        EObjectImplImpl.class,
+                        EObjectImpl.class
+                    ),  
+                    new AssertSubtypeOf(
                         NonEObjectImpl.class,
                         ExternalAbstractNonEObject.class
                     )
@@ -72,6 +76,11 @@ public class TestExplicitAbstractClasses extends TestsSuite {
                     ),
                     new AssertSubtypeOf(
                         EObjectImpl.class,
+                        EObject.class,
+                        true
+                    ),
+                    new AssertSubtypeOf(
+                        EObjectImplImpl.class,
                         EObject.class,
                         true
                     ),
@@ -95,6 +104,16 @@ public class TestExplicitAbstractClasses extends TestsSuite {
                     new AssertTwoObjectsEquality(
                         new EObjectImpl(KEY1),
                         new EObjectImpl(KEY2),
+                        false
+                    ),
+                    new AssertTwoObjectsEquality(
+                        new EObjectImplImpl(KEY1),
+                        new EObjectImplImpl(KEY1),
+                        true
+                    ),
+                    new AssertTwoObjectsEquality(
+                        new EObjectImplImpl(KEY1),
+                        new EObjectImplImpl(KEY2),
                         false
                     )
                 )

@@ -39,60 +39,60 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
             new TestCase(
                 "mismatch simple object",
                 new AssertThatTypeDoesNotMatch(
-                    Type1.class,
+                    SimpleType.class,
                     new ShouldImplementEObjectMethods()
                 )
             ),
             new TestCase(
                 "match eobject direct subtypes",
                 new AssertThatTypeMatches(
-                    Type2.class,
+                    EObjectDirectSubtype.class,
                     new ShouldImplementEObjectMethods()
                 )
             ),
             new TestCase(
                 "mismatch eobject indirect subtypes",
                 new AssertThatTypeDoesNotMatch(
-                    Type3.class,
+                    EObjectIndirectSubtype.class,
                     new ShouldImplementEObjectMethods()
                 )
             ),
             new TestCase(
                 "mismatch abstract class",
                 new AssertThatTypeDoesNotMatch(
-                    Type4.class,
+                    AbstractType.class,
                     new ShouldImplementEObjectMethods()
                 )
             ),
             new TestCase(
-                "mismatch abstract eobject subtype",
-                new AssertThatTypeDoesNotMatch(
-                    Type5.class,
+                "match abstract eobject subtype",
+                new AssertThatTypeMatches(
+                    AbstractEObjectSubtype.class,
                     new ShouldImplementEObjectMethods()
                 )
             ),
             new TestCase(
                 "mismatch subtype from abstract eobject",
                 new AssertThatTypeMatches(
-                    Type6.class,
+                    AbstractEObjectSubtypeImpl.class,
                     new ShouldImplementEObjectMethods()
                 )
             )
         );
     }
     
-    private static class Type1 {
+    private static class SimpleType { 
         private final Object obj;
 
-        public Type1(Object obj) {
+        public SimpleType(Object obj) {
             this.obj = obj;
         }
     }
     
-    private static class Type2 extends EObject {
+    private static class EObjectDirectSubtype extends EObject {
         private final Object obj;
 
-        public Type2(Object obj) {
+        public EObjectDirectSubtype(Object obj) {
             this.obj = obj;
         }
 
@@ -108,23 +108,23 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
 
         @Override
         protected final Class<? extends EObject> baseType() {
-            return Type2.class;
+            return EObjectDirectSubtype.class;
         }
     }
     
-    private static class Type3 extends Type2 {
-        public Type3(Object obj) {
+    private static class EObjectIndirectSubtype extends EObjectDirectSubtype {
+        public EObjectIndirectSubtype(Object obj) {
             super(obj);
         }
     }
     
-    private static abstract class Type4 {
+    private static abstract class AbstractType {
     }
     
-    private static abstract class Type5 extends EObject {
+    private static abstract class AbstractEObjectSubtype extends EObject {
     }
     
-    private static class Type6 extends Type5 {
+    private static class AbstractEObjectSubtypeImpl extends AbstractEObjectSubtype {
         @Override
         protected final Object[] attributes() {
             return new Object[] {};
@@ -137,7 +137,7 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
 
         @Override
         protected final Class<? extends EObject> baseType() {
-            return Type6.class;
+            return AbstractEObjectSubtypeImpl.class;
         }
     }
 }

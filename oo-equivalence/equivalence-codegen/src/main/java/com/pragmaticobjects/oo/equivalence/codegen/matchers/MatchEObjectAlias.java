@@ -26,30 +26,27 @@
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
 import com.pragmaticobjects.oo.equivalence.base.EObject;
-import java.lang.annotation.Annotation;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
-
-/**
- * Matches classes, for which generation of EObject methods should be initiated.
- * 
- * @author skapral
- */
-public class ShouldImplementEObjectMethods extends ConjunctionMatcher<TypeDescription> {
-    public <Hint extends Annotation> ShouldImplementEObjectMethods() {
+public class MatchEObjectAlias extends ConjunctionMatcher<TypeDescription> {
+    public MatchEObjectAlias() {
         super(
-            //...we implement EObject methods for all EObject inheritors (direct, or transitive)
+            ElementMatchers.not(
+                ElementMatchers.isAbstract()
+            ),
             new MatchSuperClass(
-                new DisjunctionMatcher<>(
-                    ElementMatchers.is(EObject.class),
-                    new ConjunctionMatcher<>(
-                        ElementMatchers.isAbstract(),
-                        new ThisOrSuperClassMatcher(
-                            ElementMatchers.is(EObject.class)
-                        )
+                new ConjunctionMatcher<>(
+                    ElementMatchers.not(
+                        ElementMatchers.is(EObject.class)
+                    ),
+                    ElementMatchers.isSubTypeOf(
+                        EObject.class
+                    ),
+                    ElementMatchers.not(
+                        ElementMatchers.isAbstract()
                     )
                 )
             )
         );
-    }
+    }    
 }

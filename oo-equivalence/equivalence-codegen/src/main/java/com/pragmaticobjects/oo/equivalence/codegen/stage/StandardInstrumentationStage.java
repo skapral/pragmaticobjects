@@ -36,9 +36,11 @@ import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchSuperClass;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectBaseType;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectHashSeed;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IISequential;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.AliasesDoesntDeclareAdditionalFieldsAndMethods;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AllMethodsAreFinal;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AttributesStandForIdentity;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.DisjunctionMatcher;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchEObjectAlias;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.ShouldBeMarkedAsEObject;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.ShouldImplementEObjectMethods;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.VerboseMatcher;
@@ -61,6 +63,7 @@ public class StandardInstrumentationStage extends SequenceStage {
                 )
             ),
             new ShowStatsStage(),
+            // Pre-checks
             new ByteBuddyValidationStage(
                 "It's prohibited to place EObjectHint on inherited classes",
                 new MatchSuperClass(
@@ -75,6 +78,7 @@ public class StandardInstrumentationStage extends SequenceStage {
                     ElementMatchers.isAnnotatedWith(EObjectHint.class)
                 )
             ),
+            // Instrumentation
             new ByteBuddyTransformationStage(
                 new IIConditional(
                     new ShouldBeMarkedAsEObject(),
@@ -116,6 +120,13 @@ public class StandardInstrumentationStage extends SequenceStage {
                 ),
                 new VerboseMatcher<>(
                     new AttributesStandForIdentity()
+                )
+            ),
+            new ByteBuddyValidationStage(
+                "EObject aliases must not introduce new fields or methods",
+                new MatchEObjectAlias(),
+                new VerboseMatcher<>(
+                    new AliasesDoesntDeclareAdditionalFieldsAndMethods()
                 )
             )
         );

@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * equivalence-itests.test-cases
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,33 +23,15 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
-
-import com.pragmaticobjects.oo.equivalence.base.EObject;
-import java.lang.annotation.Annotation;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatchers;
+package com.pragmaticobjects.oo.equivalence.itests.abstractclasses;
 
 /**
- * Matches classes, for which generation of EObject methods should be initiated.
- * 
+ *
  * @author skapral
  */
-public class ShouldImplementEObjectMethods extends ConjunctionMatcher<TypeDescription> {
-    public <Hint extends Annotation> ShouldImplementEObjectMethods() {
-        super(
-            //...we implement EObject methods for all EObject inheritors (direct, or transitive)
-            new MatchSuperClass(
-                new DisjunctionMatcher<>(
-                    ElementMatchers.is(EObject.class),
-                    new ConjunctionMatcher<>(
-                        ElementMatchers.isAbstract(),
-                        new ThisOrSuperClassMatcher(
-                            ElementMatchers.is(EObject.class)
-                        )
-                    )
-                )
-            )
-        );
+public class EObjectImplImpl extends EObjectImpl {
+
+    public EObjectImplImpl(Object id) {
+        super(id);
     }
 }
