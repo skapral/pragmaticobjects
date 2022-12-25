@@ -13,6 +13,21 @@
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>2.0.6</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>2.0.6</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -77,6 +92,13 @@
                     <exists>pom.xml</exists>
                 </file>
             </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
             <build>
                 <plugins>
                     <plugin>
@@ -90,14 +112,14 @@
                             </dependency>
                         </dependencies>
                         <configuration>
+                            <systemPropertyVariables>
+                                <org.slf4j.simpleLogger.defaultLogLevel>DEBUG</org.slf4j.simpleLogger.defaultLogLevel>
+                                <org.slf4j.simpleLogger.showThreadName>false</org.slf4j.simpleLogger.showThreadName>
+                                <org.slf4j.simpleLogger.levelInBrackets>true</org.slf4j.simpleLogger.levelInBrackets>
+                            </systemPropertyVariables>
                             <trimStackTrace>false</trimStackTrace>
                             <reportFormat>plain</reportFormat>
-                            <consoleOutputReporter>
-                                <disable>true</disable>
-                            </consoleOutputReporter>
-                            <statelessTestsetInfoReporter
-                                implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporterUnicode">
-                            </statelessTestsetInfoReporter>
+                            <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporterUnicode"/>
                         </configuration>
                     </plugin>
                 </plugins>
