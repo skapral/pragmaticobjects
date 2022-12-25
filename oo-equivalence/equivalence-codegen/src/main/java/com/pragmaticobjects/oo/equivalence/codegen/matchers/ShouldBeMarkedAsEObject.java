@@ -32,13 +32,19 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
 
 /**
- *
+ * Matches classes, that should be marked as EObjects. 
+ * Semantically, "marking as EObject" means confirming that equivalence logic is applicable for the type.
+ * Technically, "marking as EObject" means making the class inherit {@link com.pragmaticobjects.oo.equivalence.base.EObject} and implementing its methods, if necessary.
+ * 
+ * Later, all {@link com.pragmaticobjects.oo.equivalence.base.EObject} inheritors will become candidates for instrumentation
+ * 
+ * @see ShouldImplementEObjectMethods
  * @author skapral
  */
 public class ShouldBeMarkedAsEObject extends DisjunctionMatcher<TypeDescription> {
     public <Hint extends Annotation> ShouldBeMarkedAsEObject(Class<Hint> eobjectHint, Function<Hint, Boolean> hintStatus) {
         super(
-            // direct subtype of Object, attributes of which are all final (stand for identity)
+            // direct non-abstract subtype of Object, attributes of which are all final (stand for identity)
             new ConjunctionMatcher<>(
                 ElementMatchers.not(
                     ElementMatchers.isAbstract()
