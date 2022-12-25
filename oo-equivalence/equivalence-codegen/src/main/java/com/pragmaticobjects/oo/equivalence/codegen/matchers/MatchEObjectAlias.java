@@ -28,6 +28,12 @@ package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
+
+/**
+ * Matches EObject aliases, aka inheritors from non-abstract EObject-implementing classes.
+ * 
+ * @author skapral
+ */
 public class MatchEObjectAlias extends ConjunctionMatcher<TypeDescription> {
     public MatchEObjectAlias() {
         super(

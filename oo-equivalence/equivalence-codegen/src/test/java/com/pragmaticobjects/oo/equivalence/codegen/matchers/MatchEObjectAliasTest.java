@@ -25,78 +25,80 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.assertions.AssertCombined;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
 
-public class AliasesDoesntDeclareAdditionalFieldsAndMethodsTest extends TestsSuite {
-    public AliasesDoesntDeclareAdditionalFieldsAndMethodsTest() {
+/**
+ *
+ * @author skapral
+ */
+public class MatchEObjectAliasTest extends TestsSuite {
+
+    public MatchEObjectAliasTest() {
         super(
             new TestCase(
-                "match non-alias (direct eobject implementor)",
-                new AssertThatTypeMatches(
+                "mismatch non-alias (non-eobject)",
+                new AssertThatTypeDoesNotMatch(
+                    NonBase.class,
+                    new MatchEObjectAlias()
+                )
+            ),
+            new TestCase(
+                "mismatch non-alias (non-eobject inheritor)",
+                new AssertThatTypeDoesNotMatch(
+                    NonBaseInheritor.class,
+                    new MatchEObjectAlias()
+                )
+            ),
+            new TestCase(
+                "mismatch non-alias (direct eobject implementor)",
+                new AssertThatTypeDoesNotMatch(
                     Base.class,
-                    new AliasesDoesntDeclareAdditionalFieldsAndMethods()
+                    new MatchEObjectAlias()
                 )
             ),
             new TestCase(
                 "match alias (eobject inheritor)",
                 new AssertThatTypeMatches(
-                    Base2Correct.class,
-                    new AliasesDoesntDeclareAdditionalFieldsAndMethods()
+                    BaseAlias.class,
+                    new MatchEObjectAlias()
                 )
             ),
             new TestCase(
-                "mismatch incorrect alias (eobject inheritor)",
-                new AssertCombined(
-                    new AssertThatTypeDoesNotMatch(
-                        Base2Incorrect_ExtraFields.class,
-                        new AliasesDoesntDeclareAdditionalFieldsAndMethods()
-                    ),
-                    new AssertThatTypeDoesNotMatch(
-                        Base2Incorrect_ExtraMethods.class,
-                        new AliasesDoesntDeclareAdditionalFieldsAndMethods()
-                    )
-                )
-            ),
-            new TestCase(
-                "match non-alias (direct eobject abstract implementor)",
-                new AssertThatTypeMatches(
+                "mismatch non-alias (direct eobject abstract implementor)",
+                new AssertThatTypeDoesNotMatch(
                     Abstract.class,
-                    new AliasesDoesntDeclareAdditionalFieldsAndMethods()
+                    new MatchEObjectAlias()
                 )
             ),
             new TestCase(
-                "match non-alias (abstract eobject inheritors)",
-                new AssertThatTypeMatches(
+                "mismatch non-alias (abstract eobject inheritors)",
+                new AssertThatTypeDoesNotMatch(
                     Abstract2.class,
-                    new AliasesDoesntDeclareAdditionalFieldsAndMethods()
+                    new MatchEObjectAlias()
                 )
             ),
             new TestCase(
-                "match non-alias (abstract eobject implementor)",
-                new AssertThatTypeMatches(
+                "mismatch non-alias (abstract eobject implementor)",
+                new AssertThatTypeDoesNotMatch(
                     AbstractBase.class,
-                    new AliasesDoesntDeclareAdditionalFieldsAndMethods()
+                    new MatchEObjectAlias()
                 )
             ),
             new TestCase(
                 "match alias (abstract eobject implementor's inheriotor)",
                 new AssertThatTypeMatches(
-                    AbstractBase2Correct.class,
-                    new AliasesDoesntDeclareAdditionalFieldsAndMethods()
-                )
-            ),
-            new TestCase(
-                "mismatch incorrect alias (abstract eobject implementor's inheriotor)",
-                new AssertThatTypeDoesNotMatch(
-                    AbstractBase2Incorrect.class,
-                    new AliasesDoesntDeclareAdditionalFieldsAndMethods()
+                    AbstractBaseAlias.class,
+                    new MatchEObjectAlias()
                 )
             )
         );
     }
+    
+    public static class NonBase {}
+    
+    public static class NonBaseInheritor extends NonBase {}
     
     public static class Base extends EObject {
         private final int x;
@@ -123,27 +125,10 @@ public class AliasesDoesntDeclareAdditionalFieldsAndMethodsTest extends TestsSui
         }    
     }
     
-    public static class Base2Correct extends Base {
-        public Base2Correct() {
+    public static class BaseAlias extends Base {
+        public BaseAlias() {
             super(1, 2);
         }
-    }
-    
-    public static class Base2Incorrect_ExtraFields extends Base {
-        private final int z;
-        
-        public Base2Incorrect_ExtraFields(int x, int y, int z) {
-            super(x, y);
-            this.z = z;
-        }
-    }
-    
-    public static class Base2Incorrect_ExtraMethods extends Base {
-        public Base2Incorrect_ExtraMethods() {
-            super(1, 2);
-        }
-        
-        public final void additionalMethod() {}
     }
     
     public static abstract class Abstract extends EObject {
@@ -199,22 +184,9 @@ public class AliasesDoesntDeclareAdditionalFieldsAndMethodsTest extends TestsSui
         }
     }
     
-    public static class AbstractBase2Correct extends AbstractBase {
-        public AbstractBase2Correct() {
+    public static class AbstractBaseAlias extends AbstractBase {
+        public AbstractBaseAlias() {
             super(1, 2);
-        }
-    }
-    
-    public static class AbstractBase2Incorrect extends AbstractBase {
-        private final int z;
-        
-        public AbstractBase2Incorrect(int x, int y, int z) {
-            super(x, y);
-            this.z = z;
-        }
-
-        public final int getZ() {
-            return z;
         }
     }
 }

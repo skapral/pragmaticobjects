@@ -33,10 +33,13 @@ import net.bytebuddy.matcher.ElementMatchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AliasesDoesntDeclareAdditionalFieldsAndMethods implements ElementMatcher<TypeDescription> {
-    private static final Logger log = LoggerFactory.getLogger(AliasesDoesntDeclareAdditionalFieldsAndMethods.class);
+/**
+ * @see MatchEObjectAlias
+ * @author skapral
+ */
+public class ClassDeclaresAdditionalFieldsAndMethods implements ElementMatcher<TypeDescription> {
+    private static final Logger log = LoggerFactory.getLogger(ClassDeclaresAdditionalFieldsAndMethods.class);
     
-    private static final ElementMatcher<TypeDescription> IS_ALIAS = new MatchEObjectAlias();
     private static final ElementMatcher<FieldDescription> FIELDS_DECLARED = ElementMatchers.not(
         new DisjunctionMatcher<>(
             ElementMatchers.isTransient(),
@@ -63,20 +66,14 @@ public class AliasesDoesntDeclareAdditionalFieldsAndMethods implements ElementMa
     
     @Override
     public final boolean matches(TypeDescription td) {
-        boolean isAlias = IS_ALIAS.matches(td);
-        if(isAlias) {
-            boolean declaresAnything = DECLARES_FIELDS_OR_METHODS.matches(td);
-            log.debug("{} is alias", td.getSimpleName());
-            log.debug("  declaresAnything = {}", declaresAnything);
-            if(log.isDebugEnabled() && declaresAnything) {
-                log.debug("{} declares some fields or methods:", td.getSimpleName());
-                td.getDeclaredFields().filter(FIELDS_DECLARED).forEach(field -> log.debug("  Field:  {}", field.toString()));
-                td.getDeclaredMethods().filter(METHODS_DECLARED).forEach(field -> log.debug("  Method: {}", field.toString()));
-            }
-            return !declaresAnything;
-        } else {
-            log.debug("{} is not alias", td.getSimpleName());
-            return true;
+        boolean declaresAnything = DECLARES_FIELDS_OR_METHODS.matches(td);
+        log.debug("{} is alias", td.getSimpleName());
+        log.debug("  declaresAnything = {}", declaresAnything);
+        if(log.isDebugEnabled() && declaresAnything) {
+            log.debug("{} declares some fields or methods:", td.getSimpleName());
+            td.getDeclaredFields().filter(FIELDS_DECLARED).forEach(field -> log.debug("  Field:  {}", field.toString()));
+            td.getDeclaredMethods().filter(METHODS_DECLARED).forEach(field -> log.debug("  Method: {}", field.toString()));
         }
+        return declaresAnything;
     }
 }

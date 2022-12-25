@@ -36,7 +36,7 @@ import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchSuperClass;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectBaseType;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IIImplementEObjectHashSeed;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.IISequential;
-import com.pragmaticobjects.oo.equivalence.codegen.matchers.AliasesDoesntDeclareAdditionalFieldsAndMethods;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.ClassDeclaresAdditionalFieldsAndMethods;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AllMethodsAreFinal;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.AttributesStandForIdentity;
 import com.pragmaticobjects.oo.equivalence.codegen.matchers.DisjunctionMatcher;
@@ -56,8 +56,7 @@ public class StandardInstrumentationStage extends SequenceStage {
      * Ctor.
      */
     public StandardInstrumentationStage() {
-        super(
-            new ShowBannerStage(
+        super(new ShowBannerStage(
                 new BnnrFromResource(
                     "banner"
                 )
@@ -126,7 +125,9 @@ public class StandardInstrumentationStage extends SequenceStage {
                 "EObject aliases must not introduce new fields or methods",
                 new MatchEObjectAlias(),
                 new VerboseMatcher<>(
-                    new AliasesDoesntDeclareAdditionalFieldsAndMethods()
+                    ElementMatchers.not(
+                        new ClassDeclaresAdditionalFieldsAndMethods()
+                    )
                 )
             )
         );
