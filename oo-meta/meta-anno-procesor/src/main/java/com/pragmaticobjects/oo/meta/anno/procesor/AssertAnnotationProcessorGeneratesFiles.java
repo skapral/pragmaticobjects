@@ -25,10 +25,11 @@
  */
 package com.pragmaticobjects.oo.meta.anno.procesor;
 
+import com.pragmaticobjects.oo.equivalence.base.EquivalenceHint;
 import com.pragmaticobjects.oo.tests.Assertion;
 import io.vavr.collection.List;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
@@ -36,7 +37,9 @@ import java.net.URLClassLoader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Objects;
 import javax.annotation.processing.AbstractProcessor;
 import javax.tools.JavaCompiler;
 import javax.tools.StandardJavaFileManager;
@@ -44,52 +47,82 @@ import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.Assertions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author skapral
  */
 public class AssertAnnotationProcessorGeneratesFiles implements Assertion {
+    private static final Logger log = LoggerFactory.getLogger(AssertAnnotationProcessorGeneratesFiles.class);
 
-    public static class File {
-        private final Path path;
-        private final String contents;
+    public static class SourceFile {
+        private final String resourceName;
+        private final Path compileDirPath;
 
-        public File(Path path, String contents) {
-            this.path = path;
-            this.contents = contents;
+        public SourceFile(String resourceName, Path compileDirPath) {
+            this.resourceName = resourceName;
+            this.compileDirPath = compileDirPath;
+        }
+
+        public SourceFile(String resourceName) {
+            this(
+                resourceName,
+                Paths.get(resourceName)
+            );
+        }
+
+        public final void prepare(Path dir) {
+            Path file = dir.resolve(compileDirPath);
+            log.debug("preparing {}", file);
+            log.debug("{} {} {}", dir, compileDirPath, resourceName);
+            try (InputStream is = Objects.requireNonNull(
+                this.getClass().getClassLoader().getResourceAsStream(resourceName),
+                "null - " + resourceName
+            )) {
+                Files.createDirectories(file.getParent());
+                try (OutputStream os = Files.newOutputStream(file)) {
+                    IOUtils.copy(is, os);
+                }
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         }
 
         public final void assertPresence(Path root) {
-            Assertions.assertThat(root.resolve(path)).exists();
-            try(FileInputStream is = new FileInputStream(root.resolve(path).toFile())) {
-                String contents = IOUtils.toString(is, Charset.defaultCharset());
-                Assertions.assertThat(contents).isEqualToNormalizingNewlines(this.contents);
-            } catch(Exception ex) {
+            Path file = root.resolve(resourceName);
+            Assertions.assertThat(file).exists();
+            try (InputStream is = Files.newInputStream(file)) {
+                try (InputStream isExp = Objects.requireNonNull(
+                    this.getClass().getClassLoader().getResourceAsStream(resourceName),
+                    "null - " + resourceName
+                )) {
+                    String contents = IOUtils.toString(is, Charset.defaultCharset());
+                    String contentsExpected = IOUtils.toString(isExp, Charset.defaultCharset());
+                    Assertions.assertThat(contents).isEqualToNormalizingNewlines(contentsExpected);
+                }
+            } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
         }
     }
 
     private final AbstractProcessor processor;
-    private final Path sourceFileLocations;
-    private final String sourceFileContents;
-    private final List<File> files;
+    private final @EquivalenceHint List<SourceFile> sources;
+    private final @EquivalenceHint List<SourceFile> sourcesAfterProcessing;
 
-    public AssertAnnotationProcessorGeneratesFiles(AbstractProcessor processor, Path sourceFileLocations, String sourceFileContents, List<File> files) {
+    public AssertAnnotationProcessorGeneratesFiles(AbstractProcessor processor, List<SourceFile> sources, List<SourceFile> sourcesAfterProcessing) {
         this.processor = processor;
-        this.sourceFileLocations = sourceFileLocations;
-        this.sourceFileContents = sourceFileContents;
-        this.files = files;
+        this.sources = sources;
+        this.sourcesAfterProcessing = sourcesAfterProcessing;
     }
-    
+
     @Override
     public final void check() throws Exception {
         Path tmpDir = Files.createTempDirectory("AssertAnnotationProcessorGeneratesFiles");
-        Files.createDirectories(tmpDir.resolve(sourceFileLocations).getParent());
-        try(OutputStream os = new FileOutputStream(tmpDir.resolve(sourceFileLocations).toFile())) {
-            IOUtils.write(sourceFileContents, os, Charset.defaultCharset());
-        }
+        log.debug("Testing directory - " + tmpDir);
+        sources.forEach(s -> s.prepare(tmpDir));
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         try (StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null)) {
             MethodHandles.Lookup lookup = MethodHandles.lookup();
@@ -103,6 +136,7 @@ public class AssertAnnotationProcessorGeneratesFiles implements Assertion {
             }
             if (cl instanceof URLClassLoader) {
                 for (URL url : ((URLClassLoader) cl).getURLs()) {
+                    log.debug("URL {}", url);
                     if (classpath.length() > 0) {
                         classpath.append(separator);
                     }
@@ -120,11 +154,15 @@ public class AssertAnnotationProcessorGeneratesFiles implements Assertion {
                     "-classpath", classpath.toString()
                 ),
                 null,
-                fileManager.getJavaFileObjects(tmpDir.resolve(sourceFileLocations).toFile())
+                fileManager.getJavaFileObjects(
+                    Files.find(tmpDir, 100, (p, attrs) -> Files.isRegularFile(p) && p.toString().endsWith(".java"))
+                        .map(Path::toFile)
+                        .<File>toArray(i -> new File[i])
+                )
             );
             task.setProcessors(Arrays.asList(processor));
             if (task.call()) {
-                for(File file : files) {
+                for (SourceFile file : sourcesAfterProcessing) {
                     file.assertPresence(tmpDir);
                 }
             } else {

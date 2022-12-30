@@ -32,6 +32,8 @@ import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.List;
 import java.nio.file.Paths;
 
+import static com.pragmaticobjects.oo.meta.anno.procesor.AssertAnnotationProcessorGeneratesFiles.SourceFile;
+import com.test.assertions.DummyProcessor;
 
 /**
  *
@@ -45,21 +47,12 @@ public class AssertAnnotationProcessorGeneratesFilesTest extends TestsSuite {
                 new AssertAssertionPasses(
                     new AssertAnnotationProcessorGeneratesFiles(
                         new DummyProcessor(),
-                        Paths.get("com","test", "AnnotatedType.java"),
-                        String.join(
-                            "\r\n",
-                            "package com.test;",
-                            "import com.pragmaticobjects.oo.meta.anno.procesor.Dummy;",
-                            "@Dummy(name = \"A\", message = \"42\")",
-                            "public class AnnotatedType {",
-                            "    // EMPTY",
-                            "}"
+                        List.of(
+                            new SourceFile("com/test/assertions/Dummy.java"),
+                            new SourceFile("com/test/assertions/AnnotatedType1.java")
                         ),
                         List.of(
-                            new AssertAnnotationProcessorGeneratesFiles.File(
-                                Paths.get("A"),
-                                "42"
-                            )
+                            new SourceFile("com/test/assertions/A")
                         )
                     )
                 )
@@ -69,21 +62,12 @@ public class AssertAnnotationProcessorGeneratesFilesTest extends TestsSuite {
                 new AssertAssertionFails(
                     new AssertAnnotationProcessorGeneratesFiles(
                         new DummyProcessor(),
-                        Paths.get("com","test", "AnnotatedType.java"),
-                        String.join(
-                            "\r\n",
-                            "package com.test;",
-                            "import com.pragmaticobjects.oo.meta.anno.procesor.Dummy;",
-                            "@Dummy(name = \"A\", message = \"42\")",
-                            "public class AnnotatedType {",
-                            "    // EMPTY",
-                            "}"
+                        List.of(
+                            new SourceFile("com/test/assertions/Dummy.java"),
+                            new SourceFile("com/test/assertions/AnnotatedType1.java")
                         ),
                         List.of(
-                            new AssertAnnotationProcessorGeneratesFiles.File(
-                                Paths.get("B"),
-                                "123"
-                            )
+                            new SourceFile("com/test/assertions/B")
                         )
                     )
                 )
@@ -93,15 +77,9 @@ public class AssertAnnotationProcessorGeneratesFilesTest extends TestsSuite {
                 new AssertAssertionFails(
                     new AssertAnnotationProcessorGeneratesFiles(
                         new DummyProcessor(),
-                        Paths.get("com","test", "AnnotatedTypeWrongFileName.java"),
-                        String.join(
-                            "\r\n",
-                            "package com.test;",
-                            "import com.pragmaticobjects.oo.meta.anno.procesor.Dummy;",
-                            "@Dummy(name = \"A\", message = \"42\")",
-                            "public class AnnotatedType {",
-                            "    // EMPTY",
-                            "}"
+                        List.of(
+                            new SourceFile("com/test/assertions/Dummy.java"),
+                            new SourceFile("com/test/assertions/BrokenSourceFile", Paths.get("com/test/assertions/BrokenSourceFile.java"))
                         ),
                         List.empty()
                     )

@@ -36,6 +36,7 @@
         <dependency>
             <groupId>com.pragmaticobjects.oo.meta</groupId>
             <artifactId>meta-anno-procesor</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

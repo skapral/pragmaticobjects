@@ -25,12 +25,12 @@
  */
 package com.pragmaticobjects.oo.inference.basic;
 
-import assertions.AssertAnnotationProcessorGeneratesFiles;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.List;
+import com.pragmaticobjects.oo.meta.anno.procesor.AssertAnnotationProcessorGeneratesFiles;
 
-import static assertions.AssertAnnotationProcessorGeneratesFiles.SourceFile;
+import static com.pragmaticobjects.oo.meta.anno.procesor.AssertAnnotationProcessorGeneratesFiles.SourceFile;
 
 /**
  *
