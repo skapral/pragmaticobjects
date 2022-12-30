@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * meta-base
+ * meta-freemarker-test
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,26 +23,53 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.meta.base;
+package com.pragmaticobjects.oo.meta.freemarker;
 
-import com.pragmaticobjects.oo.tests.Assertion;
-import org.assertj.core.api.Assertions;
+import com.pragmaticobjects.oo.tests.AssertAssertionFails;
+import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
+import com.pragmaticobjects.oo.tests.TestCase;
+import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
 
 /**
  *
  * @author skapral
  */
-public class AssertArtifactContents implements Assertion {
-    private final Artifact artifact;
-    private final String contents;
+public class AssertFreemarkerModelValueTest extends TestsSuite {
+    public AssertFreemarkerModelValueTest() {
+        super(
+            new TestCase(
+                "positive test",
+                new AssertAssertionPasses(
+                    new AssertFreemarkerModelValue(
+                        new FAMSimple(HashMap.of("A", 42)),
+                        "A", 42
+                    )
+                )
+            ),
+            new TestCase(
+                "negative test",
+                new AssertAssertionFails(
+                    new AssertFreemarkerModelValue(
+                        new FAMSimple(HashMap.of("A", 42)),
+                        "A", 123
+                    )
+                )
+            )
+        );
+    }
+}
 
-    public AssertArtifactContents(Artifact artifact, String contents) {
-        this.artifact = artifact;
+class FAMSimple implements FreemarkerArtifactModel {
+    private final Map<String, Object> contents;
+
+    public FAMSimple(Map<String, Object> contents) {
         this.contents = contents;
     }
 
     @Override
-    public final void check() throws Exception {
-        Assertions.assertThat(artifact.contents()).isEqualToNormalizingNewlines(contents);
+    public final <T> T get(String item) {
+        return (T) contents.get(item).get();
     }
 }

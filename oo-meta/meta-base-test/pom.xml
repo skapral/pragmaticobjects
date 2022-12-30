@@ -6,22 +6,21 @@
         <artifactId>oo-meta</artifactId>
         <version>0.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>meta-freemarker</artifactId>
+    <artifactId>meta-base-test</artifactId>
     <packaging>jar</packaging>
-    <name>${project.artifactId}</name>
+    
     <dependencies>
         <dependency>
             <groupId>com.pragmaticobjects.oo.meta</groupId>
             <artifactId>meta-base</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
+            <groupId>com.pragmaticobjects.oo.tests</groupId>
+            <artifactId>tests-junit5</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.pragmaticobjects.oo.meta</groupId>
-            <artifactId>meta-base-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
         </dependency>
     </dependencies>
 </project>

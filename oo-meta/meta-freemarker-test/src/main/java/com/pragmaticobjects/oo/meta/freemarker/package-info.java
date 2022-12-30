@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * meta-freemarker
+ * meta-freemarker-test
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -24,27 +24,3 @@
  * ============================================================================
  */
 package com.pragmaticobjects.oo.meta.freemarker;
-
-import com.pragmaticobjects.oo.tests.Assertion;
-import org.assertj.core.api.Assertions;
-
-/**
- *
- * @author skapral
- */
-public class AssertFreemarkerModelValue implements Assertion {
-    private final FreemarkerArtifactModel model;
-    private final String key;
-    private final Object value;
-
-    public AssertFreemarkerModelValue(FreemarkerArtifactModel model, String key, Object value) {
-        this.model = model;
-        this.key = key;
-        this.value = value;
-    }
-
-    @Override
-    public final void check() throws Exception {
-        Assertions.assertThat(model.<Object>get(key)).isEqualTo(value);
-    }
-}

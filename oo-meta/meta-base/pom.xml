@@ -11,10 +11,6 @@
     <name>${project.artifactId}</name>
     <dependencies>
         <dependency>
-            <groupId>com.pragmaticobjects.oo.tests</groupId>
-            <artifactId>tests-junit5</artifactId>
-        </dependency>
-        <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
         </dependency>
@@ -23,8 +19,14 @@
             <artifactId>javapoet</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.pragmaticobjects.oo.tests</groupId>
+            <artifactId>tests-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

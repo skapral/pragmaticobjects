@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * meta-freemarker
+ * meta-freemarker-test
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2022 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -24,52 +24,3 @@
  * ============================================================================
  */
 package com.pragmaticobjects.oo.meta.freemarker;
-
-import com.pragmaticobjects.oo.tests.AssertAssertionFails;
-import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
-import com.pragmaticobjects.oo.tests.TestCase;
-import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
-import io.vavr.collection.HashMap;
-import io.vavr.collection.Map;
-
-/**
- *
- * @author skapral
- */
-public class AssertFreemarkerModelValueTest extends TestsSuite {
-    public AssertFreemarkerModelValueTest() {
-        super(
-            new TestCase(
-                "positive test",
-                new AssertAssertionPasses(
-                    new AssertFreemarkerModelValue(
-                        new FAMSimple(HashMap.of("A", 42)),
-                        "A", 42
-                    )
-                )
-            ),
-            new TestCase(
-                "negative test",
-                new AssertAssertionFails(
-                    new AssertFreemarkerModelValue(
-                        new FAMSimple(HashMap.of("A", 42)),
-                        "A", 123
-                    )
-                )
-            )
-        );
-    }
-}
-
-class FAMSimple implements FreemarkerArtifactModel {
-    private final Map<String, Object> contents;
-
-    public FAMSimple(Map<String, Object> contents) {
-        this.contents = contents;
-    }
-
-    @Override
-    public final <T> T get(String item) {
-        return (T) contents.get(item).get();
-    }
-}

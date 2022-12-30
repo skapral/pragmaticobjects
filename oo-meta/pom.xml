@@ -37,7 +37,9 @@
 
     <modules>
         <module>meta-base</module>
+        <module>meta-base-test</module>
         <module>meta-freemarker</module>
+        <module>meta-freemarker-test</module>
         <module>meta-model</module>
         <module>meta-anno-procesor</module>
     </modules>
@@ -51,7 +53,17 @@
             </dependency>
             <dependency>
                 <groupId>com.pragmaticobjects.oo.meta</groupId>
+                <artifactId>meta-base-test</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pragmaticobjects.oo.meta</groupId>
                 <artifactId>meta-freemarker</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pragmaticobjects.oo.meta</groupId>
+                <artifactId>meta-freemarker-test</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
