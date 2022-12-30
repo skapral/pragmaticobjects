@@ -25,7 +25,9 @@
         <profile>
             <id>license-headers</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <file>
+                    <exists>pom.xml</exists>
+                </file>
             </activation>
             <build>
                 <plugins>
