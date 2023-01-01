@@ -23,8 +23,9 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.inference.basic;
+package com.pragmaticobjects.oo.inference.itests;
 
+import com.pragmaticobjects.oo.inference.basic.InferredImplementationGenerator;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.List;

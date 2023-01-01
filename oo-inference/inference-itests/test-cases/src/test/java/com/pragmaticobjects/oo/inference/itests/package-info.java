@@ -23,4 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.inference.basic;
+package com.pragmaticobjects.oo.inference.itests;
