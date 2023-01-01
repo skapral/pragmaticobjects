@@ -9,13 +9,6 @@
     <artifactId>inference-basic</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
-    <properties>
-        <!-- license headers break assertions on com/test samples -->
-        <license.excludes>test/java/com/test/**/**.java</license.excludes>
-        <checkstyle.excludes>com/test/**/**.java</checkstyle.excludes>
-        <pmd.excludes>com/test/**/**.java</pmd.excludes>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.pragmaticobjects.oo.inference</groupId>
@@ -44,19 +37,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <testResources>
-            <testResource>
-                <directory>${basedir}/src/test/resources</directory>
-            </testResource>
-            <testResource>
-                <directory>${basedir}/src/test/java</directory>
-                <includes>
-                    <!-- including test samples so that they could be asserted -->
-                    <include>com/test/**</include>
-                </includes>
-            </testResource>
-        </testResources>
-    </build>
 </project>

@@ -1,8 +1,8 @@
 /*-
  * ===========================================================================
- * inference-basic
+ * inference-itests.test-cases
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * Copyright (C) 2019 - 2022 Kapralov Sergey
+ * Copyright (C) 2019 - 2023 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,59 +36,71 @@ import static com.pragmaticobjects.oo.meta.anno.procesor.AssertAnnotationProcess
  *
  * @author skapral
  */
-public class InferredAliasGeneratorTest extends TestsSuite {
-    public InferredAliasGeneratorTest() {
+public class InferredImplementationGeneratorTest extends TestsSuite {
+    public InferredImplementationGeneratorTest() {
         super(
             new TestCase(
-                "Fraction inference alias",
+                "Fraction inference",
                 new AssertAnnotationProcessorGeneratesFiles(
-                    new InferredAliasGenerator(),
+                    new InferredImplementationGenerator(),
                     List.of(
-                        new SourceFile("com/test/Fraction.java"),
-                        new SourceFile("com/test/FracFromStringInference.java")
+                        new SourceFile("com/test/inferred1/package-info.java"),
+                        new SourceFile("com/test/inferred1/Fraction.java")
                     ),
                     List.of(
-                        new SourceFile("com/test/FracFromString.java")
+                        new SourceFile("com/test/inferred1/FractionInferred.java")
                     )
                 )
             ),
             new TestCase(
-                "Fraction inference alias with explicit base class",
+                "Fraction inference in package different than interface",
                 new AssertAnnotationProcessorGeneratesFiles(
-                    new InferredAliasGenerator(),
+                    new InferredImplementationGenerator(),
                     List.of(
-                        new SourceFile("com/test/Fraction.java"),
-                        new SourceFile("com/test/FracFromStringExplicitInference.java"),
-                        new SourceFile("com/test/FractionInferred.java")
+                        new SourceFile("com/test/inferred2/package-info.java"),
+                        new SourceFile("com/test/inferred1/Fraction.java")
                     ),
                     List.of(
-                        new SourceFile("com/test/FracFromStringExplicit.java")
+                        new SourceFile("com/test/inferred2/FractionInferred.java")
                     )
                 )
             ),
             new TestCase(
-                "Fraction memoized alias",
+                "Fraction inference with void method",
                 new AssertAnnotationProcessorGeneratesFiles(
-                    new InferredAliasGenerator(),
+                    new InferredImplementationGenerator(),
                     List.of(
-                        new SourceFile("com/test/Fraction.java"),
-                        new SourceFile("com/test/FracFromStringInferenceMemoized.java")
+                        new SourceFile("com/test/inferred3/package-info.java"),
+                        new SourceFile("com/test/inferred3/Operation.java")
                     ),
                     List.of(
-                        new SourceFile("com/test/FracFromStringMemoized.java")
+                        new SourceFile("com/test/inferred3/OperationInferred.java")
                     )
                 )
             ),
             new TestCase(
-                "Fraction alias with attribute that requires importing",
+                "Generator ignores inner classes when generating inference",
                 new AssertAnnotationProcessorGeneratesFiles(
-                    new InferredAliasGenerator(),
+                    new InferredImplementationGenerator(),
                     List.of(
-                        new SourceFile("com/test/Fraction.java"),
-                        new SourceFile("com/test/RandomFracInference.java")
+                        new SourceFile("com/test/inferred4/package-info.java"),
+                        new SourceFile("com/test/inferred4/Operation.java")
                     ),
                     List.of(
-                        new SourceFile("com/test/RandomFrac.java")
+                        new SourceFile("com/test/inferred4/OperationInferred.java")
+                    )
+                )
+            ),
+            new TestCase(
+                "Generator takes into account 'throws' in method signatures",
+                new AssertAnnotationProcessorGeneratesFiles(
+                    new InferredImplementationGenerator(),
+                    List.of(
+                        new SourceFile("com/test/inferred5/Assertion.java"),
+                        new SourceFile("com/test/inferred5/package-info.java")
+                    ),
+                    List.of(
+                        new SourceFile("com/test/inferred5/AssertionInferred.java")
                     )
                 )
             )

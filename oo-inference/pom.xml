@@ -38,6 +38,7 @@
     <modules>
         <module>inference-codegen</module>
         <module>inference-basic</module>
+        <module>inference-itests</module>
     </modules>
     
     <dependencyManagement>
@@ -45,6 +46,11 @@
             <dependency>
                 <groupId>com.pragmaticobjects.oo.inference</groupId>
                 <artifactId>inference-codegen</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pragmaticobjects.oo.inference</groupId>
+                <artifactId>inference-basic</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
