@@ -24,6 +24,10 @@
             <artifactId>inference-basic</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.pragmaticobjects.oo.inference.itests</groupId>
+            <artifactId>external-module</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.pragmaticobjects.oo.meta</groupId>
             <artifactId>meta-anno-procesor</artifactId>
             <scope>test</scope>
@@ -49,5 +53,14 @@
                 </includes>
             </testResource>
         </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <proc>none</proc>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

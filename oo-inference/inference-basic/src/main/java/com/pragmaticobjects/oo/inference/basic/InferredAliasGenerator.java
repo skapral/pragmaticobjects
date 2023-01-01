@@ -105,6 +105,6 @@ public class InferredAliasGenerator extends AbstractProcessor {
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.latest();
+        return SourceVersion.latestSupported();
     }
 }
