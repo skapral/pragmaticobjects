@@ -4,8 +4,9 @@ import com.pragmaticobjects.oo.inference.api.Inference;
 import com.pragmaticobjects.oo.inference.api.Infers;
 import com.external.Fraction;
 import com.external.FracFixed;
+import com.external.FractionInferred;
 
-public @Infers("FracFromString")
+public @Infers(value = "FracFromString", using = FractionInferred.class)
 class FracFromStringInference implements Inference<Fraction> {
     private final String str;
 
