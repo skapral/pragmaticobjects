@@ -27,10 +27,10 @@ package com.pragmaticobjects.oo.inference.itests;
 
 import com.pragmaticobjects.oo.inference.basic.InferredAliasGenerator;
 import com.pragmaticobjects.oo.meta.anno.procesor.AssertAnnotationProcessorGeneratesFiles;
-import com.pragmaticobjects.oo.tests.AssertIgnore;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 import io.vavr.collection.List;
+
 
 /**
  *
@@ -41,15 +41,13 @@ public class InferredAliasGeneratorForExternalInferenceTest extends TestsSuite {
         super(
             new TestCase(
                 "alias for an inference, located in external module",
-                new AssertIgnore( // TODO: implement a fix
-                    new AssertAnnotationProcessorGeneratesFiles(
-                        new InferredAliasGenerator(),
-                        List.of(
-                            new AssertAnnotationProcessorGeneratesFiles.SourceFile("com/test/external1/FracFromStringInference.java")
-                        ),
-                        List.of(
-                            new AssertAnnotationProcessorGeneratesFiles.SourceFile("com/test/external1/FracFromString.java")
-                        )
+                new AssertAnnotationProcessorGeneratesFiles(
+                    new InferredAliasGenerator(),
+                    List.of(
+                        new AssertAnnotationProcessorGeneratesFiles.SourceFile("com/test/external1/FracFromStringInference.java")
+                    ),
+                    List.of(
+                        new AssertAnnotationProcessorGeneratesFiles.SourceFile("com/test/external1/FracFromString.java")
                     )
                 )
             )
