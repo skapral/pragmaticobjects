@@ -23,6 +23,11 @@
  * THE SOFTWARE.
  * ============================================================================
  */
+
+/**
+ * TODO: remove this javadoc block after upgrading to jdk 11.0.18, since it is a workaround
+ * <a href="https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8222091">Reference</a>
+ */
 @GenerateInferred(Fraction.class)
 package com.external;
 
