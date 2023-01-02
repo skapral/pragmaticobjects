@@ -1,6 +1,5 @@
 package ${this.packageName};
 
-import com.pragmaticobjects.oo.inference.api.Inference;
 <#list imports as import>
 import ${import.fullName};
 </#list>

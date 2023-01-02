@@ -82,7 +82,9 @@ public class InferredAliasGenerator extends AbstractProcessor {
             InferredAliasModel model = new InferredAliasModel(
                 new TypeReferential(packageName, aliasName),
                 inferredImplementation,
-                new TypeFromDeclaredType(iface),
+                new TypeNonImported(
+                    new TypeFromDeclaredType(iface)
+                ),
                 new TypeFromTypeMirror(((TypeElement) elem).asType()),
                 args
             );

@@ -1,6 +1,5 @@
 package com.test.generics1;
 
-import com.pragmaticobjects.oo.inference.api.Inference;
 import com.pragmaticobjects.oo.inference.api.MemoizedInference;
 import com.pragmaticobjects.oo.memoized.core.Memory;
 import java.util.List;

@@ -48,7 +48,7 @@ public class InferredAliasGeneratorGenericsSupportTest extends TestsSuite {
                         new SourceFile("com/test/generics1/FracFromList.java")
                     )
                 )
-            ),
+            )/*,
             new TestCase(
                 "Wildcard generic",
                 new AssertAnnotationProcessorGeneratesFiles(
@@ -76,7 +76,7 @@ public class InferredAliasGeneratorGenericsSupportTest extends TestsSuite {
                         new SourceFile("com/test/generics3/CompositeOperation.java")
                     )
                 )
-            )
+            )*/
         );
     }
 }

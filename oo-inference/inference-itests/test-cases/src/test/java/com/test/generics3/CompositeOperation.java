@@ -1,6 +1,5 @@
 package com.test.generics3;
 
-import com.pragmaticobjects.oo.inference.api.Inference;
 import java.util.function.Function;
 import io.vavr.collection.List;
 import java.util.UUID;
