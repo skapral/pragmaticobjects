@@ -45,11 +45,11 @@ public class InferredAliasGeneratorTest extends TestsSuite {
                 new AssertAnnotationProcessorGeneratesFiles(
                     new InferredAliasGenerator(),
                     List.of(
-                        new SourceFile("com/test/Fraction.java"),
-                        new SourceFile("com/test/FracFromStringInference.java")
+                        new SourceFile("com/test/alias1/Fraction.java"),
+                        new SourceFile("com/test/alias1/FracFromStringInference.java")
                     ),
                     List.of(
-                        new SourceFile("com/test/FracFromString.java")
+                        new SourceFile("com/test/alias1/FracFromString.java")
                     )
                 )
             ),
@@ -58,12 +58,12 @@ public class InferredAliasGeneratorTest extends TestsSuite {
                 new AssertAnnotationProcessorGeneratesFiles(
                     new InferredAliasGenerator(),
                     List.of(
-                        new SourceFile("com/test/Fraction.java"),
-                        new SourceFile("com/test/FracFromStringExplicitInference.java"),
-                        new SourceFile("com/test/FractionInferred.java")
+                        new SourceFile("com/test/alias2/Fraction.java"),
+                        new SourceFile("com/test/alias2/FracFromStringExplicitInference.java"),
+                        new SourceFile("com/test/alias2/FractionInferred.java")
                     ),
                     List.of(
-                        new SourceFile("com/test/FracFromStringExplicit.java")
+                        new SourceFile("com/test/alias2/FracFromStringExplicit.java")
                     )
                 )
             ),
@@ -72,11 +72,11 @@ public class InferredAliasGeneratorTest extends TestsSuite {
                 new AssertAnnotationProcessorGeneratesFiles(
                     new InferredAliasGenerator(),
                     List.of(
-                        new SourceFile("com/test/Fraction.java"),
-                        new SourceFile("com/test/FracFromStringInferenceMemoized.java")
+                        new SourceFile("com/test/alias3/Fraction.java"),
+                        new SourceFile("com/test/alias3/FracFromStringInferenceMemoized.java")
                     ),
                     List.of(
-                        new SourceFile("com/test/FracFromStringMemoized.java")
+                        new SourceFile("com/test/alias3/FracFromStringMemoized.java")
                     )
                 )
             ),
@@ -85,11 +85,11 @@ public class InferredAliasGeneratorTest extends TestsSuite {
                 new AssertAnnotationProcessorGeneratesFiles(
                     new InferredAliasGenerator(),
                     List.of(
-                        new SourceFile("com/test/Fraction.java"),
-                        new SourceFile("com/test/RandomFracInference.java")
+                        new SourceFile("com/test/alias4/Fraction.java"),
+                        new SourceFile("com/test/alias4/RandomFracInference.java")
                     ),
                     List.of(
-                        new SourceFile("com/test/RandomFrac.java")
+                        new SourceFile("com/test/alias4/RandomFrac.java")
                     )
                 )
             )

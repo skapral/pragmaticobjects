@@ -1,13 +1,13 @@
-package com.test;
+package com.test.alias2;
 
 import com.pragmaticobjects.oo.inference.api.Inference;
 import com.pragmaticobjects.oo.inference.api.Infers;
 
-public @Infers(value = "FracFromStringMemoized", memoized = true)
-class FracFromStringInferenceMemoized implements Inference<Fraction> {
+public @Infers(value = "FracFromStringExplicit", using = FractionInferred.class)
+class FracFromStringExplicitInference implements Inference<Fraction> {
     private final String str;
 
-    public FracFromStringInferenceMemoized(String str) {
+    public FracFromStringExplicitInference(String str) {
         this.str = str;
     }
 

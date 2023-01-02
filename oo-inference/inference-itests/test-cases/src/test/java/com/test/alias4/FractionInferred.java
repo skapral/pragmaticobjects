@@ -1,4 +1,4 @@
-package com.test;
+package com.test.alias4;
 
 import com.pragmaticobjects.oo.inference.api.Inference;
 

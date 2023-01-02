@@ -1,4 +1,4 @@
-package com.test;
+package com.test.alias2;
 
 public class FracFixed implements Fraction {
     private final int num;
