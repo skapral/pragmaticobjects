@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '17', 'latest' ]
+        java: [ '17', '20' ]
     name: Testing on Java ${{ matrix.Java }}
     steps:
       - uses: actions/checkout@v2
