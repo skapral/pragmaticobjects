@@ -48,7 +48,8 @@
                             </systemPropertyVariables>
                             <trimStackTrace>false</trimStackTrace>
                             <reportFormat>plain</reportFormat>
-                            <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporterUnicode"/>
+                            <statelessTestsetInfoReporter
+                                    implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporterUnicode"/>
                         </configuration>
                     </plugin>
                 </plugins>
