@@ -25,7 +25,7 @@
  */
 package com.pragmaticobjects.oo.equivalence.base;
 
-interface EObjectContract {
+public interface EObjectContract extends EquivalenceCompliant {
     /**
      * @return Object's attributes
      */
