@@ -26,23 +26,40 @@
 package com.pragmaticobjects.oo.equivalence.base;
 
 /**
- * Base class for all equivalence-compliant objects
+ * Helper interface for all equivalence-compliant candidates for instrumentation.
  *
- * @author skapral
+ * It is supposed that all implementors of this interface must also implement equals/hashCode/toString
+ * methods, delegating their calls to {@code com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic}, as follows:
+ *
+ * <pre><code>
+ *     public final boolean equals(Object obj) {
+ *         return EquivalenceLogic.equals(this, obj);
+ *     }
+ *
+ *     public final int hashCode() {
+ *         return EquivalenceLogic.hashCode(this);
+ *     }
+ *
+ *     public final String toString() {
+ *         return EquivalenceLogic.toString(this);
+ *     }
+ * </code></pre>
+ *
+ * Instrumentor will generate implementations implicitly for each implementor it will meet.
  */
-public abstract class EObject implements EquivalenceCompliant, EObjectContract {
-    @Override
-    public final boolean equals(Object obj) {
-        return EquivalenceLogic.equals(this, obj);
-    }
+public interface EObject extends EquivalenceCompliant {
+    /**
+     * @return Object's attributes
+     */
+    Object[] attributes();
 
-    @Override
-    public final int hashCode() {
-        return EquivalenceLogic.hashCode(this);
-    }
+    /**
+     * @return Object's hash seed
+     */
+    int hashSeed();
 
-    @Override
-    public final String toString() {
-        return EquivalenceLogic.toString(this);
-    }
+    /**
+     * @return Object's name
+     */
+    Class<?> baseType();
 }

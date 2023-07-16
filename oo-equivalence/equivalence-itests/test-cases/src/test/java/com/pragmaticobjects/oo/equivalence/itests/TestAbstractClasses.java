@@ -26,7 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.itests;
 
 import com.pragmaticobjects.oo.equivalence.assertions.*;
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.itests.classes.AbstractNode;
 import com.pragmaticobjects.oo.equivalence.itests.classes.BaseNode;
 import com.pragmaticobjects.oo.equivalence.itests.classes.LeafNode;
@@ -44,7 +44,7 @@ public class TestAbstractClasses extends TestsSuite {
                 new AssertCombined(
                     new AssertImplements(
                         AbstractNode.class,
-                        EObjectContract.class
+                        EObject.class
                     ),
                     new AssertSubtypeOf(
                         BaseNode.class,

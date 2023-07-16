@@ -28,7 +28,7 @@ package com.pragmaticobjects.oo.equivalence.itests;
 import com.pragmaticobjects.oo.equivalence.assertions.AssertImplements;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.itests.classes.PublicPoint;
 
 public class TestCornerCases extends TestsSuite {
@@ -38,7 +38,7 @@ public class TestCornerCases extends TestsSuite {
                 "public identity visibility is supported by instrumenter",
                 new AssertImplements(
                     PublicPoint.class,
-                    EObjectContract.class
+                    EObject.class
                 )
             )
         );

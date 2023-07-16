@@ -25,14 +25,14 @@
  */
 package com.pragmaticobjects.oo.equivalence.base.testobjects;
 
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
 /**
  *
  * @author skapral
  */
-public class ETuple implements EObjectContract {
+public class ETuple implements EObject {
     private final Object[] identity;
 
     public ETuple(Object... identity) {

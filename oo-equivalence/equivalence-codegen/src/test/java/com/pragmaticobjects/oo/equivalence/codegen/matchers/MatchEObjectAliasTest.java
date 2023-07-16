@@ -27,7 +27,7 @@ package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
 /**
@@ -101,7 +101,7 @@ public class MatchEObjectAliasTest extends TestsSuite {
     
     public static class NonBaseInheritor extends NonBase {}
     
-    public static class Base implements EObjectContract {
+    public static class Base implements EObject {
         private final int x;
         private final int y;
 
@@ -147,7 +147,7 @@ public class MatchEObjectAliasTest extends TestsSuite {
         }
     }
     
-    public static abstract class Abstract implements EObjectContract {
+    public static abstract class Abstract implements EObject {
         protected final int x;
 
         public Abstract(int x) {

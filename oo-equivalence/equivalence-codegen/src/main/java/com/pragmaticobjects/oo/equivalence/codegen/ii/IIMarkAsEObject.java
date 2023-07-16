@@ -25,7 +25,7 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import org.slf4j.Logger;
@@ -40,6 +40,6 @@ public class IIMarkAsEObject implements InstrumentationIteration {
 
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
-        return builder.implement(EObjectContract.class);
+        return builder.implement(EObject.class);
     }
 }

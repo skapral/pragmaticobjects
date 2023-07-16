@@ -29,7 +29,7 @@ import com.pragmaticobjects.oo.equivalence.assertions.AssertImplements;
 import com.pragmaticobjects.oo.equivalence.assertions.AssertSubtypeOf;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.itests.classes.AnonymousClass;
 
 /**
@@ -43,7 +43,7 @@ public class TestAnonymousImplementations extends TestsSuite {
                 "anonymous interface",
                 new AssertImplements(
                     AnonymousClass.anonymousType,
-                    EObjectContract.class
+                    EObject.class
                 )
             ),
             new TestCase(

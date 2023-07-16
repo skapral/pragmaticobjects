@@ -25,7 +25,7 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
 
@@ -39,17 +39,17 @@ import java.lang.annotation.Annotation;
 public class ShouldImplementEObjectMethods extends ConjunctionMatcher<TypeDescription> {
     public <Hint extends Annotation> ShouldImplementEObjectMethods() {
         super(
-            //...we implement EObjectContract methods for all EObjectContract implementors (direct, or transitive)
-            //unless its superclass is abstract or of non-eobject type
             new ConjunctionMatcher<>(
-                ElementMatchers.isSubTypeOf(EObjectContract.class),
+                // If a class implements EObject...
+                ElementMatchers.isSubTypeOf(EObject.class),
+                //...and doesn't inherit another non-abstract class, that implements EObject
                 ElementMatchers.not(
                     new MatchSuperClass(
                         new ConjunctionMatcher<>(
                             ElementMatchers.not(
                                 ElementMatchers.isAbstract()
                             ),
-                            ElementMatchers.isSubTypeOf(EObjectContract.class)
+                            ElementMatchers.isSubTypeOf(EObject.class)
                         )
                     )
                 )

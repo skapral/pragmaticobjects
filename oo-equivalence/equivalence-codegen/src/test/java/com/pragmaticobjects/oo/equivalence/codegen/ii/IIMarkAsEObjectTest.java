@@ -27,7 +27,7 @@ package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import net.bytebuddy.matcher.ElementMatchers;
 
 /**
@@ -42,7 +42,7 @@ public class IIMarkAsEObjectTest extends TestsSuite {
                 new AssertClassAfterInstrumentation(
                     new IIMarkAsEObject(),
                     Type1.class,
-                    ElementMatchers.isSubTypeOf(EObjectContract.class)
+                    ElementMatchers.isSubTypeOf(EObject.class)
                 )
             ),
             new TestCase(
@@ -50,7 +50,7 @@ public class IIMarkAsEObjectTest extends TestsSuite {
                 new AssertClassAfterInstrumentation(
                     new IIMarkAsEObject(),
                     Type2.class,
-                    ElementMatchers.isSubTypeOf(EObjectContract.class)
+                    ElementMatchers.isSubTypeOf(EObject.class)
                 )
             ),
             new TestCase(
@@ -58,7 +58,7 @@ public class IIMarkAsEObjectTest extends TestsSuite {
                 new AssertClassAfterInstrumentation(
                     new IIMarkAsEObject(),
                     Type3.class,
-                    ElementMatchers.isSubTypeOf(EObjectContract.class)
+                    ElementMatchers.isSubTypeOf(EObject.class)
                 )
             )
         );

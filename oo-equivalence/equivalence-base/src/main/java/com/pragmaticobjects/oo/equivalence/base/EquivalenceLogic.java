@@ -34,16 +34,16 @@ import java.util.stream.Collectors;
 public class EquivalenceLogic {
     private static final boolean FIXED_STATIC_IDENTITY = System.getProperty("fixedStaticIdentity") != null;
 
-    public static boolean equals(EObjectContract that, Object obj) {
+    public static boolean equals(EObject that, Object obj) {
         if (that == obj) {
             return true;
         }
         if (obj == null) {
             return false;
         }
-        if (obj instanceof EObjectContract && (that.baseType() == ((EObjectContract) obj).baseType())) {
+        if (obj instanceof EObject && (that.baseType() == ((EObject) obj).baseType())) {
             final Object[] thisAttrs = that.attributes();
-            final Object[] objAttrs = ((EObjectContract) obj).attributes();
+            final Object[] objAttrs = ((EObject) obj).attributes();
             int length = thisAttrs.length == objAttrs.length ? thisAttrs.length : -1;
             if (length < 0) {
                 return false;
@@ -58,7 +58,7 @@ public class EquivalenceLogic {
         return false;
     }
 
-    public static int hashCode(EObjectContract that) {
+    public static int hashCode(EObject that) {
         final Object[] attrs = that.attributes();
         final int hashSeed = that.hashSeed();
         int result = hash(hashSeed);
@@ -68,7 +68,7 @@ public class EquivalenceLogic {
         return result;
     }
 
-    public static String toString(EObjectContract that) {
+    public static String toString(EObject that) {
         final Object[] attrs = that.attributes();
         StringBuilder sb = new StringBuilder();
         sb.append(that.baseType().getSimpleName());

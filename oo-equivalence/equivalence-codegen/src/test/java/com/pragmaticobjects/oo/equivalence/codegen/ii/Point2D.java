@@ -26,14 +26,14 @@
 package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
 
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
 /**
  *
  * @author skapral
  */
-public class Point2D implements EObjectContract {
+public class Point2D implements EObject {
     private final int x;
     private final int y;
 

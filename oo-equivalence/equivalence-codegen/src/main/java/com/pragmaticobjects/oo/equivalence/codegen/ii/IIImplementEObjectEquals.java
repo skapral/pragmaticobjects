@@ -25,7 +25,7 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Implementation;
 import net.bytebuddy.description.method.MethodDescription;
@@ -50,7 +50,7 @@ public class IIImplementEObjectEquals implements InstrumentationIteration {
         try {
             EQLOGIC_EQUALS = EquivalenceLogic.class.getDeclaredMethod(
                 "equals",
-                EObjectContract.class,
+                EObject.class,
                 Object.class
             );
         } catch (NoSuchMethodException e) {

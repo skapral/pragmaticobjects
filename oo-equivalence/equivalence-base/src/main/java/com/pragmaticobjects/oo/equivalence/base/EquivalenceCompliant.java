@@ -28,7 +28,7 @@ package com.pragmaticobjects.oo.equivalence.base;
 /**
  * Marker interface, claiming that "equivalence" term is applicable for instances of the class-implementor.
  *
- * Avoid using it directly in client code. Instead, either let the instrumentor do its job, implement {@link EObjectContract},
+ * Avoid using it directly in client code. Instead, either let the instrumentor do its job, implement {@link EObject},
  * or use {@link NaturallyEquivalent} decorator
  */
 public interface EquivalenceCompliant {

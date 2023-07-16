@@ -26,7 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.itests.abstractclasses;
 
 import com.pragmaticobjects.oo.equivalence.assertions.*;
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractEObject;
 import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractNonEObject;
 import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractPlainObject;
@@ -65,24 +65,24 @@ public class TestExplicitAbstractClasses extends TestsSuite {
                     new AssertAssertionFails(
                         new AssertImplements(
                             PlainObjectImpl.class,
-                            EObjectContract.class,
+                            EObject.class,
                             true
                         )
                     ),
                     new AssertImplements(
                         EObjectImpl.class,
-                        EObjectContract.class,
+                        EObject.class,
                         true
                     ),
                     new AssertImplements(
                         EObjectImplImpl.class,
-                        EObjectContract.class,
+                        EObject.class,
                         true
                     ),
                     new AssertAssertionFails(
                         new AssertImplements(
                             NonEObjectImpl.class,
-                            EObjectContract.class,
+                            EObject.class,
                             true
                         )
                     )

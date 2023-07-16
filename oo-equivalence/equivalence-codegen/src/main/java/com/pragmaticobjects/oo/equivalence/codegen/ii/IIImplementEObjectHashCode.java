@@ -25,7 +25,7 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Implementation;
 import net.bytebuddy.description.method.MethodDescription;
@@ -50,7 +50,7 @@ public class IIImplementEObjectHashCode implements InstrumentationIteration {
         try {
             EQLOGIC_HASHCODE = EquivalenceLogic.class.getDeclaredMethod(
                 "hashCode",
-                EObjectContract.class
+                EObject.class
             );
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);

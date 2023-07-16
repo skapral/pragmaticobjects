@@ -25,7 +25,7 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceHint;
 import com.pragmaticobjects.oo.equivalence.base.NaturallyEquivalent;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Box;
@@ -119,7 +119,7 @@ public class IIImplementEObjectAttributes implements InstrumentationIteration {
         final Annotation[] annotations;
         {
             TypeDescription superclass = typeDescription.getSuperClass().asErasure();
-            doOverride = superclass.isAssignableTo(EObjectContract.class);
+            doOverride = superclass.isAssignableTo(EObject.class);
             isAbstract = typeDescription.isAbstract();
         }
         if(isAbstract) {

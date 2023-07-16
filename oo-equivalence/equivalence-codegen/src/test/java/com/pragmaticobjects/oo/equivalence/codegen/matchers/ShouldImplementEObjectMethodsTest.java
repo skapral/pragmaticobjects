@@ -27,7 +27,7 @@ package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
-import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
 /**
@@ -90,7 +90,7 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
         }
     }
     
-    private static class EObjectDirectSubtype implements EObjectContract {
+    private static class EObjectDirectSubtype implements EObject {
         private final Object obj;
 
         public EObjectDirectSubtype(Object obj) {
@@ -137,7 +137,7 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
     private static abstract class AbstractType {
     }
     
-    private static abstract class AbstractEObjectSubtype implements EObjectContract {
+    private static abstract class AbstractEObjectSubtype implements EObject {
     }
     
     private static class AbstractEObjectSubtypeImpl extends AbstractEObjectSubtype {
