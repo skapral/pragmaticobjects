@@ -5,7 +5,6 @@ updates:
     schedule:
       interval: daily
     open-pull-requests-limit: 10
-    target-branch: master-updates
     pull-request-branch-name:
       separator: "_"
     groups:
