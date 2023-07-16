@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * equivalence-assertions
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2023 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,43 +23,36 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.assertions;
 
-/**
- * Helper interface for all equivalence-compliant candidates for instrumentation.
- *
- * It is supposed that all implementors of this interface must also implement equals/hashCode/toString
- * methods, delegating their calls to {@code com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic}, as follows:
- *
- * <pre><code>
- *     public final boolean equals(Object obj) {
- *         return EquivalenceLogic.equals(this, obj);
- *     }
- *
- *     public final int hashCode() {
- *         return EquivalenceLogic.hashCode(this);
- *     }
- *
- *     public final String toString() {
- *         return EquivalenceLogic.toString(this);
- *     }
- * </code></pre>
- *
- * Instrumentor will generate implementations implicitly for each implementor it will meet.
- */
-public interface EObjectContract extends EquivalenceCompliant {
-    /**
-     * @return Object's attributes
-     */
-    Object[] attributes();
+import io.vavr.collection.List;
+import org.assertj.core.api.Assertions;
 
-    /**
-     * @return Object's hash seed
-     */
-    int hashSeed();
+import java.lang.reflect.Type;
+import java.util.stream.Collectors;
 
-    /**
-     * @return Object's name
-     */
-    Class<?> baseType();
+public class AssertImplementsTypeName implements Assertion {
+    private final Class<?> source;
+    private final String typeName;
+
+    public AssertImplementsTypeName(Class<?> source, String typeName) {
+        this.source = source;
+        this.typeName = typeName;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        Assertions.assertThat(
+                List.of(source.getGenericInterfaces())
+                    .exists(iface -> iface.getTypeName().equals(typeName))
+            )
+            .withFailMessage(
+                "Expecting %s to implement %s, found %s",
+                source.getName(),
+                typeName,
+                List.of(source.getGenericInterfaces()).map(Type::getTypeName).collect(Collectors.joining(", "))
+            )
+            .isTrue();
+
+    }
 }

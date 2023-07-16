@@ -60,6 +60,10 @@ public class IIImplementEObjectHashCode implements InstrumentationIteration {
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
         log.debug("hashCode() " + typeDescription.getActualName());
+        if(!ElementMatchers.is(Object.class).matches(typeDescription.getSuperClass())) {
+            log.debug("Skipping for non-base class");
+            return builder;
+        }
         if(!typeDescription.getDeclaredMethods()
             .filter(ElementMatchers.named("hashCode"))
             .filter(ElementMatchers.takesArguments(0))

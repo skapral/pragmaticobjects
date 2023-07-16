@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2023 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,43 +23,7 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-/**
- * Helper interface for all equivalence-compliant candidates for instrumentation.
- *
- * It is supposed that all implementors of this interface must also implement equals/hashCode/toString
- * methods, delegating their calls to {@code com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic}, as follows:
- *
- * <pre><code>
- *     public final boolean equals(Object obj) {
- *         return EquivalenceLogic.equals(this, obj);
- *     }
- *
- *     public final int hashCode() {
- *         return EquivalenceLogic.hashCode(this);
- *     }
- *
- *     public final String toString() {
- *         return EquivalenceLogic.toString(this);
- *     }
- * </code></pre>
- *
- * Instrumentor will generate implementations implicitly for each implementor it will meet.
- */
-public interface EObjectContract extends EquivalenceCompliant {
-    /**
-     * @return Object's attributes
-     */
-    Object[] attributes();
-
-    /**
-     * @return Object's hash seed
-     */
-    int hashSeed();
-
-    /**
-     * @return Object's name
-     */
-    Class<?> baseType();
+public class Foo2 extends Foo {
 }

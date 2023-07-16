@@ -25,13 +25,14 @@
  */
 package com.pragmaticobjects.oo.equivalence.base.testobjects;
 
-import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
+import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
 /**
  *
  * @author skapral
  */
-public class ETuple extends EObject {
+public class ETuple implements EObjectContract {
     private final Object[] identity;
 
     public ETuple(Object... identity) {
@@ -49,7 +50,22 @@ public class ETuple extends EObject {
     }
 
     @Override
-    public final Class<? extends EObject> baseType() {
+    public final Class<?> baseType() {
         return ETuple.class;
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        return EquivalenceLogic.equals(this, obj);
+    }
+
+    @Override
+    public final int hashCode() {
+        return EquivalenceLogic.hashCode(this);
+    }
+
+    @Override
+    public final String toString() {
+        return EquivalenceLogic.toString(this);
     }
 }

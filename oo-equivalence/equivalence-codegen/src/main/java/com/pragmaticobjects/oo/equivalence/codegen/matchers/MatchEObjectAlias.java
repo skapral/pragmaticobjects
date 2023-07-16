@@ -25,7 +25,7 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
 
@@ -43,10 +43,10 @@ public class MatchEObjectAlias extends ConjunctionMatcher<TypeDescription> {
             new MatchSuperClass(
                 new ConjunctionMatcher<>(
                     ElementMatchers.not(
-                        ElementMatchers.is(EObject.class)
+                        ElementMatchers.is(Object.class)
                     ),
                     ElementMatchers.isSubTypeOf(
-                        EObject.class
+                        EObjectContract.class
                     ),
                     ElementMatchers.not(
                         ElementMatchers.isAbstract()

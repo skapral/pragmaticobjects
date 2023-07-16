@@ -30,7 +30,6 @@ import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import net.bytebuddy.matcher.ElementMatchers;
 
 /**
- *
  * @author skapral
  */
 public class IIImplementEObjectToStringTest extends TestsSuite {
@@ -43,6 +42,18 @@ public class IIImplementEObjectToStringTest extends TestsSuite {
                     Foo.class,
                     ElementMatchers.declaresMethod(
                         ElementMatchers.hasMethodName("toString")
+                    )
+                )
+            ),
+            new TestCase(
+                "declaration is skept for non-base classes",
+                new AssertClassAfterInstrumentation(
+                    new IIImplementEObjectToString(),
+                    Foo2.class,
+                    ElementMatchers.not(
+                        ElementMatchers.declaresMethod(
+                            ElementMatchers.hasMethodName("toString")
+                        )
                     )
                 )
             )

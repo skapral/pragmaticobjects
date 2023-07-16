@@ -61,6 +61,10 @@ public class IIImplementEObjectEquals implements InstrumentationIteration {
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
         log.debug("equals() " + typeDescription.getActualName());
+        if(!ElementMatchers.is(Object.class).matches(typeDescription.getSuperClass())) {
+            log.debug("Skipping for non-base class");
+            return builder;
+        }
         if(!typeDescription.getDeclaredMethods()
             .filter(ElementMatchers.named("equals"))
             .filter(ElementMatchers.takesArguments(1))

@@ -34,9 +34,9 @@ import net.bytebuddy.matcher.ElementMatchers;
 /**
  * Matches classes, that should be marked as EObjects. 
  * Semantically, "marking as EObject" means confirming that equivalence logic is applicable for the type.
- * Technically, "marking as EObject" means making the class inherit {@link com.pragmaticobjects.oo.equivalence.base.EObject} and implementing its methods, if necessary.
+ * Technically, "marking as EObject" means making the class implement {@link com.pragmaticobjects.oo.equivalence.base.EObjectContract} and its methods, if necessary.
  * 
- * Later, all {@link com.pragmaticobjects.oo.equivalence.base.EObject} inheritors will become candidates for instrumentation
+ * Later, all {@link com.pragmaticobjects.oo.equivalence.base.EObjectContract} implementors will become candidates for instrumentation
  * 
  * @see ShouldImplementEObjectMethods
  * @author skapral

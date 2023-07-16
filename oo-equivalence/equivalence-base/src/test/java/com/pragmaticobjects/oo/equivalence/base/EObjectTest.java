@@ -36,7 +36,7 @@ import java.time.LocalDate;
 public class EObjectTest extends TestsSuite {
     private static final ETuple CONSTANT = new ETuple();
     private static final Object CONSTANT_OBJ = new Object();
-    private static final EObject[] CONSTANT_ARRAY = new EObject[]{};
+    private static final EObjectContract[] CONSTANT_ARRAY = new EObjectContract[]{};
 
     public EObjectTest() {
         super(
@@ -157,8 +157,8 @@ public class EObjectTest extends TestsSuite {
                 "Arrays identity",
                 new AssertCombined(
                     new AssertTwoObjectsEquality(
-                        new ETuple((Object) new EObject[]{}),
-                        new ETuple((Object) new EObject[]{}),
+                        new ETuple((Object) new EObjectContract[]{}),
+                        new ETuple((Object) new EObjectContract[]{}),
                         false
                     ),
                     new AssertTwoObjectsEquality(

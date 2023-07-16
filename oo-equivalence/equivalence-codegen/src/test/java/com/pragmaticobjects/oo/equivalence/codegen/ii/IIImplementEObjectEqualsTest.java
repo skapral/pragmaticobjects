@@ -45,6 +45,18 @@ public class IIImplementEObjectEqualsTest extends TestsSuite {
                         ElementMatchers.hasMethodName("equals")
                     )
                 )
+            ),
+            new TestCase(
+                "declaration is skept for non-base classes",
+                new AssertClassAfterInstrumentation(
+                    new IIImplementEObjectEquals(),
+                    Foo2.class,
+                    ElementMatchers.not(
+                        ElementMatchers.declaresMethod(
+                            ElementMatchers.hasMethodName("equals")
+                        )
+                    )
+                )
             )
         );
     }

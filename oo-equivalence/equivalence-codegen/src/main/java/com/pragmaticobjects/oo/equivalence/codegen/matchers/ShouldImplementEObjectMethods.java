@@ -25,27 +25,31 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.base.EObject;
-import java.lang.annotation.Annotation;
+import com.pragmaticobjects.oo.equivalence.base.EObjectContract;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
 
+import java.lang.annotation.Annotation;
+
 /**
  * Matches classes, for which generation of EObject methods should be initiated.
- * 
+ *
  * @author skapral
  */
 public class ShouldImplementEObjectMethods extends ConjunctionMatcher<TypeDescription> {
     public <Hint extends Annotation> ShouldImplementEObjectMethods() {
         super(
-            //...we implement EObject methods for all EObject inheritors (direct, or transitive)
-            new MatchSuperClass(
-                new DisjunctionMatcher<>(
-                    ElementMatchers.is(EObject.class),
-                    new ConjunctionMatcher<>(
-                        ElementMatchers.isAbstract(),
-                        new ThisOrSuperClassMatcher(
-                            ElementMatchers.is(EObject.class)
+            //...we implement EObjectContract methods for all EObjectContract implementors (direct, or transitive)
+            //unless its superclass is abstract or of non-eobject type
+            new ConjunctionMatcher<>(
+                ElementMatchers.isSubTypeOf(EObjectContract.class),
+                ElementMatchers.not(
+                    new MatchSuperClass(
+                        new ConjunctionMatcher<>(
+                            ElementMatchers.not(
+                                ElementMatchers.isAbstract()
+                            ),
+                            ElementMatchers.isSubTypeOf(EObjectContract.class)
                         )
                     )
                 )

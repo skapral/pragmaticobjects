@@ -45,6 +45,18 @@ public class IIImplementEObjectHashCodeTest extends TestsSuite {
                         ElementMatchers.hasMethodName("hashCode")
                     )
                 )
+            ),
+            new TestCase(
+                "declaration is skept for non-base classes",
+                new AssertClassAfterInstrumentation(
+                    new IIImplementEObjectHashCode(),
+                    Foo2.class,
+                    ElementMatchers.not(
+                        ElementMatchers.declaresMethod(
+                            ElementMatchers.hasMethodName("hashCode")
+                        )
+                    )
+                )
             )
         );
     }

@@ -28,7 +28,7 @@ package com.pragmaticobjects.oo.equivalence.base;
 import java.util.Objects;
 
 /**
- * Wrapper class, which enforces equivalence check for objects, which are not of the {@link EObject} type.
+ * Wrapper class, which enforces equivalence check for objects, which are not of the {@link EObjectContract} type.
  */
 public class NaturallyEquivalent implements EquivalenceCompliant {
     private final Object obj;
