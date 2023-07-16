@@ -39,17 +39,17 @@ public class ETuple extends EObject {
     }
 
     @Override
-    protected final Object[] attributes() {
+    public final Object[] attributes() {
         return identity;
     }
 
     @Override
-    protected final int hashSeed() {
+    public final int hashSeed() {
         return 12345;
     }
 
     @Override
-    protected final Class<? extends EObject> baseType() {
+    public final Class<? extends EObject> baseType() {
         return ETuple.class;
     }
 }

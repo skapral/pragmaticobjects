@@ -97,17 +97,17 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
         }
 
         @Override
-        protected final Object[] attributes() {
+        public final Object[] attributes() {
             return new Object[] {obj};
         }
 
         @Override
-        protected final int hashSeed() {
+        public final int hashSeed() {
             return 42;
         }
 
         @Override
-        protected final Class<? extends EObject> baseType() {
+        public final Class<? extends EObject> baseType() {
             return EObjectDirectSubtype.class;
         }
     }
@@ -126,17 +126,17 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
     
     private static class AbstractEObjectSubtypeImpl extends AbstractEObjectSubtype {
         @Override
-        protected final Object[] attributes() {
+        public final Object[] attributes() {
             return new Object[] {};
         }
 
         @Override
-        protected final int hashSeed() {
+        public final int hashSeed() {
             return 42;
         }
 
         @Override
-        protected final Class<? extends EObject> baseType() {
+        public final Class<? extends EObject> baseType() {
             return AbstractEObjectSubtypeImpl.class;
         }
     }

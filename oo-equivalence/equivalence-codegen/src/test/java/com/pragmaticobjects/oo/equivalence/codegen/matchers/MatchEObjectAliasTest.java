@@ -110,17 +110,17 @@ public class MatchEObjectAliasTest extends TestsSuite {
         }
         
         @Override
-        protected final Object[] attributes() {
+        public final Object[] attributes() {
             return new Object[] {x, y};
         }
 
         @Override
-        protected final int hashSeed() {
+        public final int hashSeed() {
             return 31;
         }
 
         @Override
-        protected final Class<?> baseType() {
+        public final Class<?> baseType() {
             return Base.class;
         }    
     }
@@ -169,17 +169,17 @@ public class MatchEObjectAliasTest extends TestsSuite {
         }
 
         @Override
-        protected final Object[] attributes() {
+        public final Object[] attributes() {
             return new Object[] {x, y};
         }
 
         @Override
-        protected final int hashSeed() {
+        public final int hashSeed() {
             return 31;
         }
 
         @Override
-        protected final Class<?> baseType() {
+        public final Class<?> baseType() {
             return AbstractBase.class;
         }
     }

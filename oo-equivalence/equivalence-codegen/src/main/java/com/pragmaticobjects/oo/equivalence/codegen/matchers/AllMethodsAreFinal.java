@@ -25,14 +25,15 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
+import io.vavr.collection.List;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.method.MethodList;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-
-import static net.bytebuddy.matcher.ElementMatchers.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static net.bytebuddy.matcher.ElementMatchers.*;
 
 /**
  * Matcher which matches types, methods of which are final.
@@ -46,7 +47,16 @@ public class AllMethodsAreFinal implements ElementMatcher<TypeDescription> {
     public final boolean matches(TypeDescription target) {
         MethodList<MethodDescription.InDefinedShape> methodsToCheck = target.getDeclaredMethods()
                 .filter(not(isConstructor()))
-                .filter(isPublic())
+                .filter(
+                    new ConjunctionMatcher<>(
+                        List.of(
+                        isPublic(),
+                            not(named("attributes")),
+                            not(named("baseType")),
+                            not(named("hashSeed"))
+                        )
+                    )
+                )
                 .filter(not(isStatic()))
                 .filter(not(isAbstract()))
                 .filter(not(isBridge()))

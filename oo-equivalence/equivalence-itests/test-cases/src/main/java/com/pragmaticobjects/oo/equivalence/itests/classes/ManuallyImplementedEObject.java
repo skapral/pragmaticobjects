@@ -39,17 +39,17 @@ public class ManuallyImplementedEObject extends EObject {
     }
 
     @Override
-    protected final Object[] attributes() {
+    public final Object[] attributes() {
         return new Object[] {a};
     }
 
     @Override
-    protected final int hashSeed() {
+    public final int hashSeed() {
         return 42;
     }
 
     @Override
-    protected final Class<? extends EObject> baseType() {
+    public final Class<? extends EObject> baseType() {
         return ManuallyImplementedEObject.class;
     }
 }

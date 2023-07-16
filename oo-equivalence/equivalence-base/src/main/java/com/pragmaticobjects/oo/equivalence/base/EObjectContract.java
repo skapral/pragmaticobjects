@@ -25,24 +25,19 @@
  */
 package com.pragmaticobjects.oo.equivalence.base;
 
-/**
- * Base class for all equivalence-compliant objects
- *
- * @author skapral
- */
-public abstract class EObject implements EquivalenceCompliant, EObjectContract {
-    @Override
-    public final boolean equals(Object obj) {
-        return EquivalenceLogic.equals(this, obj);
-    }
+interface EObjectContract {
+    /**
+     * @return Object's attributes
+     */
+    Object[] attributes();
 
-    @Override
-    public final int hashCode() {
-        return EquivalenceLogic.hashCode(this);
-    }
+    /**
+     * @return Object's hash seed
+     */
+    int hashSeed();
 
-    @Override
-    public final String toString() {
-        return EquivalenceLogic.toString(this);
-    }
+    /**
+     * @return Object's name
+     */
+    Class<?> baseType();
 }

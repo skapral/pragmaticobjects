@@ -41,17 +41,17 @@ public class Point2D extends EObject {
     }
 
     @Override
-    protected final Object[] attributes() {
+    public final Object[] attributes() {
         return new Object[] {x, y};
     }
 
     @Override
-    protected final int hashSeed() {
+    public final int hashSeed() {
         return 42;
     }
 
     @Override
-    protected final Class<? extends EObject> baseType() {
+    public final Class<? extends EObject> baseType() {
         return Point2D.class;
     }
 }
