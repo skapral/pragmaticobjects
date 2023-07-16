@@ -75,7 +75,7 @@ import org.slf4j.LoggerFactory;
 
 public class IIImplementEObjectAttributes implements InstrumentationIteration {
     private static final Logger log = LoggerFactory.getLogger(IIImplementEObjectAttributes.class);
-    private static final Constructor NATURALLYEQ_CONSTR;
+    private static final Constructor<NaturallyEquivalent> NATURALLYEQ_CONSTR;
     private static final Method ARRAYS_COPYOF;
     private static final Method SYSTEM_ARRAYCOPY;
 
