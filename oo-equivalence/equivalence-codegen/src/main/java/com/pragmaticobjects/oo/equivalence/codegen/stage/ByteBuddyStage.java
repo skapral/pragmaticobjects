@@ -30,7 +30,6 @@ import com.pragmaticobjects.oo.equivalence.codegen.cfls.CflsExplicit;
 import com.pragmaticobjects.oo.equivalence.codegen.cfls.CflsFromClassPath;
 import com.pragmaticobjects.oo.equivalence.codegen.cn.ClassNames;
 import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
-import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.ClassFileLocator;
 import net.bytebuddy.pool.TypePool;
