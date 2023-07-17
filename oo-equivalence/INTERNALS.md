@@ -51,38 +51,45 @@ class Main {
 
         Counter c = new Counter("C");
         c.next(); // 0
+      
+        System.out.println(a.equals(b)); //true
+        System.out.println(a.equals(c)); //false
     }
 }
 ```
 
-# EObject
 
-[EObject](equivalence-base/src/main/java/com/pragmaticobjects/oo/equivalence/base/EObject.java) is a class, that provides generic equivalence logic. It implements and seals `equals`, `hashCode`, `toString` methods.
-All equivalence-compliant classes are supposed to extend this class, instead of `java.util.Object`, making methods
-implementations final.
+# Contracts
+[EquivalenceLogic](equivalence-base/src/main/java/com/pragmaticobjects/oo/equivalence/base/EquivalenceLogic.java) utility 
+class defines equivalence logic as a set of static equals/hashCode/toString methods. `EquivalenceLogic` is supposed to be used with `EObject` implementors.
+[EObject](equivalence-base/src/main/java/com/pragmaticobjects/oo/equivalence/base/EObject.java) is marker interface, that
+declares compliance of the class implementing it with the logic, defined in `EquivalenceLogic`. All equivalence-compliant classes 
+are supposed to implement this interface, making methods implementations final.
 
-Though it is possible and supported by Equivalence Maven Plugin, **it is not recommended to extend `EObject` manually**.
-Equivalence Maven plugin detects all equivalence-compliant classes, makes them to extend `EObject`,
-and implements all three methods automatically.
+Though it is possible and supported by Equivalence Maven Plugin, **it is not recommended to implement `EObject` manually**.
+Equivalence Maven plugin detects all equivalence-compliant classes, makes them implement `EObject`,
+and generates implementation of all three methods automatically.
 
-Also, **`EObject` class is not recommended to be used in source code directly**, unless you design some tracing or debugging tool which works with Java classes.
+Also, **`EObject` interface is not recommended to be used in source code directly**, unless you design some tracing or debugging tool which works with Java classes.
 
-All `EObject` inheritors must implement these abstract methods:
+All `EObject` inheritors must implement these methods:
 
-- `protected abstract Object[] attributes();` --- a set of object's attributes, that represent the object's identity.
+- `Object[] attributes();` --- a set of object's attributes, that represent the object's identity.
 It's return value must stay constant per object instance. Usually, all non-static attributes of a class is supposed to be returned here, *provided that they are all final*.
-- `protected abstract int hashSeed();` --- a seed, from which the `hashCode` is calculated.
+- `int hashSeed();` --- a seed, from which the `hashCode` is calculated.
 Should return a constant integer.
-- `protected abstract Class<? extends EObject> baseType();` --- a method for 
-obtaining the base type of the instance, closest to `EObject` in hierarchy.
+- `Class<? extends EObject> baseType();` --- a method for obtaining the base type of the instance.
 Usually, it is sufficient to just return the class, where the method is implemented, and make it final.
 
-Classes, for which equivalence is applicable, should be extended from `EObject`. Direct inheritors from EObject must make the methods implementations final.
+Classes, for which equivalence is applicable, should implement `EObject`.
+Non-abstract EObject implementors must make the methods implementations final.
+All classes, that implement `EObject` manually, must also define `equals/hashCode/toString` triad,
+delegating all calls from them to `EquivalenceLogic`.
 
 Example of `EObject` implementation for the `Counter` class:
 
 ```java
-class Counter extends EObject {
+class Counter implements EObject {
   private final Map<String, Integer> state;
   private final String identity;
 
@@ -113,6 +120,18 @@ class Counter extends EObject {
   protected final int hashSeed() {
     return 17;
   }
+  
+  public final boolean equals(Object obj) {
+    return EquivalenceLogic.equals(this, obj);
+  }
+ 
+  public final int hashCode() {
+    return EquivalenceLogic.hashCode(this);
+  }
+ 
+  public final String toString() {
+    return EquivalenceLogic.toString(this);
+  }
 }
 ```
 
@@ -130,14 +149,16 @@ for each attribute, it checks whether the pair of objects referenced by it are e
 ### Natural equivalence
 
 In Java, there are certain classes, that don't implement `EObject`, but behave like they are equivalence-compliant.
-Examples are boxed primitives and `java.util.UUID`. The special trait about all of them is that they are immutable and reproducible (one can recreate same instances of them in any context).
-Later in this document, I will call such classes "natural-equivalence-compliant", and two equivalent instances of these classes --- naturally equivalent.
+Examples are boxed primitives and `java.util.UUID`. The special trait about all of them is that they are immutable 
+and different instances of the same value don't impact the result of execution where they participate in.
+Later in this document, I will call such classes "natural-equivalence-compliant",
+and two equivalent instances of these classes --- naturally equivalent.
 
-For natural-equvalence-compliant objects, exclusions from the rules above are made: despite the fact that they don't extend `EObject`, they 
-are still compared by means of calling `equals` on them, and treated by the `oo-equivalence` as like they
+For natural-equvalence-compliant objects, exclusions from the rules above are made: despite the fact that they don't extend `EObject`, 
+they are still compared by means of calling `equals` on them, and treated by the `oo-equivalence` as like they
 are equivalence-compliant.
 
-A list of naturally-equivalent classes is currently hardcoded in [EObject](equivalence-base/src/main/java/com/pragmaticobjects/oo/equivalence/base/EObject.java).
+A list of naturally-equivalent classes is currently hardcoded in [EquivalenceLogic](equivalence-base/src/main/java/com/pragmaticobjects/oo/equivalence/base/EquivalenceLogic.java).
 Hardcode is a temporal measure.
 
 Also, it is possible to enforce equivalence check for a certain attribute of an object, annotating it with @EquivalenceHint annotation, like in example below:
@@ -158,16 +179,17 @@ After instrumentation, `TimeRange` will compare `beginDate` and `endDate` attrib
 
 ## EObject::hashCode
 
-Returns hash code for `EObject`, which is consistent with equivalence results. If `this` is equivalent to the `hashCode` argument, the `hashCode` is guaranteed to be the same.
+Returns hash code for `EObject`, which is consistent with equivalence results. If two `EObject`'s are equivalent, their `hashCode`'s are guaranteed to return the same result.
 Implementation of `EObject::hashCode` obtains (by calling `EObject::attributes`), calculates and combines the hash codes for the attributes of the object
 (in the same manner like it is proposed by Josh Bloch's Effective Java) but with certain corrections:
 
-- if the attribute is of type `EObject` (or of some natural-equivalence-compliant type), it's hash code is obtained by means of calling `hashCode` on it.
-- if the attribute is of type `java.util.Object`, its hash code is obtained by calling `System::identityHashCode` on it.
+- if the attribute is instance of `EObject` (or of some natural-equivalence-compliant type), it's hash code is obtained by means of calling `hashCode` on it.
+- if the attribute is not equivalence-compliant, its hash code is obtained by calling `System::identityHashCode` on it.
 
 ## EObject::toString
 
-`EObject`'s `toString` method is reserved for tracing and debugging purposes. It prints out the object's internal structure. Placed into exceptions' messages and logs,
+`EObject`'s `toString` method is reserved for tracing and debugging purposes. It prints out the object's internal structure.
+Placed into exceptions' messages and logs,
 `toString` output provides information to developers about the internal structure for the object of interest.
 For two equivalent objects, output of `toString` is guaranteed to be the same.
 
@@ -184,8 +206,9 @@ For each class, Equivalence Maven plugin executes the sequence of actions
 (see [StandardInstrumentationStage](equivalence-codegen/src/main/java/com/pragmaticobjects/oo/equivalence/codegen/stage/StandardInstrumentationStage.java) class). This sequence includes:
 
 - *Prechecks* --- at this stage, each project class is checked for compliance to equivalence logic.
-- *Marking EObjects* --- each equivalence-compliant class is instrumented to extend `EObject` instead of `java.util.Object` (classes with base class different from `java.util.Object` are ignored).
-- *Implementing EObjects* --- implementation of `EObject`'s abstract methods is generated for each class, marked with `EObject` on previous step.
-- *Postchecks* --- verification stage, checking sanity and consistency for all equivalence-compliant classes within the project. It is mainly checking that the methods of equivalence-compliant classes
+- *Marking EObjects* --- each equivalence-compliant class is instrumented to implement `EObject`.
+- *Implementing EObjects* --- implementation of `EObject`'s abstract methods and `equals/hashCode/toString` triad is generated for each class, marked with `EObject` on previous step.
+- *Postchecks* --- verification stage, checking sanity and consistency for all equivalence-compliant classes within the project.
+  It is mainly checking that the methods of equivalence-compliant classes
   are not overridable, aliases from equivalence-compliant objects doesn't declare new fields and methods, etc.
   On any mismatch found, the build is failed.
