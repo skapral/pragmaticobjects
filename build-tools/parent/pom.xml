@@ -16,7 +16,7 @@
     <profiles>
 
         <profile>
-            <id>compile-java9</id>
+            <id>multi-release-java9</id>
             <activation>
                 <file>
                     <exists>src/main/java9</exists>
@@ -42,6 +42,17 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <configuration>
+                            <archive>
+                                <manifestEntries>
+                                    <Multi-Release>true</Multi-Release>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

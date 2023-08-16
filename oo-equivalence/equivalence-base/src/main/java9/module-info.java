@@ -23,6 +23,7 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-module equivalence.base {
-
+module com.pragmaticobjects.oo.equivalence.base {
+    requires java.base;
+    exports com.pragmaticobjects.oo.equivalence.base;
 }
