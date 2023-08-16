@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * equivalence-codegen
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2023 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,49 +23,40 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base.testobjects;
+package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import com.pragmaticobjects.oo.equivalence.base.EObject;
-import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
- *
  * @author skapral
  */
-public class ETuple implements EObject {
-    private final Object[] identity;
-
-    public ETuple(Object... identity) {
-        this.identity = identity;
-    }
-
-    @Override
-    public final Object[] attributes() {
-        return identity;
-    }
-
-    @Override
-    public final int hashSeed() {
-        return 12345;
-    }
-
-    @Override
-    public final Class<?> baseType() {
-        return ETuple.class;
-    }
-
-    @Override
-    public final boolean equals(Object obj) {
-        return EquivalenceLogic.equals(this, obj);
-    }
-
-    @Override
-    public final int hashCode() {
-        return EquivalenceLogic.hashCode(this);
-    }
-
-    @Override
-    public final String toString() {
-        return EquivalenceLogic.toString(this);
+public class IIImplementEObjectToStringTest extends TestsSuite {
+    public IIImplementEObjectToStringTest() {
+        super(
+            new TestCase(
+                "declares the method",
+                new AssertClassAfterInstrumentation(
+                    new IIImplementEObjectToString(),
+                    Foo.class,
+                    ElementMatchers.declaresMethod(
+                        ElementMatchers.hasMethodName("toString")
+                    )
+                )
+            ),
+            new TestCase(
+                "declaration is skept for non-base classes",
+                new AssertClassAfterInstrumentation(
+                    new IIImplementEObjectToString(),
+                    Foo2.class,
+                    ElementMatchers.not(
+                        ElementMatchers.declaresMethod(
+                            ElementMatchers.hasMethodName("toString")
+                        )
+                    )
+                )
+            )
+        );
     }
 }

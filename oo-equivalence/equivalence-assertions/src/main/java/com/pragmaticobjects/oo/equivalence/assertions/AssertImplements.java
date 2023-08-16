@@ -33,26 +33,46 @@ import java.util.stream.Collectors;
 
 public class AssertImplements implements Assertion {
     private final Class<?> source;
-    private final String typeName;
+    private final Class<?> typeName;
+    private final boolean deepSearch;
 
-    public AssertImplements(Class<?> source, String typeName) {
+    public AssertImplements(Class<?> source, Class<?> typeName, boolean deepSearch) {
         this.source = source;
         this.typeName = typeName;
+        this.deepSearch = deepSearch;
+    }
+
+    public AssertImplements(Class<?> source, Class<?> typeName) {
+        this(source, typeName, false);
     }
 
     @Override
     public final void check() throws Exception {
-        Assertions.assertThat(
-                List.of(source.getGenericInterfaces())
-                    .exists(iface -> iface.getTypeName().equals(typeName))
-            )
-            .withFailMessage(
-                "Expecting %s to implement %s, found %s",
-                source.getName(),
-                typeName,
-                List.of(source.getGenericInterfaces()).map(Type::getTypeName).collect(Collectors.joining(", "))
-            )
-            .isTrue();
-
+        if(deepSearch) {
+            Assertions
+                .assertThat(
+                    source
+                )
+                .withFailMessage(
+                    "Expecting %s to implement %s, found %s",
+                    source.getName(),
+                    typeName,
+                    List.of(source.getGenericInterfaces()).map(Type::getTypeName).collect(Collectors.joining(", "))
+                )
+                .isAssignableTo(typeName);
+        } else {
+            Assertions
+                .assertThat(
+                    List.of(source.getGenericInterfaces())
+                        .exists(iface -> iface.getTypeName().equals(typeName.getTypeName()))
+                )
+                .withFailMessage(
+                    "Expecting %s to implement %s, found %s",
+                    source.getName(),
+                    typeName,
+                    List.of(source.getGenericInterfaces()).map(Type::getTypeName).collect(Collectors.joining(", "))
+                )
+                .isTrue();
+        }
     }
 }

@@ -25,19 +25,9 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import net.bytebuddy.asm.AsmVisitorWrapper;
-import net.bytebuddy.description.field.FieldDescription;
-import net.bytebuddy.description.field.FieldList;
-import net.bytebuddy.description.method.MethodList;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
-import net.bytebuddy.jar.asm.ClassVisitor;
-import net.bytebuddy.jar.asm.MethodVisitor;
-import net.bytebuddy.jar.asm.signature.SignatureReader;
-import net.bytebuddy.jar.asm.signature.SignatureVisitor;
-import net.bytebuddy.jar.asm.signature.SignatureWriter;
-import net.bytebuddy.pool.TypePool;
-import net.bytebuddy.utility.OpenedClassReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,102 +40,6 @@ public class IIMarkAsEObject implements InstrumentationIteration {
 
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
-
-        return builder.visit(
-            new AsmVisitorWrapper() {
-                @Override
-                public int mergeWriter(int arg0) {
-                    return arg0;
-                }
-
-                @Override
-                public int mergeReader(int arg0) {
-                    return arg0;
-                }
-
-                @Override
-                public ClassVisitor wrap(TypeDescription instrumentedType,
-                        ClassVisitor classVisitor,
-                        net.bytebuddy.implementation.Implementation.Context implementationContext,
-                        TypePool typePool,
-                        FieldList<FieldDescription.InDefinedShape> fields,
-                        MethodList<?> methods,
-                        int writerFlags,
-                        int readerFlags) {
-                    return new ClassVisitor(OpenedClassReader.ASM_API, classVisitor) {
-                        private boolean wasMarked = false;
-
-                        @Override
-                        public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-                            if ("java/lang/Object".equals(superName)) {
-                                superName = "com/pragmaticobjects/oo/equivalence/base/EObject";
-                                if (signature != null) {
-                                    SignatureWriter sw = new SignatureWriter() {
-                                        private boolean superclass = false;
-
-                                        @Override
-                                        public void visitFormalTypeParameter(String name) {
-                                            log.debug("visitFormalTypeParameter: " + name + " " + superclass);
-                                            superclass = false;
-                                            super.visitFormalTypeParameter(name);
-                                        }
-
-                                        @Override
-                                        public SignatureVisitor visitSuperclass() {
-                                            log.debug("visitSuperclass: " + superclass);
-                                            superclass = true;
-                                            return super.visitSuperclass();
-                                        }
-
-                                        @Override
-                                        public void visitEnd() {
-                                            log.debug("visitEnd: " + superclass);
-                                            superclass = false;
-                                            super.visitEnd();
-                                        }
-
-                                        @Override
-                                        public SignatureVisitor visitInterface() {
-                                            log.debug("visitInterface: " + superclass);
-                                            superclass = false;
-                                            return super.visitInterface();
-                                        }
-
-                                        @Override
-                                        public void visitClassType(String name) {
-                                            log.debug("visitClassType: " + name + " " + superclass);
-                                            if (superclass && "java/lang/Object".equals(name)) {
-                                                name = "com/pragmaticobjects/oo/equivalence/base/EObject";
-                                            }
-                                            super.visitClassType(name);
-                                        }
-                                    };
-                                    new SignatureReader(signature).accept(sw);
-                                    signature = sw.toString();
-                                }
-                                wasMarked = true;
-                            }
-                            super.visit(version, access, name, signature, superName, interfaces);
-                        }
-
-                        @Override
-                        public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
-                            if (wasMarked && "<init>".equals(name)) {
-                                return new MethodVisitor(OpenedClassReader.ASM_API, super.visitMethod(access, name, descriptor, signature, exceptions)) {
-                                    @Override
-                                    public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-                                        if ("java/lang/Object".equals(owner)) {
-                                            owner = "com/pragmaticobjects/oo/equivalence/base/EObject";
-                                        }
-                                        super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
-                                    }
-                                };
-                            }
-                            return super.visitMethod(access, name, descriptor, signature, exceptions);
-                        }
-                    };
-                }
-            }
-        );
+        return builder.implement(EObject.class);
     }
 }

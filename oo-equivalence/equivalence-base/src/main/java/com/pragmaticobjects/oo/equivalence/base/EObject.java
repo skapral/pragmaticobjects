@@ -25,144 +25,41 @@
  */
 package com.pragmaticobjects.oo.equivalence.base;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 /**
- * Base class for all equivalence-compliant objects
+ * Helper interface for all equivalence-compliant candidates for instrumentation.
  *
- * @author skapral
+ * It is supposed that all implementors of this interface must also implement equals/hashCode/toString
+ * methods, delegating their calls to {@code com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic}, as follows:
+ *
+ * <pre><code>
+ *     public final boolean equals(Object obj) {
+ *         return EquivalenceLogic.equals(this, obj);
+ *     }
+ *
+ *     public final int hashCode() {
+ *         return EquivalenceLogic.hashCode(this);
+ *     }
+ *
+ *     public final String toString() {
+ *         return EquivalenceLogic.toString(this);
+ *     }
+ * </code></pre>
+ *
+ * Instrumentor will generate implementations implicitly for each implementor it will meet.
  */
-public abstract class EObject implements EquivalenceCompliant {
-    private static final boolean FIXED_STATIC_IDENTITY = System.getProperty("fixedStaticIdentity") != null;
-
+public interface EObject extends EquivalenceCompliant {
     /**
      * @return Object's attributes
      */
-    protected abstract Object[] attributes();
+    Object[] attributes();
 
     /**
      * @return Object's hash seed
      */
-    protected abstract int hashSeed();
-    
+    int hashSeed();
+
     /**
      * @return Object's name
      */
-    protected abstract Class<?> baseType();
-
-    @Override
-    public final boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (obj instanceof EObject && (this.baseType() == ((EObject) obj).baseType())) {
-            final Object[] thisAttrs = attributes();
-            final Object[] objAttrs = ((EObject) obj).attributes();
-            int length = thisAttrs.length == objAttrs.length ? thisAttrs.length : -1;
-            if (length < 0) {
-                return false;
-            }
-            for (int i = 0; i < thisAttrs.length; i++) {
-                if (!equal(thisAttrs[i], objAttrs[i])) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public final int hashCode() {
-        final Object[] attrs = attributes();
-        final int hashSeed = hashSeed();
-        int result = hash(hashSeed);
-        for (Object attr : attrs) {
-            result = hashSeed * result + hash(attr);
-        }
-        return result;
-    }
-
-    @Override
-    public final String toString() {
-        final Object[] attrs = attributes();
-        StringBuilder sb = new StringBuilder();
-        sb.append(baseType().getSimpleName());
-        sb.append("(");
-        sb.append(
-            Arrays.stream(attrs)
-                .map(EObject::toString)
-                .collect(Collectors.joining(", "))
-        );
-        sb.append(")");
-        return sb.toString();
-    }
-
-    private final static HashSet<Class<?>> NATURALLY_EQUIVALENT = new HashSet<Class<?>>();
-
-    static {
-        NATURALLY_EQUIVALENT.add(String.class);
-        NATURALLY_EQUIVALENT.add(Boolean.class);
-        NATURALLY_EQUIVALENT.add(Byte.class);
-        NATURALLY_EQUIVALENT.add(Short.class);
-        NATURALLY_EQUIVALENT.add(Integer.class);
-        NATURALLY_EQUIVALENT.add(Long.class);
-        NATURALLY_EQUIVALENT.add(Float.class);
-        NATURALLY_EQUIVALENT.add(Double.class);
-        NATURALLY_EQUIVALENT.add(UUID.class);
-        NATURALLY_EQUIVALENT.add(Optional.class);
-    }
-
-    protected static boolean hasIdentity(Object obj) {
-        return obj == null
-            || obj instanceof EquivalenceCompliant
-            || obj instanceof Enum
-            || NATURALLY_EQUIVALENT.contains(obj.getClass());
-    }
-
-    protected static boolean equal(Object object1, Object object2) {
-        if (object1 == null) {
-            return object2 == null;
-        }
-        if (object1 == object2) {
-            return true;
-        }
-        if (hasIdentity(object1)) {
-            return object1.equals(object2);
-        }
-        return false;
-    }
-
-    protected static int hash(Object element) {
-        if (element == null) {
-            return 0;
-        }
-        if (hasIdentity(element)) {
-            return element.hashCode();
-        }
-        return systemIdentity(element);
-    }
-
-    protected static int systemIdentity(Object element) {
-        if (FIXED_STATIC_IDENTITY) {
-            return element.getClass().getName().hashCode();
-        } else {
-            return System.identityHashCode(element);
-        }
-    }
-
-    protected static String toString(Object value) {
-        if (hasIdentity(value)) {
-            return value == null ? "null" : value.toString();
-        } else {
-            return value.getClass().getName() + "#" + systemIdentity(value);
-        }
-    }
+    Class<?> baseType();
 }

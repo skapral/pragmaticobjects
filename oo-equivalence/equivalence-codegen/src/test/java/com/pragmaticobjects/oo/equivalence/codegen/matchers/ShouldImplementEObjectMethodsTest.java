@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
 /**
  *
@@ -72,7 +73,7 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
                 )
             ),
             new TestCase(
-                "mismatch subtype from abstract eobject",
+                "match subtype from abstract eobject",
                 new AssertThatTypeMatches(
                     AbstractEObjectSubtypeImpl.class,
                     new ShouldImplementEObjectMethods()
@@ -89,7 +90,7 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
         }
     }
     
-    private static class EObjectDirectSubtype extends EObject {
+    private static class EObjectDirectSubtype implements EObject {
         private final Object obj;
 
         public EObjectDirectSubtype(Object obj) {
@@ -97,18 +98,33 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
         }
 
         @Override
-        protected final Object[] attributes() {
+        public final Object[] attributes() {
             return new Object[] {obj};
         }
 
         @Override
-        protected final int hashSeed() {
+        public final int hashSeed() {
             return 42;
         }
 
         @Override
-        protected final Class<? extends EObject> baseType() {
+        public final Class<?> baseType() {
             return EObjectDirectSubtype.class;
+        }
+
+        @Override
+        public final boolean equals(Object obj) {
+            return EquivalenceLogic.equals(this, obj);
+        }
+
+        @Override
+        public final int hashCode() {
+            return EquivalenceLogic.hashCode(this);
+        }
+
+        @Override
+        public final String toString() {
+            return EquivalenceLogic.toString(this);
         }
     }
     
@@ -121,23 +137,38 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
     private static abstract class AbstractType {
     }
     
-    private static abstract class AbstractEObjectSubtype extends EObject {
+    private static abstract class AbstractEObjectSubtype implements EObject {
     }
     
     private static class AbstractEObjectSubtypeImpl extends AbstractEObjectSubtype {
         @Override
-        protected final Object[] attributes() {
+        public final Object[] attributes() {
             return new Object[] {};
         }
 
         @Override
-        protected final int hashSeed() {
+        public final int hashSeed() {
             return 42;
         }
 
         @Override
-        protected final Class<? extends EObject> baseType() {
+        public final Class<?> baseType() {
             return AbstractEObjectSubtypeImpl.class;
+        }
+
+        @Override
+        public final boolean equals(Object obj) {
+            return EquivalenceLogic.equals(this, obj);
+        }
+
+        @Override
+        public final int hashCode() {
+            return EquivalenceLogic.hashCode(this);
+        }
+
+        @Override
+        public final String toString() {
+            return EquivalenceLogic.toString(this);
         }
     }
 }

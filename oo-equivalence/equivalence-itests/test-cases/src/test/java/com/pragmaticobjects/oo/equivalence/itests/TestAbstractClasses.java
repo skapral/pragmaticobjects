@@ -25,11 +25,7 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests;
 
-import com.pragmaticobjects.oo.equivalence.assertions.AssertCombined;
-import com.pragmaticobjects.oo.equivalence.assertions.AssertSubtypeOf;
-import com.pragmaticobjects.oo.equivalence.assertions.AssertTwoObjectsEquality;
-import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
-import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import com.pragmaticobjects.oo.equivalence.assertions.*;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.itests.classes.AbstractNode;
 import com.pragmaticobjects.oo.equivalence.itests.classes.BaseNode;
@@ -46,7 +42,7 @@ public class TestAbstractClasses extends TestsSuite {
             new TestCase(
                 "types hierarchy is preserved",
                 new AssertCombined(
-                    new AssertSubtypeOf(
+                    new AssertImplements(
                         AbstractNode.class,
                         EObject.class
                     ),
@@ -68,13 +64,13 @@ public class TestAbstractClasses extends TestsSuite {
                 "attributes of base class are participating in eqivalence calculation",
                 new AssertCombined(
                     new AssertTwoObjectsEquality(
-                        new LeafNode<Integer>(42),
-                        new LeafNode<Integer>(42),
+                        new LeafNode<>(42),
+                        new LeafNode<>(42),
                         true
                     ),
                     new AssertTwoObjectsEquality(
-                        new LeafNode<Integer>(42),
-                        new LeafNode<Integer>(24),
+                        new LeafNode<>(42),
+                        new LeafNode<>(24),
                         false
                     )
                 )

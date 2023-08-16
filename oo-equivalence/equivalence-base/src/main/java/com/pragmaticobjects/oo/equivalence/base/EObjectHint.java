@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  * The class, annotated by this annotation, is allowed to have only the {@link Object} superclass.
  * Attempt to annotate and instrument a class that doesn't fit this requirement will be terminated by exception.
  * 
- * If the class is abstract, its base class is replaced to
+ * If the class is abstract, the list of implemented interfaces for it is updated with
  * {@link EObject}, and instrumentor handles its non-abstract subtypes as EObjects. Abstract class, that is not annotated by {@link EObjectHint},
  * is not considered as a candidate for instrumentation.
  * 

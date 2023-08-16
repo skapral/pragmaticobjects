@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * equivalence-assertions
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2023 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,49 +23,36 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base.testobjects;
+package com.pragmaticobjects.oo.equivalence.assertions;
 
-import com.pragmaticobjects.oo.equivalence.base.EObject;
-import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
+import io.vavr.collection.List;
+import org.assertj.core.api.Assertions;
 
-/**
- *
- * @author skapral
- */
-public class ETuple implements EObject {
-    private final Object[] identity;
+import java.lang.reflect.Type;
+import java.util.stream.Collectors;
 
-    public ETuple(Object... identity) {
-        this.identity = identity;
+public class AssertImplementsTypeName implements Assertion {
+    private final Class<?> source;
+    private final String typeName;
+
+    public AssertImplementsTypeName(Class<?> source, String typeName) {
+        this.source = source;
+        this.typeName = typeName;
     }
 
     @Override
-    public final Object[] attributes() {
-        return identity;
-    }
+    public final void check() throws Exception {
+        Assertions.assertThat(
+                List.of(source.getGenericInterfaces())
+                    .exists(iface -> iface.getTypeName().equals(typeName))
+            )
+            .withFailMessage(
+                "Expecting %s to implement %s, found %s",
+                source.getName(),
+                typeName,
+                List.of(source.getGenericInterfaces()).map(Type::getTypeName).collect(Collectors.joining(", "))
+            )
+            .isTrue();
 
-    @Override
-    public final int hashSeed() {
-        return 12345;
-    }
-
-    @Override
-    public final Class<?> baseType() {
-        return ETuple.class;
-    }
-
-    @Override
-    public final boolean equals(Object obj) {
-        return EquivalenceLogic.equals(this, obj);
-    }
-
-    @Override
-    public final int hashCode() {
-        return EquivalenceLogic.hashCode(this);
-    }
-
-    @Override
-    public final String toString() {
-        return EquivalenceLogic.toString(this);
     }
 }

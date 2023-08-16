@@ -79,7 +79,7 @@ public class TestClassesWithGenerics extends TestsSuite {
             new TestCase(
                 "Issue 3 regression test: see https://github.com/skapral/pragmaticobjects/issues/3",
                 new AssertAssertionPasses(
-                    new AssertImplements(
+                    new AssertImplementsTypeName(
                         GenericsTest.class,
                         "com.pragmaticobjects.oo.equivalence.itests.classes.GenericsTestIface<io.vavr.collection.Map<java.lang.String, java.lang.Object>>"
                     )

@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-itests.test-cases
+ * equivalence-assertions
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2023 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,33 +23,58 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.itests.classes;
+package com.pragmaticobjects.oo.equivalence.assertions;
 
-import com.pragmaticobjects.oo.equivalence.base.EObject;
-
-/**
- *
- * @author skapral
- */
-public class ManuallyImplementedEObject extends EObject {
-    private final int a;
-
-    public ManuallyImplementedEObject(int a) {
-        this.a = a;
+public class AssertImplementsTest extends TestsSuite {
+    public AssertImplementsTest() {
+        super(
+            new TestCase(
+                "direct implementor",
+                new AssertCombined(
+                    new AssertAssertionPasses(
+                        new AssertImplements(
+                            Ao.class,
+                            A.class
+                        )
+                    ),
+                    new AssertAssertionFails(
+                        new AssertImplements(
+                            Ao.class,
+                            B.class
+                        )
+                    )
+                )
+            ),
+            new TestCase(
+                "indirect implementor",
+                new AssertCombined(
+                    new AssertAssertionFails(
+                        new AssertImplements(
+                            Bo.class,
+                            A.class
+                        )
+                    ),
+                    new AssertAssertionPasses(
+                        new AssertImplements(
+                            Bo.class,
+                            A.class,
+                            true
+                        )
+                    )
+                )
+            )
+        );
     }
+}
 
-    @Override
-    protected final Object[] attributes() {
-        return new Object[] {a};
-    }
+interface A {
+}
 
-    @Override
-    protected final int hashSeed() {
-        return 42;
-    }
+class Ao implements A {
+}
 
-    @Override
-    protected final Class<? extends EObject> baseType() {
-        return ManuallyImplementedEObject.class;
-    }
+interface B extends A {
+}
+
+class Bo implements B {
 }

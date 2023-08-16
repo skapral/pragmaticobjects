@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
 /**
  *
@@ -100,7 +101,7 @@ public class MatchEObjectAliasTest extends TestsSuite {
     
     public static class NonBaseInheritor extends NonBase {}
     
-    public static class Base extends EObject {
+    public static class Base implements EObject {
         private final int x;
         private final int y;
 
@@ -110,19 +111,34 @@ public class MatchEObjectAliasTest extends TestsSuite {
         }
         
         @Override
-        protected final Object[] attributes() {
+        public final Object[] attributes() {
             return new Object[] {x, y};
         }
 
         @Override
-        protected final int hashSeed() {
+        public final int hashSeed() {
             return 31;
         }
 
         @Override
-        protected final Class<?> baseType() {
+        public final Class<?> baseType() {
             return Base.class;
-        }    
+        }
+
+        @Override
+        public final boolean equals(Object obj) {
+            return EquivalenceLogic.equals(this, obj);
+        }
+
+        @Override
+        public final int hashCode() {
+            return EquivalenceLogic.hashCode(this);
+        }
+
+        @Override
+        public final String toString() {
+            return EquivalenceLogic.toString(this);
+        }
     }
     
     public static class BaseAlias extends Base {
@@ -131,7 +147,7 @@ public class MatchEObjectAliasTest extends TestsSuite {
         }
     }
     
-    public static abstract class Abstract extends EObject {
+    public static abstract class Abstract implements EObject {
         protected final int x;
 
         public Abstract(int x) {
@@ -140,6 +156,21 @@ public class MatchEObjectAliasTest extends TestsSuite {
 
         public final int getX() {
             return x;
+        }
+
+        @Override
+        public final boolean equals(Object obj) {
+            return EquivalenceLogic.equals(this, obj);
+        }
+
+        @Override
+        public final int hashCode() {
+            return EquivalenceLogic.hashCode(this);
+        }
+
+        @Override
+        public final String toString() {
+            return EquivalenceLogic.toString(this);
         }
     }
     
@@ -169,17 +200,17 @@ public class MatchEObjectAliasTest extends TestsSuite {
         }
 
         @Override
-        protected final Object[] attributes() {
+        public final Object[] attributes() {
             return new Object[] {x, y};
         }
 
         @Override
-        protected final int hashSeed() {
+        public final int hashSeed() {
             return 31;
         }
 
         @Override
-        protected final Class<?> baseType() {
+        public final Class<?> baseType() {
             return AbstractBase.class;
         }
     }

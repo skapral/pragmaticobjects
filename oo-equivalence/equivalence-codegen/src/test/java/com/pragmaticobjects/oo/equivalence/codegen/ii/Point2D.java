@@ -25,13 +25,15 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
+
 import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
 /**
  *
  * @author skapral
  */
-public class Point2D extends EObject {
+public class Point2D implements EObject {
     private final int x;
     private final int y;
 
@@ -41,17 +43,32 @@ public class Point2D extends EObject {
     }
 
     @Override
-    protected final Object[] attributes() {
+    public final Object[] attributes() {
         return new Object[] {x, y};
     }
 
     @Override
-    protected final int hashSeed() {
+    public final int hashSeed() {
         return 42;
     }
 
     @Override
-    protected final Class<? extends EObject> baseType() {
+    public final Class<?> baseType() {
         return Point2D.class;
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        return EquivalenceLogic.equals(this, obj);
+    }
+
+    @Override
+    public final int hashCode() {
+        return EquivalenceLogic.hashCode(this);
+    }
+
+    @Override
+    public final String toString() {
+        return EquivalenceLogic.toString(this);
     }
 }

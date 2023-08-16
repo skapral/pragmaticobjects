@@ -43,7 +43,7 @@ public class MatchEObjectAlias extends ConjunctionMatcher<TypeDescription> {
             new MatchSuperClass(
                 new ConjunctionMatcher<>(
                     ElementMatchers.not(
-                        ElementMatchers.is(EObject.class)
+                        ElementMatchers.is(Object.class)
                     ),
                     ElementMatchers.isSubTypeOf(
                         EObject.class

@@ -25,12 +25,7 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests.abstractclasses;
 
-import com.pragmaticobjects.oo.equivalence.assertions.AssertAssertionFails;
-import com.pragmaticobjects.oo.equivalence.assertions.AssertCombined;
-import com.pragmaticobjects.oo.equivalence.assertions.AssertSubtypeOf;
-import com.pragmaticobjects.oo.equivalence.assertions.AssertTwoObjectsEquality;
-import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
-import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import com.pragmaticobjects.oo.equivalence.assertions.*;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractEObject;
 import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractNonEObject;
@@ -68,24 +63,24 @@ public class TestExplicitAbstractClasses extends TestsSuite {
                 "EObject hints are taken into account",
                 new AssertCombined(
                     new AssertAssertionFails(
-                        new AssertSubtypeOf(
+                        new AssertImplements(
                             PlainObjectImpl.class,
                             EObject.class,
                             true
                         )
                     ),
-                    new AssertSubtypeOf(
+                    new AssertImplements(
                         EObjectImpl.class,
                         EObject.class,
                         true
                     ),
-                    new AssertSubtypeOf(
+                    new AssertImplements(
                         EObjectImplImpl.class,
                         EObject.class,
                         true
                     ),
                     new AssertAssertionFails(
-                        new AssertSubtypeOf(
+                        new AssertImplements(
                             NonEObjectImpl.class,
                             EObject.class,
                             true
