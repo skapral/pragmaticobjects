@@ -60,7 +60,7 @@ public class CnFromPath implements ClassNames {
                 .map(p -> List.ofAll(StreamSupport.stream(p.spliterator(), false)))
                 .map(pl -> pl.map(Object::toString).collect(Collectors.joining(".")))
                 .map(s -> s.replaceFirst(".class$", ""))
-                .filter(s -> !"module-info".equals(s))
+                .filter(s -> !s.endsWith("module-info"))
                 .collect(List.collector());
             return classes;
         } catch(Exception ex) {
