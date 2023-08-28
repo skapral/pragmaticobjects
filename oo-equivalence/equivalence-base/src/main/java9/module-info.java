@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * equivalence-base
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2023 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,48 +23,7 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.cn;
-
-import io.vavr.collection.List;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-/**
- * Class names, extracted from all .class files from certain directory.
- *
- * @author Kapralov Sergey
- */
-public class CnFromPath implements ClassNames {
-    private final Path path;
-
-    /**
-     * Ctor.
-     *
-     * @param path Path to scan for class names.
-     */
-    public CnFromPath(final Path path) {
-        this.path = path;
-    }
-
-    @Override
-    public final List<String> classNames() {
-        try {
-            if(Files.notExists(path)) {
-                return List.empty();
-            }
-            final List<String> classes = Files.find(path, Integer.MAX_VALUE, (p, bf) -> p.toString().endsWith(".class"))
-                .map(path::relativize)
-                .map(p -> List.ofAll(StreamSupport.stream(p.spliterator(), false)))
-                .map(pl -> pl.map(Object::toString).collect(Collectors.joining(".")))
-                .map(s -> s.replaceFirst(".class$", ""))
-                .filter(s -> !s.endsWith("module-info"))
-                .collect(List.collector());
-            return classes;
-        } catch(Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
+module com.pragmaticobjects.oo.equivalence.base {
+    requires java.base;
+    exports com.pragmaticobjects.oo.equivalence.base;
 }

@@ -63,6 +63,15 @@ public class CnFromPathTest extends TestsSuite {
                     ),
                     Paths.get("module-info.class")
                 )
+            ),
+            new TestCase(
+                "ignores module-info.class in multi-release project",
+                new AssertSimulatingClasspath(
+                    path -> new AssertZeroClassNames(
+                        new CnFromPath(path)
+                    ),
+                    Paths.get("META-INF/versions/9/module-info.class")
+                )
             )
         );
     }
