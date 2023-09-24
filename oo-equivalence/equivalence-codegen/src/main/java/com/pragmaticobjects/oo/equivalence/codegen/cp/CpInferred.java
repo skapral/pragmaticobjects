@@ -26,20 +26,23 @@
 package com.pragmaticobjects.oo.equivalence.codegen.cp;
 
 import io.vavr.collection.List;
+
 import java.nio.file.Path;
 
 /**
- * Class path
+ * Inferred {@link ClassPath}
  *
  * @author Kapralov Sergey
  */
-public interface ClassPath {
-    interface Inference {
-        ClassPath classPath();
+public class CpInferred implements ClassPath {
+    private final Inference inference;
+
+    public CpInferred(Inference inference) {
+        this.inference = inference;
     }
 
-    /**
-     * @return The list of paths, this class path consists of.
-     */
-    List<Path> paths();
+    @Override
+    public final List<Path> paths() {
+        return inference.classPath().paths();
+    }
 }

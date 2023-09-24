@@ -14,7 +14,6 @@
     <packaging>pom</packaging>
 
     <profiles>
-
         <profile>
             <id>multi-release-java9</id>
             <activation>
@@ -37,6 +36,48 @@
                                     <release>9</release>
                                     <compileSourceRoots>
                                         <compileSourceRoot>${project.basedir}/src/main/java9</compileSourceRoot>
+                                    </compileSourceRoots>
+                                    <multiReleaseOutput>true</multiReleaseOutput>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <configuration>
+                            <archive>
+                                <manifestEntries>
+                                    <Multi-Release>true</Multi-Release>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>multi-release-java17</id>
+            <activation>
+                <file>
+                    <exists>src/main/java17</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>compile-java17</id>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                                <configuration>
+                                    <release>17</release>
+                                    <compileSourceRoots>
+                                        <compileSourceRoot>${project.basedir}/src/main/java17</compileSourceRoot>
                                     </compileSourceRoots>
                                     <multiReleaseOutput>true</multiReleaseOutput>
                                 </configuration>
@@ -91,7 +132,8 @@
                             </systemPropertyVariables>
                             <trimStackTrace>false</trimStackTrace>
                             <reportFormat>plain</reportFormat>
-                            <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporterUnicode"/>
+                            <statelessTestsetInfoReporter
+                                    implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporterUnicode"/>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -162,6 +204,13 @@
                                 <goals>
                                     <goal>report</goal>
                                 </goals>
+                                <configuration>
+                                    <excludes>
+                                        <!-- Multi-Release structures coverage workaround -->
+                                        <!-- https://github.com/jacoco/jacoco/issues/407#issuecomment-442106170 -->
+                                        <exclude>META-INF/**</exclude>
+                                    </excludes>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>

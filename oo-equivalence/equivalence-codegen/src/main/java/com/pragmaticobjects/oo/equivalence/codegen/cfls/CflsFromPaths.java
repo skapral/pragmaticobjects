@@ -29,30 +29,6 @@ import io.vavr.collection.List;
 
 import java.nio.file.Path;
 
-/**
- * {@link CflsFromPaths} inference.
- *
- * @author Kapralov Sergey
- */
-class CflsFromPathsInference implements ClassFileLocatorSource.Inference {
-    private final List<Path> paths;
-
-    /**
-     * Ctor.
-     *
-     * @param paths Paths
-     */
-    public CflsFromPathsInference(final List<Path> paths) {
-        this.paths = paths;
-    }
-
-    @Override
-    public final ClassFileLocatorSource classFileLocatorSource() {
-        return paths
-            .<ClassFileLocatorSource>map(CflsFromPath::new)
-            .transform(CflsCompound::new);
-    }
-}
 
 /**
  * Source from {@link net.bytebuddy.dynamic.ClassFileLocator}, made from provided paths.
@@ -60,6 +36,27 @@ class CflsFromPathsInference implements ClassFileLocatorSource.Inference {
  * @author Kapralov Sergey
  */
 public class CflsFromPaths extends CflsInferred implements ClassFileLocatorSource {
+    private static class Inference implements ClassFileLocatorSource.Inference {
+        private final List<Path> paths;
+
+        /**
+         * Ctor.
+         *
+         * @param paths Paths
+         */
+        public Inference(final List<Path> paths) {
+            this.paths = paths;
+        }
+
+        @Override
+        public final ClassFileLocatorSource classFileLocatorSource() {
+            return paths
+                .<ClassFileLocatorSource>map(CflsFromPath::new)
+                .transform(CflsCompound::new);
+        }
+    }
+
+
     /**
      * Ctor.
      *
@@ -67,7 +64,7 @@ public class CflsFromPaths extends CflsInferred implements ClassFileLocatorSourc
      */
     public CflsFromPaths(final List<Path> paths) {
         super(
-            new CflsFromPathsInference(
+            new Inference(
                 paths
             )
         );

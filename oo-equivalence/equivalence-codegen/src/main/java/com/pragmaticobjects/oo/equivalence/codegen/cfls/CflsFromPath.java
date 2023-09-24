@@ -31,38 +31,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * {@link CflsFromPath} inference
- *
- * @author Kapralov Sergey
- */
-class CflsFromPathInference implements ClassFileLocatorSource.Inference {
-    private final Path path;
-
-    /**
-     * Ctor.
-     *
-     * @param path Path
-     */
-    public CflsFromPathInference(final Path path) {
-        this.path = path;
-    }
-
-    @Override
-    public final ClassFileLocatorSource classFileLocatorSource() {
-        if(!Files.exists(path)) {
-            return new CflsExplicit(
-                ClassFileLocator.NoOp.INSTANCE
-            );
-        }
-        if(Files.isDirectory(path)) {
-            return new CflsDirectory(path);
-        } else {
-            return new CflsJar(path);
-        }
-    }
-}
-
-/**
  * Source for {@link net.bytebuddy.dynamic.ClassFileLocator}, made from specified path.
  * It automatically determines the nature of path provided (a directory or a jar file)
  * and chooses suitable locator for it.
@@ -70,6 +38,32 @@ class CflsFromPathInference implements ClassFileLocatorSource.Inference {
  * @author Kapralov Sergey
  */
 public class CflsFromPath extends CflsInferred implements ClassFileLocatorSource {
+    private static class Inference implements ClassFileLocatorSource.Inference {
+        private final Path path;
+
+        /**
+         * Ctor.
+         *
+         * @param path Path
+         */
+        public Inference(final Path path) {
+            this.path = path;
+        }
+
+        @Override
+        public final ClassFileLocatorSource classFileLocatorSource() {
+            if(!Files.exists(path)) {
+                return new CflsExplicit(
+                    ClassFileLocator.NoOp.INSTANCE
+                );
+            }
+            if(Files.isDirectory(path)) {
+                return new CflsDirectory(path);
+            } else {
+                return new CflsJar(path);
+            }
+        }
+    }
 
     /**
      * Ctor.
@@ -78,7 +72,7 @@ public class CflsFromPath extends CflsInferred implements ClassFileLocatorSource
      */
     public CflsFromPath(final Path path) {
         super(
-            new CflsFromPathInference(
+            new Inference(
                 path
             )
         );

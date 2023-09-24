@@ -28,36 +28,31 @@ package com.pragmaticobjects.oo.equivalence.codegen.cfls;
 import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
 
 /**
- * {@link CflsFromClassPath} inference.
- *
- * @author Kapralov Sergey
- */
-class CflsFromClassPathInference implements ClassFileLocatorSource.Inference {
-    private final ClassPath classPath;
-
-    /**
-     * Ctor.
-     *
-     * @param classPath {@link ClassPath} instance
-     */
-    public CflsFromClassPathInference(final ClassPath classPath) {
-        this.classPath = classPath;
-    }
-
-    @Override
-    public final ClassFileLocatorSource classFileLocatorSource() {
-        return new CflsFromPaths(
-            classPath.paths()
-        );
-    }
-}
-
-/**
  * {@link ClassFileLocatorSource} which looks for classes in certain {@link ClassPath}
  *
  * @author Kapralov Sergey
  */
 public class CflsFromClassPath extends CflsInferred implements ClassFileLocatorSource {
+    private static class Inference implements ClassFileLocatorSource.Inference {
+        private final ClassPath classPath;
+
+        /**
+         * Ctor.
+         *
+         * @param classPath {@link ClassPath} instance
+         */
+        public Inference(final ClassPath classPath) {
+            this.classPath = classPath;
+        }
+
+        @Override
+        public final ClassFileLocatorSource classFileLocatorSource() {
+            return new CflsFromPaths(
+                classPath.paths()
+            );
+        }
+    }
+
     /**
      * Ctor.
      *
@@ -65,7 +60,7 @@ public class CflsFromClassPath extends CflsInferred implements ClassFileLocatorS
      */
     public CflsFromClassPath(final ClassPath cp) {
         super(
-            new CflsFromClassPathInference(
+            new Inference(
                 cp
             )
         );

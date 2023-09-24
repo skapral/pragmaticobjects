@@ -23,23 +23,29 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.cp;
+package com.pragmaticobjects.oo.equivalence.codegen.cn;
 
 import io.vavr.collection.List;
-import java.nio.file.Path;
 
 /**
- * Class path
+ * Class names list, collected from multiple sources
  *
  * @author Kapralov Sergey
  */
-public interface ClassPath {
-    interface Inference {
-        ClassPath classPath();
-    }
+public class CnCombined implements ClassNames {
+    private final List<ClassNames> parts;
 
     /**
-     * @return The list of paths, this class path consists of.
+     * Ctor.
+     *
+     * @param sources Combined class names sources
      */
-    List<Path> paths();
+    public CnCombined(List<ClassNames> sources) {
+        this.parts = sources;
+    }
+
+    @Override
+    public final List<String> classNames() {
+        return parts.flatMap(ClassNames::classNames);
+    }
 }

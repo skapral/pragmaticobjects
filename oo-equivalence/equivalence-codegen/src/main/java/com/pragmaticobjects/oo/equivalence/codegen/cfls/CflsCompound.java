@@ -29,38 +29,33 @@ import io.vavr.collection.List;
 import net.bytebuddy.dynamic.ClassFileLocator;
 
 /**
- * {@link CflsCompound} inference;
- *
- * @author Kapralov Sergey
- */
-class CflsCompoundInference implements ClassFileLocatorSource.Inference {
-    private final List<ClassFileLocatorSource> parts;
-
-    /**
-     * Ctor.
-     *
-     * @param parts Parts to combine
-     */
-    public CflsCompoundInference(final List<ClassFileLocatorSource> parts) {
-        this.parts = parts;
-    }
-
-    @Override
-    public final ClassFileLocatorSource classFileLocatorSource() {
-        return new CflsExplicit(
-            parts
-                .map(ClassFileLocatorSource::classFileLocator)
-                .transform(cflsl -> new ClassFileLocator.Compound(cflsl.toJavaList()))
-        );
-    }
-}
-
-/**
  * Source for a combined {@link ClassFileLocator}, consisting of provided parts
  *
  * @author Kapralov Sergey
  */
 public class CflsCompound extends CflsInferred implements ClassFileLocatorSource {
+    private static class Inference implements ClassFileLocatorSource.Inference {
+        private final List<ClassFileLocatorSource> parts;
+
+        /**
+         * Ctor.
+         *
+         * @param parts Parts to combine
+         */
+        public Inference(final List<ClassFileLocatorSource> parts) {
+            this.parts = parts;
+        }
+
+        @Override
+        public final ClassFileLocatorSource classFileLocatorSource() {
+            return new CflsExplicit(
+                parts
+                    .map(ClassFileLocatorSource::classFileLocator)
+                    .transform(cflsl -> new ClassFileLocator.Compound(cflsl.toJavaList()))
+            );
+        }
+    }
+
     /**
      * Ctor.
      *
@@ -68,7 +63,7 @@ public class CflsCompound extends CflsInferred implements ClassFileLocatorSource
      */
     public CflsCompound(List<ClassFileLocatorSource> parts) {
         super(
-            new CflsCompoundInference(
+            new Inference(
                 parts
             )
         );
