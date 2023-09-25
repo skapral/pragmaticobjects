@@ -25,12 +25,10 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests.records;
 
-import com.pragmaticobjects.oo.equivalence.assertions.AssertCombined;
-import com.pragmaticobjects.oo.equivalence.assertions.AssertEqualsResult;
-import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
-import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import com.pragmaticobjects.oo.equivalence.assertions.*;
 import com.pragmaticobjects.oo.equivalence.itests.classes.Counter;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,6 +65,20 @@ public class TestRecords extends TestsSuite {
                         new TRecord<>(new Counter("B")),
                         false
                     )
+                )
+            ),
+            new TestCase(
+                "record with hinted atributtes",
+                new AssertTwoObjectsEquality(
+                    new TimeRange(
+                        LocalDate.of(2020, 1, 1),
+                        LocalDate.of(2030, 1, 1)
+                    ),
+                    new TimeRange(
+                        LocalDate.of(2020, 1, 1),
+                        LocalDate.of(2030, 1, 1)
+                    ),
+                    true
                 )
             )
         );
