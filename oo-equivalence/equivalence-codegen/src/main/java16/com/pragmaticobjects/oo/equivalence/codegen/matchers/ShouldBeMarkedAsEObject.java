@@ -25,75 +25,22 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
-import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
-import java.lang.annotation.Annotation;
-import java.util.function.Function;
-
-import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
 
-class DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal extends ConjunctionMatcher<TypeDescription> {
-    public <Hint extends Annotation> DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal(
-        Class<Hint> eobjectHint,
-        Function<Hint, Boolean> hintStatus
-    ) {
-        super(
-            List.of(
-                ElementMatchers.not(
-                    ElementMatchers.isAbstract()
-                ),
-                new MatchSuperClass(
-                    ElementMatchers.is(Object.class)
-                ),
-                new AttributesStandForIdentity(),
-                // unless it is explicitly hinted as not a candidate
-                ElementMatchers.not(
-                    new HasHint<>(eobjectHint, hintStatus, false)
-                )
-            )
-        );
-    }
-}
+import java.lang.annotation.Annotation;
+import java.util.function.Function;
 
-class ExplicitlyHintedAbstractClass extends ConjunctionMatcher<TypeDescription> {
-    public <Hint extends Annotation> ExplicitlyHintedAbstractClass(
-        Class<Hint> eobjectHint,
-        Function<Hint, Boolean> hintStatus
-    ) {
-        super(
-            List.of(
-                ElementMatchers.isAbstract(),
-                new ConjunctionMatcher<>(
-                    new MatchSuperClass(
-                        ElementMatchers.is(Object.class)
-                    ),
-                    new HasHint<>(eobjectHint, hintStatus, true)
-                )
-            )
-        );
-    }
-}
-
-/**
- * Matches classes, that should be marked as EObjects. 
- * Semantically, "marking as EObject" means confirming that equivalence logic is applicable for the type.
- * Technically, "marking as EObject" means making the class implement {@link EObject} and its methods, if necessary.
- * 
- * Later, all {@link EObject} implementors will become candidates for instrumentation
- * 
- * @see ShouldImplementEObjectMethods
- * @author skapral
- */
 public class ShouldBeMarkedAsEObject extends DisjunctionMatcher<TypeDescription> {
     public <Hint extends Annotation> ShouldBeMarkedAsEObject(Class<Hint> eobjectHint, Function<Hint, Boolean> hintStatus) {
         super(
+            ElementMatchers.isRecord(),
             new DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal(eobjectHint, hintStatus),
             new ExplicitlyHintedAbstractClass(eobjectHint, hintStatus)
         );
     }
-    
+
     public ShouldBeMarkedAsEObject() {
         this(EObjectHint.class, EObjectHint::enabled);
     }

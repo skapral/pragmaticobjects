@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.codegen.ii;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Implementation;
+import com.pragmaticobjects.oo.equivalence.codegen.matchers.MatchEqualsTriadGenerationCandidate;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
@@ -36,6 +37,7 @@ import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
 import net.bytebuddy.jar.asm.Opcodes;
+import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +47,7 @@ import java.lang.reflect.Method;
 public class IIImplementEObjectHashCode implements InstrumentationIteration {
     private static final Logger log = LoggerFactory.getLogger(IIImplementEObjectHashCode.class);
     private static final Method EQLOGIC_HASHCODE;
+    private static final ElementMatcher<TypeDescription> GENERATION_CANDIDATE = new MatchEqualsTriadGenerationCandidate();
 
     static {
         try {
@@ -60,16 +63,9 @@ public class IIImplementEObjectHashCode implements InstrumentationIteration {
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
         log.debug("hashCode() " + typeDescription.getActualName());
-        if(!ElementMatchers.is(Object.class).matches(typeDescription.getSuperClass())) {
+        if(!GENERATION_CANDIDATE.matches(typeDescription)) {
             log.debug("Skipping for non-base class");
             return builder;
-        }
-        if(!typeDescription.getDeclaredMethods()
-            .filter(ElementMatchers.named("hashCode"))
-            .filter(ElementMatchers.takesArguments(0))
-            .isEmpty()) {
-            // If for some reason the method is already defined, we fail
-            throw new RuntimeException("Defining hashCode() for this class is unexpected");
         }
         final int modifiers = Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL;
         final StackManipulation impl = new StackManipulation.Compound(
@@ -77,6 +73,20 @@ public class IIImplementEObjectHashCode implements InstrumentationIteration {
             MethodInvocation.invoke(new MethodDescription.ForLoadedMethod(EQLOGIC_HASHCODE)),
             MethodReturn.INTEGER
         );
+        if(!typeDescription.getDeclaredMethods()
+            .filter(ElementMatchers.named("hashCode"))
+            .filter(ElementMatchers.takesArguments(0))
+            .isEmpty()) {
+            if(typeDescription.isRecord()) {
+                return builder
+                    .method(ElementMatchers.named("hashCode"))
+                    .intercept(new Implementation(impl))
+                    .annotateMethod(new GeneratedMark(), new OverrideMark());
+            } else {
+                // If for some reason the method is already defined, we fail
+                throw new RuntimeException("Defining hashCode() for this class is unexpected");
+            }
+        }
         return builder
             .defineMethod("hashCode", int.class, modifiers)
             .intercept(new Implementation(impl))
