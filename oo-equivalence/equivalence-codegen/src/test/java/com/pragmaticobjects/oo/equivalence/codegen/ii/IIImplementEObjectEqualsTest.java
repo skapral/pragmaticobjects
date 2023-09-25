@@ -57,6 +57,16 @@ public class IIImplementEObjectEqualsTest extends TestsSuite {
                         )
                     )
                 )
+            ),
+            new TestCase(
+                "declares the method for records",
+                new AssertClassAfterInstrumentation(
+                    new IIImplementEObjectEquals(),
+                    Foo3.class,
+                    ElementMatchers.declaresMethod(
+                        ElementMatchers.hasMethodName("equals")
+                    )
+                )
             )
         );
     }
