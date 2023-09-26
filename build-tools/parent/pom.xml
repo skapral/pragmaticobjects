@@ -20,6 +20,7 @@
                 <file>
                     <exists>src/main/java9</exists>
                 </file>
+                <jdk>[9, 99)</jdk>
             </activation>
             <build>
                 <plugins>
@@ -74,6 +75,7 @@
                 <file>
                     <exists>src/main/java16</exists>
                 </file>
+                <jdk>[16, 99)</jdk>
             </activation>
             <build>
                 <plugins>
@@ -128,6 +130,7 @@
                 <file>
                     <exists>src/main/java17</exists>
                 </file>
+                <jdk>[17, 99)</jdk>
             </activation>
             <build>
                 <plugins>
