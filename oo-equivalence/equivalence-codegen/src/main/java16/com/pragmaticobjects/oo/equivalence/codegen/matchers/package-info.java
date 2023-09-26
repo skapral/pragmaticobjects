@@ -24,32 +24,3 @@
  * ============================================================================
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
-
-import io.vavr.collection.List;
-
-import static net.bytebuddy.matcher.ElementMatchers.*;
-
-public class AllMethodsAreFinal extends AllMethodsAreFinalExcept {
-    public AllMethodsAreFinal() {
-        super(
-            target -> {
-                boolean isRecord = isRecord().matches(target);
-                if (isRecord) {
-                    return new DisjunctionMatcher<>(
-                        target.getRecordComponents().stream()
-                            .map(
-                                component -> new ConjunctionMatcher<>(
-                                    List.of(
-                                        named(component.getActualName()),
-                                        returnsGeneric(component.getType())
-                                    )
-                                )
-                            )
-                            .collect(List.collector())
-                    );
-                }
-                return none();
-            }
-        );
-    }
-}

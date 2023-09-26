@@ -16,7 +16,6 @@
 
     <properties>
         <maven.compiler.release>8</maven.compiler.release>
-        <maven.compiler.testRelease>20</maven.compiler.testRelease>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

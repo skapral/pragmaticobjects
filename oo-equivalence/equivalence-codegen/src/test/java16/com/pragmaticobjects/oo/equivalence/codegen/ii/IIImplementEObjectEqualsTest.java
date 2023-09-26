@@ -25,50 +25,22 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
-import com.pragmaticobjects.oo.equivalence.assertions.Test;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
-import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
-import io.vavr.collection.List;
 import net.bytebuddy.matcher.ElementMatchers;
 
-
-class BaseSetForIIImplementEObjectEquals extends TestsSuite {
-    public static final List<TestCase> BASE_SET = List.of(
-        new TestCase(
-            "declares the method",
-            new AssertClassAfterInstrumentation(
-                new IIImplementEObjectEquals(),
-                Foo.class,
-                ElementMatchers.declaresMethod(
-                    ElementMatchers.hasMethodName("equals")
-                )
-            )
-        ),
-        new TestCase(
-            "declaration is skept for non-base classes",
-            new AssertClassAfterInstrumentation(
-                new IIImplementEObjectEquals(),
-                Foo2.class,
-                ElementMatchers.not(
+public class IIImplementEObjectEqualsTest extends BaseSetForIIImplementEObjectEquals {
+    public IIImplementEObjectEqualsTest() {
+        super(
+            new TestCase(
+                "declares the method for records",
+                new AssertClassAfterInstrumentation(
+                    new IIImplementEObjectEquals(),
+                    Foo3.class,
                     ElementMatchers.declaresMethod(
                         ElementMatchers.hasMethodName("equals")
                     )
                 )
             )
-        )
-    );
-
-    public BaseSetForIIImplementEObjectEquals(Test... tests) {
-        super(
-            List.of(tests).prependAll(BASE_SET)
         );
     }
-}
-
-
-/**
- *
- * @author skapral
- */
-public class IIImplementEObjectEqualsTest extends BaseSetForIIImplementEObjectEquals {
 }

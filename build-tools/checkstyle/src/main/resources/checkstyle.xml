@@ -30,7 +30,14 @@
 <!DOCTYPE module PUBLIC
         "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
         "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+
 <module name="Checker">
+    <!-- WA for suppressing fail on module-info -->
+    <!-- taken from here https://github.com/checkstyle/eclipse-cs/issues/359 -->
+    <module name="BeforeExecutionExclusionFileFilter">
+        <property name="fileNamePattern" value=".*(Example|Test|module-info)(\$.*)?"/>
+    </module>
+    <!-- WA end -->
     <module name="JavadocPackage"/>
     <module name="FileTabCharacter"/>
 
