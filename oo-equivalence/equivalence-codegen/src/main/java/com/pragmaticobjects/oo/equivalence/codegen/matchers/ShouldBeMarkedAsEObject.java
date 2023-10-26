@@ -30,6 +30,7 @@ import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 import java.lang.annotation.Annotation;
 import java.util.function.Function;
 
+import com.pragmaticobjects.oo.equivalence.base.EquivalenceCompliant;
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
@@ -41,6 +42,10 @@ class DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal extends Conju
     ) {
         super(
             List.of(
+                ElementMatchers.not(
+                    // No sense in marking the objects that already handle equivalence
+                    ElementMatchers.isSubTypeOf(EquivalenceCompliant.class)
+                ),
                 ElementMatchers.not(
                     ElementMatchers.isAbstract()
                 ),
