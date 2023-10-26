@@ -29,8 +29,57 @@ import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 import java.lang.annotation.Annotation;
 import java.util.function.Function;
+
+import com.pragmaticobjects.oo.equivalence.base.EquivalenceCompliant;
+import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatchers;
+
+class DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal extends ConjunctionMatcher<TypeDescription> {
+    public <Hint extends Annotation> DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal(
+        Class<Hint> eobjectHint,
+        Function<Hint, Boolean> hintStatus
+    ) {
+        super(
+            List.of(
+                ElementMatchers.not(
+                    // No sense in marking the objects that already handle equivalence
+                    ElementMatchers.isSubTypeOf(EquivalenceCompliant.class)
+                ),
+                ElementMatchers.not(
+                    ElementMatchers.isAbstract()
+                ),
+                new MatchSuperClass(
+                    ElementMatchers.is(Object.class)
+                ),
+                new AttributesStandForIdentity(),
+                // unless it is explicitly hinted as not a candidate
+                ElementMatchers.not(
+                    new HasHint<>(eobjectHint, hintStatus, false)
+                )
+            )
+        );
+    }
+}
+
+class ExplicitlyHintedAbstractClass extends ConjunctionMatcher<TypeDescription> {
+    public <Hint extends Annotation> ExplicitlyHintedAbstractClass(
+        Class<Hint> eobjectHint,
+        Function<Hint, Boolean> hintStatus
+    ) {
+        super(
+            List.of(
+                ElementMatchers.isAbstract(),
+                new ConjunctionMatcher<>(
+                    new MatchSuperClass(
+                        ElementMatchers.is(Object.class)
+                    ),
+                    new HasHint<>(eobjectHint, hintStatus, true)
+                )
+            )
+        );
+    }
+}
 
 /**
  * Matches classes, that should be marked as EObjects. 
@@ -45,30 +94,8 @@ import net.bytebuddy.matcher.ElementMatchers;
 public class ShouldBeMarkedAsEObject extends DisjunctionMatcher<TypeDescription> {
     public <Hint extends Annotation> ShouldBeMarkedAsEObject(Class<Hint> eobjectHint, Function<Hint, Boolean> hintStatus) {
         super(
-            // direct non-abstract subtype of Object, attributes of which are all final (stand for identity)
-            new ConjunctionMatcher<>(
-                ElementMatchers.not(
-                    ElementMatchers.isAbstract()
-                ),
-                new MatchSuperClass(
-                    ElementMatchers.is(Object.class)
-                ),
-                new AttributesStandForIdentity(),
-                // unless it is explicitly hinted as not a candidate
-                ElementMatchers.not(
-                    new HasHint<>(eobjectHint, hintStatus, false)
-                )
-            ),
-            // or explicitly hinted class if abstract
-            new ConjunctionMatcher<>(
-                ElementMatchers.isAbstract(),
-                new ConjunctionMatcher<>(
-                    new MatchSuperClass(
-                        ElementMatchers.is(Object.class)
-                    ),
-                    new HasHint<>(eobjectHint, hintStatus, true)
-                )
-            )
+            new DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal(eobjectHint, hintStatus),
+            new ExplicitlyHintedAbstractClass(eobjectHint, hintStatus)
         );
     }
     

@@ -25,13 +25,15 @@
  */
 package com.pragmaticobjects.oo.equivalence.maven.plugin;
 
-import com.pragmaticobjects.oo.equivalence.codegen.cn.CnExcludingPackages;
 import com.pragmaticobjects.oo.equivalence.codegen.cn.CnFromPath;
 import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
+import com.pragmaticobjects.oo.equivalence.codegen.cp.CpCombined;
+import com.pragmaticobjects.oo.equivalence.codegen.cp.CpExplicit;
 import com.pragmaticobjects.oo.equivalence.codegen.cp.CpFromString;
 import com.pragmaticobjects.oo.equivalence.codegen.instrumentation.ApplyStages;
 import com.pragmaticobjects.oo.equivalence.codegen.stage.Stage;
 import io.vavr.collection.HashSet;
+import io.vavr.collection.List;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -41,8 +43,11 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Base Mojo for different instrumentations
@@ -58,26 +63,65 @@ public abstract class BaseMojo extends AbstractMojo {
     protected final ClassPath buildClassPath() {
         PluginDescriptor pluginDescriptor = (PluginDescriptor) this.getPluginContext().get("pluginDescriptor");
         String classPath = HashSet.ofAll(project.getArtifacts())
-                    .addAll(pluginDescriptor.getArtifacts())
-                    .map(Artifact::getFile)
-                    .map(File::toString)
-                    .collect(Collectors.joining(";"));
+            .addAll(pluginDescriptor.getArtifacts())
+            .map(Artifact::getFile)
+            .map(File::toString)
+            .collect(Collectors.joining(";"));
         ClassPath cp = new CpFromString(classPath);
         return cp;
     }
-    
-    protected final void doInstrumentation(Stage stage, ClassPath cp, Path workingDirectory) throws MojoExecutionException, MojoFailureException {
-        if(!project.getPackaging().equals("pom") || instrumentPomProjects) {
+
+
+    protected final List<Path> multiReleaseWorkingSubdirectories(Path workingDirectory) {
+        final List<Path> multiReleaseWorkingSubdirectories;
+        final Path multiReleaseVersionsPath = workingDirectory.resolve("META-INF/versions");
+        if (Files.exists(multiReleaseVersionsPath)) {
+            try (Stream<Path> stream = Files.find(
+                multiReleaseVersionsPath,
+                1,
+                (p, bf) -> !multiReleaseVersionsPath.equals(p) && Files.isDirectory(p)
+            )) {
+                multiReleaseWorkingSubdirectories = stream.collect(List.collector());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } else {
+            multiReleaseWorkingSubdirectories = List.empty();
+        }
+        return multiReleaseWorkingSubdirectories;
+    }
+
+    protected final void doInstrumentation(
+        Stage stage,
+        ClassPath cp,
+        Path workingDirectory
+    ) throws MojoExecutionException, MojoFailureException {
+        if (!project.getPackaging().equals("pom") || instrumentPomProjects) {
             new ApplyStages(
                 cp,
                 workingDirectory,
-                new CnExcludingPackages(
-                    new CnFromPath(
-                        workingDirectory
-                    )
+                new CnFromPath(
+                    workingDirectory
                 ),
                 stage
             ).apply();
+
+            final List<Path> multiReleaseSubdirs = multiReleaseWorkingSubdirectories(workingDirectory);
+            for (final Path workingSubdir : multiReleaseSubdirs) {
+                new ApplyStages(
+                    new CpCombined(
+                        new CpExplicit(
+                            workingDirectory
+                        ),
+                        cp
+                    ),
+                    workingSubdir,
+                    new CnFromPath(
+                        workingSubdir
+                    ),
+                    stage
+                ).apply();
+            }
         }
     }
 }

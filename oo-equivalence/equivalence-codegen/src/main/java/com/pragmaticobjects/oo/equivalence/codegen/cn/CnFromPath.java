@@ -30,6 +30,7 @@ import io.vavr.collection.List;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
@@ -55,13 +56,16 @@ public class CnFromPath implements ClassNames {
             if(Files.notExists(path)) {
                 return List.empty();
             }
-            final List<String> classes = Files.find(path, Integer.MAX_VALUE, (p, bf) -> p.toString().endsWith(".class"))
-                .map(path::relativize)
-                .map(p -> List.ofAll(StreamSupport.stream(p.spliterator(), false)))
-                .map(pl -> pl.map(Object::toString).collect(Collectors.joining(".")))
-                .map(s -> s.replaceFirst(".class$", ""))
-                .filter(s -> !s.endsWith("module-info"))
-                .collect(List.collector());
+            final List<String> classes;
+            try(final Stream<Path> pathsStream = Files.find(path, Integer.MAX_VALUE, (p, bf) -> p.toString().endsWith(".class"))) {
+                classes = pathsStream.map(path::relativize)
+                    .map(p -> List.ofAll(StreamSupport.stream(p.spliterator(), false)))
+                    .map(pl -> pl.map(Object::toString).collect(Collectors.joining(".")))
+                    .map(s -> s.replaceFirst(".class$", ""))
+                    .filter(s -> !s.startsWith("META-INF") /* Multi module nested paths */)
+                    .filter(s -> !s.endsWith("module-info"))
+                    .collect(List.collector());
+            }
             return classes;
         } catch(Exception ex) {
             throw new RuntimeException(ex);

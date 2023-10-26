@@ -34,6 +34,10 @@ import java.nio.file.Path;
  * @author Kapralov Sergey
  */
 public interface ClassPath {
+    interface Inference {
+        ClassPath classPath();
+    }
+
     /**
      * @return The list of paths, this class path consists of.
      */

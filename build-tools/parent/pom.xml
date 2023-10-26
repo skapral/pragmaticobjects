@@ -14,13 +14,13 @@
     <packaging>pom</packaging>
 
     <profiles>
-
         <profile>
             <id>multi-release-java9</id>
             <activation>
                 <file>
                     <exists>src/main/java9</exists>
                 </file>
+                <jdk>[9, 99)</jdk>
             </activation>
             <build>
                 <plugins>
@@ -37,6 +37,116 @@
                                     <release>9</release>
                                     <compileSourceRoots>
                                         <compileSourceRoot>${project.basedir}/src/main/java9</compileSourceRoot>
+                                    </compileSourceRoots>
+                                    <multiReleaseOutput>true</multiReleaseOutput>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>testcompile-java9</id>
+                                <goals>
+                                    <goal>testCompile</goal>
+                                </goals>
+                                <configuration>
+                                    <release>9</release>
+                                    <compileSourceRoots>
+                                        <compileSourceRoot>${project.basedir}/src/test/java9</compileSourceRoot>
+                                    </compileSourceRoots>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <configuration>
+                            <archive>
+                                <manifestEntries>
+                                    <Multi-Release>true</Multi-Release>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>multi-release-java16</id>
+            <activation>
+                <file>
+                    <exists>src/main/java16</exists>
+                </file>
+                <jdk>[16, 99)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>compile-java16</id>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                                <configuration>
+                                    <release>16</release>
+                                    <compileSourceRoots>
+                                        <compileSourceRoot>${project.basedir}/src/main/java16</compileSourceRoot>
+                                    </compileSourceRoots>
+                                    <multiReleaseOutput>true</multiReleaseOutput>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>testcompile-java16</id>
+                                <goals>
+                                    <goal>testCompile</goal>
+                                </goals>
+                                <configuration>
+                                    <release>16</release>
+                                    <compileSourceRoots>
+                                        <compileSourceRoot>${project.basedir}/src/test/java16</compileSourceRoot>
+                                    </compileSourceRoots>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <configuration>
+                            <archive>
+                                <manifestEntries>
+                                    <Multi-Release>true</Multi-Release>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>multi-release-java17</id>
+            <activation>
+                <file>
+                    <exists>src/main/java17</exists>
+                </file>
+                <jdk>[17, 99)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>compile-java17</id>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                                <configuration>
+                                    <release>17</release>
+                                    <compileSourceRoots>
+                                        <compileSourceRoot>${project.basedir}/src/main/java17</compileSourceRoot>
                                     </compileSourceRoots>
                                     <multiReleaseOutput>true</multiReleaseOutput>
                                 </configuration>
@@ -91,7 +201,8 @@
                             </systemPropertyVariables>
                             <trimStackTrace>false</trimStackTrace>
                             <reportFormat>plain</reportFormat>
-                            <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporterUnicode"/>
+                            <statelessTestsetInfoReporter
+                                    implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporterUnicode"/>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -162,6 +273,13 @@
                                 <goals>
                                     <goal>report</goal>
                                 </goals>
+                                <configuration>
+                                    <excludes>
+                                        <!-- Multi-Release structures coverage workaround -->
+                                        <!-- https://github.com/jacoco/jacoco/issues/407#issuecomment-442106170 -->
+                                        <exclude>META-INF/**</exclude>
+                                    </excludes>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -308,9 +426,15 @@
                                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                                     <sourceDirectories>
                                         <sourceDirectory>src/main/java</sourceDirectory>
+                                        <sourceDirectory>src/main/java9</sourceDirectory>
+                                        <sourceDirectory>src/main/java16</sourceDirectory>
+                                        <sourceDirectory>src/main/java17</sourceDirectory>
                                     </sourceDirectories>
                                     <testSourceDirectories>
                                         <testSourceDirectory>src/test/java</testSourceDirectory>
+                                        <testSourceDirectory>src/test/java9</testSourceDirectory>
+                                        <testSourceDirectory>src/test/java16</testSourceDirectory>
+                                        <testSourceDirectory>src/test/java17</testSourceDirectory>
                                     </testSourceDirectories>
                                     <configLocation>checkstyle.xml</configLocation>
                                     <logViolationsToConsole>true</logViolationsToConsole>

@@ -30,40 +30,46 @@ import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.method.MethodList;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
+import net.bytebuddy.matcher.ElementMatchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.function.Function;
+
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
-/**
- * Matcher which matches types, methods of which are final.
- *
- * @author Kapralov Sergey
- */
-public class AllMethodsAreFinal implements ElementMatcher<TypeDescription> {
+class AllMethodsAreFinalExcept implements ElementMatcher<TypeDescription> {
     private static final Logger LOG = LoggerFactory.getLogger(AllMethodsAreFinal.class);
-    
+
+    private final Function<TypeDescription, ElementMatcher<MethodDescription>> exceptions;
+
+    public AllMethodsAreFinalExcept(Function<TypeDescription, ElementMatcher<MethodDescription>> exceptions) {
+        this.exceptions = exceptions;
+    }
+
     @Override
     public final boolean matches(TypeDescription target) {
+        ElementMatcher<MethodDescription> exceptionsMatcher = exceptions.apply(target);
         MethodList<MethodDescription.InDefinedShape> methodsToCheck = target.getDeclaredMethods()
-                .filter(not(isConstructor()))
-                .filter(
-                    new ConjunctionMatcher<>(
-                        List.of(
+            .filter(not(isConstructor()))
+            .filter(
+                new ConjunctionMatcher<>(
+                    List.of(
                         isPublic(),
-                            not(named("attributes")),
-                            not(named("baseType")),
-                            not(named("hashSeed"))
-                        )
+                        not(named("attributes")),
+                        not(named("baseType")),
+                        not(named("hashSeed"))
                     )
                 )
-                .filter(not(isStatic()))
-                .filter(not(isAbstract()))
-                .filter(not(isBridge()))
-                .filter(not(named("equals")))
-                .filter(not(named("hashCode")))
-                .filter(not(named("toString")));
-        
+            )
+            .filter(not(isStatic()))
+            .filter(not(isAbstract()))
+            .filter(not(isBridge()))
+            .filter(not(exceptionsMatcher))
+            .filter(not(named("equals")))
+            .filter(not(named("hashCode")))
+            .filter(not(named("toString")));
+
         for(MethodDescription md : methodsToCheck) {
             LOG.debug(md.getDeclaringType().getActualName() + "::" + md.getName());
             if(!md.isFinal()) {
@@ -73,5 +79,17 @@ public class AllMethodsAreFinal implements ElementMatcher<TypeDescription> {
         }
         LOG.debug("true");
         return true;
+    }
+}
+
+
+/**
+ * Matcher which matches types, methods of which are final.
+ *
+ * @author Kapralov Sergey
+ */
+public class AllMethodsAreFinal extends AllMethodsAreFinalExcept {
+    public AllMethodsAreFinal() {
+        super(target -> ElementMatchers.none());
     }
 }
