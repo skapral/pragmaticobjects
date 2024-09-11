@@ -51,11 +51,7 @@ public class StandardInstrumentationStage extends SequenceStage {
             // Pre-checks
             new ByteBuddyValidationStage(
                 "It's prohibited to place EObjectHint on inherited classes",
-                new MatchSuperClass(
-                    ElementMatchers.not(
-                        ElementMatchers.is(Object.class)
-                    )
-                ),
+                new MatchInheritedClass(),
                 ElementMatchers.not(
                     ElementMatchers.isAnnotatedWith(EObjectHint.class)
                 )
