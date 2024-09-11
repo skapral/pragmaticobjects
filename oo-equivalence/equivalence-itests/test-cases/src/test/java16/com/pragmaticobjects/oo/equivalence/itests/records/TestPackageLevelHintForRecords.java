@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * equivalence-itests.test-cases
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2024 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,31 +23,26 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+package com.pragmaticobjects.oo.equivalence.itests.records;
 
-import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatchers;
+import com.pragmaticobjects.oo.equivalence.assertions.AssertNotInstanceOf;
+import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
+import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
+import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.base.EquivalenceCompliant;
+import com.pragmaticobjects.oo.equivalence.itests.packagelevelhint.SimpleClass;
+import com.pragmaticobjects.oo.equivalence.itests.packagelevelhint.SimpleRecord;
 
-import java.lang.annotation.Annotation;
-import java.util.function.Function;
-
-public class ShouldBeMarkedAsEObject extends DisjunctionMatcher<TypeDescription> {
-    public <Hint extends Annotation> ShouldBeMarkedAsEObject(Class<Hint> eobjectHint, Function<Hint, Boolean> hintStatus) {
+public class TestPackageLevelHintForRecords extends TestsSuite {
+    public TestPackageLevelHintForRecords() {
         super(
-            new DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal(
-                new DisjunctionMatcher<>(
-                    ElementMatchers.is(Object.class),
-                    ElementMatchers.isRecord()
-                ),
-                eobjectHint,
-                hintStatus
-            ),
-            new ExplicitlyHintedAbstractClass(eobjectHint, hintStatus)
+            new TestCase(
+                "records inside a package with EObjectHint = disabled are not instrumented",
+                new AssertNotInstanceOf(
+                    new SimpleRecord(1),
+                    EquivalenceCompliant.class
+                )
+            )
         );
-    }
-
-    public ShouldBeMarkedAsEObject() {
-        this(EObjectHint.class, EObjectHint::enabled);
     }
 }

@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-codegen
+ * equivalence-itests.test-module2
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2024 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,31 +23,7 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.codegen.matchers;
+@EObjectHint(enabled = false)
+package com.pragmaticobjects.oo.equivalence.itests.packagelevelhint;
 
 import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.matcher.ElementMatchers;
-
-import java.lang.annotation.Annotation;
-import java.util.function.Function;
-
-public class ShouldBeMarkedAsEObject extends DisjunctionMatcher<TypeDescription> {
-    public <Hint extends Annotation> ShouldBeMarkedAsEObject(Class<Hint> eobjectHint, Function<Hint, Boolean> hintStatus) {
-        super(
-            new DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal(
-                new DisjunctionMatcher<>(
-                    ElementMatchers.is(Object.class),
-                    ElementMatchers.isRecord()
-                ),
-                eobjectHint,
-                hintStatus
-            ),
-            new ExplicitlyHintedAbstractClass(eobjectHint, hintStatus)
-        );
-    }
-
-    public ShouldBeMarkedAsEObject() {
-        this(EObjectHint.class, EObjectHint::enabled);
-    }
-}

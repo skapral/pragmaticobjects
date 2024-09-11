@@ -33,10 +33,12 @@ import java.util.function.Function;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceCompliant;
 import io.vavr.collection.List;
 import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
 
 class DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal extends ConjunctionMatcher<TypeDescription> {
     public <Hint extends Annotation> DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal(
+        ElementMatcher<TypeDescription> allowedBaseClasses,
         Class<Hint> eobjectHint,
         Function<Hint, Boolean> hintStatus
     ) {
@@ -50,7 +52,7 @@ class DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal extends Conju
                     ElementMatchers.isAbstract()
                 ),
                 new MatchSuperClass(
-                    ElementMatchers.is(Object.class)
+                    allowedBaseClasses
                 ),
                 new AttributesStandForIdentity(),
                 // unless it is explicitly hinted as not a candidate
@@ -58,6 +60,17 @@ class DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal extends Conju
                     new HasHint<>(eobjectHint, hintStatus, false)
                 )
             )
+        );
+    }
+
+    public <Hint extends Annotation> DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal(
+        Class<Hint> eobjectHint,
+        Function<Hint, Boolean> hintStatus
+    ) {
+        this(
+            ElementMatchers.is(Object.class),
+            eobjectHint,
+            hintStatus
         );
     }
 }
