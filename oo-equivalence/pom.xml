@@ -62,7 +62,7 @@
             <dependency>
                 <groupId>io.vavr</groupId>
                 <artifactId>vavr</artifactId>
-                <version>0.10.4</version>
+                <version>0.10.5</version>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
@@ -77,7 +77,7 @@
             <dependency>
                 <groupId>net.bytebuddy</groupId>
                 <artifactId>byte-buddy</artifactId>
-                <version>1.15.4</version>
+                <version>1.15.5</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
