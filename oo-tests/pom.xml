@@ -64,7 +64,7 @@
             <dependency>
                 <groupId>io.vavr</groupId>
                 <artifactId>vavr</artifactId>
-                <version>0.10.4</version>
+                <version>0.10.5</version>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
@@ -74,7 +74,7 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
-                <version>5.11.2</version>
+                <version>5.11.4</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
