@@ -25,6 +25,7 @@
                 <configuration>
                     <systemPropertyVariables>
                          <fixedStaticIdentity>true</fixedStaticIdentity>
+                         <toStringStrategyForNonEO>TYPE_AND_HASH</toStringStrategyForNonEO>
                     </systemPropertyVariables>
                     <trimStackTrace>false</trimStackTrace>
                 </configuration>

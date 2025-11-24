@@ -29,11 +29,16 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class EquivalenceLogic {
     private static final boolean FIXED_STATIC_IDENTITY = System.getProperty("fixedStaticIdentity") != null;
-
+    private static final ToStringStrategy TO_STRING_STRATEGY_FOR_NON_EO = System.getProperty("toStringStrategyForNonEO") != null
+            ? ToStringStrategy.valueOf(
+                    System.getProperty("toStringStrategyForNonEO")
+            )
+            : ToStringStrategy.SHARP;
     public static boolean equals(EObject that, Object obj) {
         if (that == obj) {
             return true;
@@ -139,7 +144,23 @@ public class EquivalenceLogic {
         if (hasIdentity(value)) {
             return value == null ? "null" : value.toString();
         } else {
-            return value.getClass().getName() + "#" + systemIdentity(value);
+            return TO_STRING_STRATEGY_FOR_NON_EO.toString(value);
+        }
+    }
+
+    public enum ToStringStrategy {
+        TYPE_AND_HASH(value -> value.getClass().getName() + "#" + systemIdentity(value)),
+        HASH(value -> "#" + systemIdentity(value)),
+        SHARP(value -> "#");
+
+        private final Function<Object, String> fn;
+
+        ToStringStrategy(Function<Object, String> fn) {
+            this.fn = fn;
+        }
+
+        public String toString(Object that) {
+            return fn.apply(that);
         }
     }
 }
