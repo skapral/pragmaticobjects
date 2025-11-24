@@ -23,4 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.itests.lombok;
+package com.pragmaticobjects.oo.equivalence.itests.lombokclasses;

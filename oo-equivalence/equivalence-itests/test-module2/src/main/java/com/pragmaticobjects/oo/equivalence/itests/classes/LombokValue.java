@@ -23,16 +23,13 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.itests.lombok;
+package com.pragmaticobjects.oo.equivalence.itests.classes;
 
-import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
-import lombok.Value;
+import lombok.AllArgsConstructor;
 
 /**
  * Test lombok value
  */
-@Value
-@EObjectHint(enabled = false)
-public class LombokValueHinted {
-    public int i;
+@AllArgsConstructor
+public class LombokValue {
 }
