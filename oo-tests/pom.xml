@@ -64,17 +64,17 @@
             <dependency>
                 <groupId>io.vavr</groupId>
                 <artifactId>vavr</artifactId>
-                <version>0.10.5</version>
+                <version>0.11.0</version>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
-                <version>3.27.2</version>
+                <version>3.27.6</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
-                <version>5.11.4</version>
+                <version>6.0.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
