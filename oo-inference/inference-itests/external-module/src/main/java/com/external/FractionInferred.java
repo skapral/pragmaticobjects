@@ -2,10 +2,10 @@ package com.external;
 
 import com.pragmaticobjects.oo.inference.api.Inference;
 
-public class FracInferred implements Fraction {
+public class FractionInferred implements Fraction {
     private final Inference<Fraction> inference;
 
-    public FracInferred(Inference<Fraction> inference) {
+    public FractionInferred(Inference<Fraction> inference) {
         this.inference = inference;
     }
 
