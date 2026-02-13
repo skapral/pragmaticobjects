@@ -190,7 +190,7 @@
                             <dependency>
                                 <groupId>me.fabriciorby</groupId>
                                 <artifactId>maven-surefire-junit5-tree-reporter</artifactId>
-                                <version>1.4.0</version>
+                                <version>1.5.1</version>
                             </dependency>
                         </dependencies>
                         <configuration>
@@ -360,7 +360,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>flatten-maven-plugin</artifactId>
-                        <version>1.6.0</version>
+                        <version>1.7.3</version>
                         <dependencies>
                             <!--
                             WA taken from here:
@@ -448,7 +448,7 @@
                             <dependency>
                                 <groupId>com.puppycrawl.tools</groupId>
                                 <artifactId>checkstyle</artifactId>
-                                <version>10.21.1</version>
+                                <version>13.2.0</version>
                             </dependency>
                             <dependency>
                                 <groupId>com.pragmaticobjects</groupId>
