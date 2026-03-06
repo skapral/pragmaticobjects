@@ -18,9 +18,14 @@
         <module>equivalence-base</module>
         <module>equivalence-itests</module>
         <module>equivalence-maven-plugin</module>
+        <module>equivalence-gradle-plugin</module>
         <module>equivalence-codegen</module>
         <module>equivalence-assertions</module>
     </modules>
+
+    <properties>
+        <gradle-api.version>8.11.1</gradle-api.version>
+    </properties>
 
     <name>OO-Equivalence</name>
     <description>Equivalence logic generator for immutable objects</description>
@@ -98,6 +103,12 @@
                 <groupId>org.apache.maven.plugin-tools</groupId>
                 <artifactId>maven-plugin-annotations</artifactId>
                 <version>3.15.1</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>dev.gradleplugins</groupId>
+                <artifactId>gradle-api</artifactId>
+                <version>${gradle-api.version}</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>
