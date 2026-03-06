@@ -25,6 +25,9 @@
  */
 package com.pragmaticobjects.oo.equivalence.base;
 
+import com.pragmaticobjects.oo.equivalence.base.tostring.Default;
+import com.pragmaticobjects.oo.equivalence.base.tostring.ToStringMethod;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -40,4 +43,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EquivalenceHint {
     boolean enabled() default true;
+    Class<? extends ToStringMethod> toStringMethod() default Default.class;
 }

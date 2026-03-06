@@ -23,14 +23,25 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.base.tostring;
 
-/**
- * Marker interface, claiming that "equivalence" term is applicable for instances of the class-implementor.
- *
- * Avoid using it directly in client code. Instead, either let the instrumentor do its job, implement {@link EObject},
- * or use {@link NaturallyEquivalent} decorator
- */
-public interface EquivalenceCompliant {
-    boolean isEquivalenceCompliant();
+import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
+import org.assertj.core.api.Assertions;
+
+/** Assertion that checks the result of {@link ToStringMethod#stringify(Object)}. */
+public class AssertStringifyResult implements Assertion {
+    private final ToStringMethod method;
+    private final Object input;
+    private final String expected;
+
+    public AssertStringifyResult(ToStringMethod method, Object input, String expected) {
+        this.method = method;
+        this.input = input;
+        this.expected = expected;
+    }
+
+    @Override
+    public final void check() throws Exception {
+        Assertions.assertThat(method.stringify(input)).isEqualTo(expected);
+    }
 }

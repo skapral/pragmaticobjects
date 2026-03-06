@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * equivalence-itests.test-module2
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2026 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,14 +23,19 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.itests.fieldlevelhint;
 
-/**
- * Marker interface, claiming that "equivalence" term is applicable for instances of the class-implementor.
- *
- * Avoid using it directly in client code. Instead, either let the instrumentor do its job, implement {@link EObject},
- * or use {@link NaturallyEquivalent} decorator
- */
-public interface EquivalenceCompliant {
-    boolean isEquivalenceCompliant();
+import com.pragmaticobjects.oo.equivalence.base.EquivalenceHint;
+import com.pragmaticobjects.oo.equivalence.base.tostring.Stub;
+
+public class StubHint {
+    private final String ref;
+    private final @EquivalenceHint(
+        toStringMethod = Stub.class
+    ) String ref2;
+
+    public StubHint(String ref, String ref2) {
+        this.ref = ref;
+        this.ref2 = ref2;
+    }
 }

@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * equivalence-itests.test-module2
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2026 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,14 +23,13 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.itests.fieldlevelhint;
 
-/**
- * Marker interface, claiming that "equivalence" term is applicable for instances of the class-implementor.
- *
- * Avoid using it directly in client code. Instead, either let the instrumentor do its job, implement {@link EObject},
- * or use {@link NaturallyEquivalent} decorator
- */
-public interface EquivalenceCompliant {
-    boolean isEquivalenceCompliant();
+import com.pragmaticobjects.oo.equivalence.base.tostring.Hex;
+import com.pragmaticobjects.oo.equivalence.base.tostring.Iterating;
+
+public class HexedIterable extends Iterating {
+    public HexedIterable() {
+        super(new Hex());
+    }
 }

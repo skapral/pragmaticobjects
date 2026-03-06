@@ -48,6 +48,12 @@ package com.pragmaticobjects.oo.equivalence.base;
  * Instrumentor will generate implementations implicitly for each implementor it will meet.
  */
 public interface EObject extends EquivalenceCompliant {
+    @Override
+    default boolean isEquivalenceCompliant() {
+        // EObjects are always supposed to be equivalence compliant
+        return true;
+    }
+
     /**
      * @return Object's attributes
      */

@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * equivalence-itests.test-module2
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2026 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,14 +23,27 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.itests.fieldlevelhint;
 
-/**
- * Marker interface, claiming that "equivalence" term is applicable for instances of the class-implementor.
- *
- * Avoid using it directly in client code. Instead, either let the instrumentor do its job, implement {@link EObject},
- * or use {@link NaturallyEquivalent} decorator
- */
-public interface EquivalenceCompliant {
-    boolean isEquivalenceCompliant();
+import com.pragmaticobjects.oo.equivalence.base.EquivalenceHint;
+import io.vavr.collection.List;
+
+public class IterableHexes {
+    private static final int[] REF_ARRAY = new int[] {1, 2, 3};
+    private static final List<Integer> REF_LIST = List.of(1, 2, 3);
+
+    private final @EquivalenceHint(enabled = false, toStringMethod = HexedIterable.class) int[] refArray;
+    private final @EquivalenceHint(enabled = false, toStringMethod = HexedIterable.class) List<Integer> refList;
+
+    public IterableHexes(int[] refArray, List<Integer> refList) {
+        this.refArray = refArray;
+        this.refList = refList;
+    }
+
+    public IterableHexes() {
+        this(
+            REF_ARRAY,
+            REF_LIST
+        );
+    }
 }

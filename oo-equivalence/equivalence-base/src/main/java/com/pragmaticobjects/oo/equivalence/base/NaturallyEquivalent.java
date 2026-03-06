@@ -25,33 +25,20 @@
  */
 package com.pragmaticobjects.oo.equivalence.base;
 
-import java.util.Objects;
+import com.pragmaticobjects.oo.equivalence.base.tostring.Default;
+import com.pragmaticobjects.oo.equivalence.base.tostring.ToStringMethod;
 
 /**
  * Wrapper class, which enforces equivalence check for objects, which are not of the {@link EObject} type.
  */
-public class NaturallyEquivalent implements EquivalenceCompliant {
-    private final Object obj;
+public class NaturallyEquivalent extends HintedAttribute {
+    private static final ToStringMethod DEFAULT = new Default();
 
     public NaturallyEquivalent(Object obj) {
-        this.obj = obj;
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof NaturallyEquivalent)) return false;
-        NaturallyEquivalent that = (NaturallyEquivalent) o;
-        return Objects.equals(obj, that.obj);
-    }
-
-    @Override
-    public final int hashCode() {
-        return Objects.hash(obj);
-    }
-
-    @Override
-    public final String toString() {
-        return obj.toString();
+        super(
+            obj,
+            DEFAULT,
+            true
+        );
     }
 }

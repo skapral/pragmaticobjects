@@ -23,14 +23,51 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.base.tostring;
 
-/**
- * Marker interface, claiming that "equivalence" term is applicable for instances of the class-implementor.
- *
- * Avoid using it directly in client code. Instead, either let the instrumentor do its job, implement {@link EObject},
- * or use {@link NaturallyEquivalent} decorator
- */
-public interface EquivalenceCompliant {
-    boolean isEquivalenceCompliant();
+public class Hex implements ToStringMethod {
+    private static final ToStringMethod DEFAULT = new Default();
+
+    private final String prefix;
+
+    public Hex(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public Hex() {
+        this("0x");
+    }
+
+    /**
+     * Formats a hex string with an even number of digits (full bytes).
+     * E.g. 10 → "0a", 260 → "0104".
+     */
+    private static String toEvenHex(long value) {
+        String hex = Long.toHexString(value);
+        if (hex.length() % 2 != 0) {
+            hex = "0" + hex;
+        }
+        return hex;
+    }
+
+    @Override
+    public final String stringify(Object obj) {
+        final String result;
+        if (obj instanceof Integer) {
+            result = toEvenHex(Integer.toUnsignedLong((int) obj));
+        } else if (obj instanceof Long) {
+            result = toEvenHex((long) obj);
+        } else if (obj instanceof Short) {
+            result = toEvenHex(Short.toUnsignedLong((short) obj));
+        } else if (obj instanceof Byte) {
+            result = toEvenHex(Byte.toUnsignedLong((byte) obj));
+        } else if (obj instanceof Float) {
+            result = Float.toHexString((float) obj);
+        } else if (obj instanceof Double) {
+            result = Double.toHexString((double) obj);
+        } else {
+            return DEFAULT.stringify(obj);
+        }
+        return prefix + result;
+    }
 }
