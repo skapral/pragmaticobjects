@@ -58,7 +58,6 @@ public abstract class InstrumentTestsTask extends BaseInstrumentTask {
      */
     @InputDirectory
     @OutputDirectory
-    @PathSensitive(PathSensitivity.RELATIVE)
     public abstract DirectoryProperty getTestClassesDirectory();
 
     @Override

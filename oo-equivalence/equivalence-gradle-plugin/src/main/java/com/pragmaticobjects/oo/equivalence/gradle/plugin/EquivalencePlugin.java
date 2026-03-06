@@ -76,7 +76,7 @@ public class EquivalencePlugin implements Plugin<Project> {
 
         // Insert instrumentClasses between compileJava and classes
         project.getTasks().named(JavaPlugin.CLASSES_TASK_NAME)
-            .configure(t -> t.dependsOn(instrumentTask));
+                .configure(t -> t.dependsOn(instrumentTask));
 
         // --- instrumentTestClasses task ---
         final TaskProvider<InstrumentTestsTask> instrumentTestsTask = project.getTasks()

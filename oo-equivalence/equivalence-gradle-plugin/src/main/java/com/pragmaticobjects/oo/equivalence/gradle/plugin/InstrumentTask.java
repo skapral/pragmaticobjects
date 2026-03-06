@@ -29,8 +29,6 @@ import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentation
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.OutputDirectory;
-import org.gradle.api.tasks.PathSensitive;
-import org.gradle.api.tasks.PathSensitivity;
 
 /**
  * Gradle task that instruments production classes after compilation.
@@ -47,7 +45,6 @@ public abstract class InstrumentTask extends BaseInstrumentTask {
      */
     @InputDirectory
     @OutputDirectory
-    @PathSensitive(PathSensitivity.RELATIVE)
     public abstract DirectoryProperty getClassesDirectory();
 
     @Override
