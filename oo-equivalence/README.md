@@ -4,19 +4,17 @@ Equivalence logic generator for Java objects. For information about what equival
 
 ## Installation
 
-1. Add dependency:
+### Maven
 
-```
-<dependency>
-  <groupId>com.pragmaticobjects.oo.equivalence</groupId>
-  <artifactId>equivalence-base</artifactId>
-  <version>x.y.z</version>
-</dependency>
-```
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.pragmaticobjects.oo.equivalence</groupId>
+        <artifactId>equivalence-base</artifactId>
+        <version>x.y.z</version>
+    </dependency>
+</dependencies>
 
-2. Add Maven plugin:
-
-```
 <build>
     <plugins>
         <plugin>
@@ -34,4 +32,30 @@ Equivalence logic generator for Java objects. For information about what equival
         </plugin>
     </plugins>
 </build>
+```
+
+### Gradle
+
+```groovy
+plugins {
+    id 'java'
+    id 'com.pragmaticobjects.oo.equivalence' version 'x.y.z'
+}
+
+dependencies {
+    implementation 'com.pragmaticobjects.oo.equivalence:equivalence-base:x.y.z'
+}
+```
+
+Or with Kotlin DSL (`build.gradle.kts`):
+
+```kotlin
+plugins {
+    java
+    id("com.pragmaticobjects.oo.equivalence") version "x.y.z"
+}
+
+dependencies {
+    implementation("com.pragmaticobjects.oo.equivalence:equivalence-base:x.y.z")
+}
 ```
