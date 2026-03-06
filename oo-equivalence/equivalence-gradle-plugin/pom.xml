@@ -37,4 +37,65 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>gradle-plugin-marker</id>
+            <activation>
+                <file>
+                    <exists>marker.xml</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>prepare-marker</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>resources</goal>
+                                </goals>
+                                <configuration>
+                                    <resources>
+                                        <resource>
+                                            <directory>${basedir}</directory>
+                                            <includes>
+                                                <include>marker.xml</include>
+                                            </includes>
+                                            <filtering>true</filtering>
+                                            <targetPath>${build.outputDirectory}</targetPath>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-install-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>marker-install</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>install-file</goal>
+                                </goals>
+                                <configuration>
+                                    <file>${build.outputDirectory}/marker.xml</file>
+                                    <groupId>com.pragmaticobjects.oo.equivalence</groupId>
+                                    <artifactId>com.pragmaticobjects.oo.equivalence.gradle.plugin</artifactId>
+                                    <version>${project.version}</version>
+                                    <packaging>pom</packaging>
+                                    <pomFile>${build.outputDirectory}/marker.xml</pomFile>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

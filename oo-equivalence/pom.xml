@@ -23,10 +23,6 @@
         <module>equivalence-assertions</module>
     </modules>
 
-    <properties>
-        <gradle-api.version>8.11.1</gradle-api.version>
-    </properties>
-
     <name>OO-Equivalence</name>
     <description>Equivalence logic generator for immutable objects</description>
     <url>https://github.com/skapral/pragmaticobjects</url>
@@ -108,7 +104,7 @@
             <dependency>
                 <groupId>dev.gradleplugins</groupId>
                 <artifactId>gradle-api</artifactId>
-                <version>${gradle-api.version}</version>
+                <version>8.11.1</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>
