@@ -44,6 +44,15 @@ public class FreemarkerArtifact implements Artifact {
             Configuration.getVersion()
     );
 
+    /**
+     * Returns true if the method name follows standard JavaBeans accessor convention
+     * (getXxx or isXxx), meaning FreeMarker already handles it as a property automatically.
+     */
+    private static boolean isStandardBeanAccessor(final String mName) {
+        return (mName.startsWith("get") && (mName.length() == 3 || Character.isUpperCase(mName.charAt(3))))
+            || (mName.startsWith("is")  && (mName.length() == 2 || Character.isUpperCase(mName.charAt(2))));
+    }
+
     static {
         DefaultObjectWrapper ow = new DefaultObjectWrapper(
             Configuration.getVersion()
@@ -51,8 +60,8 @@ public class FreemarkerArtifact implements Artifact {
             @Override
             protected void finetuneMethodAppearance(Class clazz, Method m, MethodAppearanceDecision decision) {
                 if (m.getDeclaringClass() != Object.class && m.getReturnType() != void.class && m.getParameterTypes().length == 0) {
-                    String mName = m.getName();
-                    if (!(mName.startsWith("get") && (mName.length() == 3 || Character.isUpperCase(mName.charAt(3))))) {
+                    final String mName = m.getName();
+                    if (!isStandardBeanAccessor(mName)) {
                         decision.setExposeMethodAs(null);
                         try {
                             decision.setExposeAsProperty(new PropertyDescriptor(mName, clazz, mName, null));
