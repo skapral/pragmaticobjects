@@ -23,22 +23,52 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.base.tostring;
 
-import com.pragmaticobjects.oo.equivalence.base.tostring.Default;
-import com.pragmaticobjects.oo.equivalence.base.tostring.ToStringMethod;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-/**
- * Wrapper class, which enforces equivalence check for objects, which are not of the {@link EObject} type.
- */
-public class NaturallyEquivalent extends HintedAttribute {
-    private static final ToStringMethod DEFAULT = new Default();
+public class Iterating implements ToStringMethod {
+    private final ToStringMethod methodForEachItem;
+    private final String start;
+    private final String end;
+    private final String separator;
 
-    public NaturallyEquivalent(Object obj) {
-        super(
-            obj,
-            DEFAULT,
-            true
+    public Iterating(ToStringMethod methodForEachItem, String start, String end, String separator) {
+        this.methodForEachItem = methodForEachItem;
+        this.start = start;
+        this.end = end;
+        this.separator = separator;
+    }
+
+    public Iterating(ToStringMethod methodForEachItem) {
+        this(
+            methodForEachItem,
+            "[",
+            "]",
+            ", "
         );
+    }
+
+    @Override
+    public String stringify(Object obj) {
+        final String result;
+        if(obj instanceof Array) {
+            result = Arrays
+                .stream((Object[]) obj)
+                .map(methodForEachItem::stringify)
+                .collect(Collectors.joining(separator));
+        } else if(obj instanceof Iterable) {
+            result = StreamSupport.stream(
+                    ((Iterable<?>) obj).spliterator(),
+                    false
+            ).map(methodForEachItem::stringify)
+                .collect(Collectors.joining(separator));
+        } else {
+            return "";
+        }
+        return start + result + end;
     }
 }

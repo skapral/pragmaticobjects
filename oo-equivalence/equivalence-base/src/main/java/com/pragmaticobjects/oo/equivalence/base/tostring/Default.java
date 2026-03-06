@@ -23,14 +23,18 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.base.tostring;
 
-/**
- * Marker interface, claiming that "equivalence" term is applicable for instances of the class-implementor.
- *
- * Avoid using it directly in client code. Instead, either let the instrumentor do its job, implement {@link EObject},
- * or use {@link NaturallyEquivalent} decorator
- */
-public interface EquivalenceCompliant {
-    boolean isEquivalenceCompliant();
+import com.pragmaticobjects.oo.equivalence.base.EObject;
+import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
+
+public class Default implements ToStringMethod {
+    @Override
+    public final String stringify(Object obj) {
+        if(obj instanceof EObject) {
+            return EquivalenceLogic.toString((EObject) obj);
+        } else {
+            return obj.toString();
+        }
+    }
 }

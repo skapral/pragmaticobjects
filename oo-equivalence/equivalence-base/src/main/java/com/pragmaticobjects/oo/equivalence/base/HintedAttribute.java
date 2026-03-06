@@ -25,12 +25,45 @@
  */
 package com.pragmaticobjects.oo.equivalence.base;
 
-/**
- * Marker interface, claiming that "equivalence" term is applicable for instances of the class-implementor.
- *
- * Avoid using it directly in client code. Instead, either let the instrumentor do its job, implement {@link EObject},
- * or use {@link NaturallyEquivalent} decorator
- */
-public interface EquivalenceCompliant {
-    boolean isEquivalenceCompliant();
+import com.pragmaticobjects.oo.equivalence.base.tostring.ToStringMethod;
+
+import java.util.Objects;
+
+public class HintedAttribute implements EquivalenceCompliant {
+    private final Object obj;
+    private final ToStringMethod stringifyMethod;
+    private final boolean equivalenceCompliant;
+
+    public HintedAttribute(Object obj, ToStringMethod stringifyMethod, boolean equivalenceCompliant) {
+        this.obj = obj;
+        this.stringifyMethod = stringifyMethod;
+        this.equivalenceCompliant = equivalenceCompliant;
+    }
+
+    @Override
+    public final boolean isEquivalenceCompliant() {
+        return equivalenceCompliant;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HintedAttribute)) return false;
+        HintedAttribute that = (HintedAttribute) o;
+        if(this.equivalenceCompliant && that.equivalenceCompliant) {
+            return Objects.equals(obj, that.obj);
+        } else {
+            return obj == that.obj;
+        }
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(obj);
+    }
+
+    @Override
+    public final String toString() {
+        return stringifyMethod.stringify(obj);
+    }
 }

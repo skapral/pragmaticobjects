@@ -27,25 +27,15 @@ package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
 import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceHint;
-import com.pragmaticobjects.oo.equivalence.base.NaturallyEquivalent;
+import com.pragmaticobjects.oo.equivalence.base.HintedAttribute;
+import com.pragmaticobjects.oo.equivalence.base.tostring.ToStringMethod;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Box;
 import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Implementation;
 import com.pragmaticobjects.oo.equivalence.codegen.sets.Attributes;
 import com.pragmaticobjects.oo.equivalence.codegen.sets.AttributesFromTypeDescription;
 import com.pragmaticobjects.oo.equivalence.codegen.sets.AttributesNonStatic;
-import java.lang.annotation.Annotation;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collections;
-
-import java.util.function.Function;
 import net.bytebuddy.asm.AsmVisitorWrapper;
-
 import net.bytebuddy.description.annotation.AnnotationDescription;
-
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.field.FieldList;
 import net.bytebuddy.description.method.MethodDescription;
@@ -58,7 +48,9 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.TypeCreation;
 import net.bytebuddy.implementation.bytecode.collection.ArrayFactory;
 import net.bytebuddy.implementation.bytecode.collection.ArrayLength;
+import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
 import net.bytebuddy.implementation.bytecode.member.FieldAccess;
+import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.implementation.bytecode.member.MethodReturn;
 import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
 import net.bytebuddy.jar.asm.ClassVisitor;
@@ -66,22 +58,30 @@ import net.bytebuddy.jar.asm.ClassWriter;
 import net.bytebuddy.jar.asm.Opcodes;
 import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.pool.TypePool;
-
-
-import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
-import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.function.Function;
+
 public class IIImplementEObjectAttributes implements InstrumentationIteration {
     private static final Logger log = LoggerFactory.getLogger(IIImplementEObjectAttributes.class);
-    private static final Constructor<NaturallyEquivalent> NATURALLYEQ_CONSTR;
+    private static final Constructor<HintedAttribute> HINTEDATTR_CONSTR;
     private static final Method ARRAYS_COPYOF;
     private static final Method SYSTEM_ARRAYCOPY;
 
     static {
         try {
-            NATURALLYEQ_CONSTR = NaturallyEquivalent.class.getConstructor(Object.class);
+            HINTEDATTR_CONSTR = HintedAttribute.class.getConstructor(
+                Object.class,
+                ToStringMethod.class,
+                boolean.class
+            );
             ARRAYS_COPYOF = Arrays.class.getDeclaredMethod("copyOf", Object[].class, int.class);
             SYSTEM_ARRAYCOPY = System.class.getDeclaredMethod("arraycopy", Object.class, int.class, Object.class, int.class, int.class);
         } catch (Exception ex) {
@@ -209,34 +209,60 @@ public class IIImplementEObjectAttributes implements InstrumentationIteration {
     }
     
     private StackManipulation loadAttribute(FieldDescription field) {
+        // Bytecode for loading 'this' on stack
         StackManipulation loadThis = MethodVariableAccess.REFERENCE.loadFrom(0);
+        // Bytecode for reading the attribute on stack
         StackManipulation readAttr = FieldAccess.forField(field).read();
+        // If the attribute is primitive, we make it boxed
         if (field.getType().isPrimitive()) {
             readAttr = new StackManipulation.Compound(
                 readAttr,
                 new Box(field.getType().asErasure())
             );
         }
+        // Acquire equivalence hint annotation instance
         AnnotationDescription.Loadable<EquivalenceHint> equivalenceHintLoadable = field.getDeclaredAnnotations().ofType(EquivalenceHint.class);
+        // If the field is annotated, we decorate it into HintedAttribute, below
         if (equivalenceHintLoadable != null) {
-            EquivalenceHint eqHint = equivalenceHintLoadable.load();
-            if (eqHint.enabled()) {
-                return new StackManipulation.Compound(
+            final EquivalenceHint eqHint = equivalenceHintLoadable.load();
+            final Class<? extends ToStringMethod> stringifyStrategy = eqHint.toStringMethod();
+            final StackManipulation methodCreation;
+            try {
+                // Bytecode for instantiating a toString strategy object on top of the stack
+                methodCreation = new StackManipulation.Compound(
                     TypeCreation.of(
-                        TypeDescription.ForLoadedType.of(NaturallyEquivalent.class)
+                        TypeDescription.ForLoadedType.of(stringifyStrategy)
                     ),
                     Duplication.of(
-                        TypeDescription.ForLoadedType.of(NaturallyEquivalent.class)
+                        TypeDescription.ForLoadedType.of(stringifyStrategy)
                     ),
-                    loadThis,
-                    readAttr,
                     MethodInvocation.invoke(
                         new MethodDescription.ForLoadedConstructor(
-                            NATURALLYEQ_CONSTR
+                            stringifyStrategy.getConstructor()
                         )
                     )
                 );
+            } catch(NoSuchMethodException ex) {
+                throw new RuntimeException("Wasn't able to generate a bytecode for " + stringifyStrategy + " instantiation");
             }
+
+            return new StackManipulation.Compound(
+                TypeCreation.of(
+                    TypeDescription.ForLoadedType.of(HintedAttribute.class)
+                ),
+                Duplication.of(
+                    TypeDescription.ForLoadedType.of(HintedAttribute.class)
+                ),
+                loadThis,
+                readAttr,
+                methodCreation,
+                IntegerConstant.forValue(eqHint.enabled()),
+                MethodInvocation.invoke(
+                    new MethodDescription.ForLoadedConstructor(
+                        HINTEDATTR_CONSTR
+                    )
+                )
+            );
         }
         return new StackManipulation.Compound(loadThis, readAttr);
     }

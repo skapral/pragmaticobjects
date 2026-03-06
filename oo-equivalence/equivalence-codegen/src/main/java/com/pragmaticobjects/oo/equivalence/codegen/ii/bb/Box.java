@@ -53,7 +53,7 @@ public final class Box implements StackManipulation {
         try {
             BOOLEAN_VALUEOF = Boolean.class.getMethod("valueOf", boolean.class);
             BYTE_VALUEOF = Byte.class.getMethod("valueOf", byte.class);
-            CHAR_VALUEOF = Double.class.getMethod("valueOf", double.class);
+            CHAR_VALUEOF = Character.class.getMethod("valueOf", char.class);
             SHORT_VALUEOF = Short.class.getMethod("valueOf", short.class);
             INT_VALUEOF = Integer.class.getMethod("valueOf", int.class);
             LONG_VALUEOF = Long.class.getMethod("valueOf", long.class);

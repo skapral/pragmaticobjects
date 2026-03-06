@@ -1,6 +1,6 @@
 /*-
  * ===========================================================================
- * equivalence-base
+ * equivalence-itests.test-module2
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Copyright (C) 2019 - 2026 Kapralov Sergey
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,14 +23,29 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.equivalence.base;
+package com.pragmaticobjects.oo.equivalence.itests.fieldlevelhint;
 
-/**
- * Marker interface, claiming that "equivalence" term is applicable for instances of the class-implementor.
- *
- * Avoid using it directly in client code. Instead, either let the instrumentor do its job, implement {@link EObject},
- * or use {@link NaturallyEquivalent} decorator
- */
-public interface EquivalenceCompliant {
-    boolean isEquivalenceCompliant();
+import com.pragmaticobjects.oo.equivalence.base.EquivalenceHint;
+import com.pragmaticobjects.oo.equivalence.base.tostring.Hex;
+
+public class HexHint {
+    private final int ref;
+    private final @EquivalenceHint(toStringMethod = Hex.class) int ref2;
+    private final @EquivalenceHint(toStringMethod = Hex.class) short ref3;
+    private final @EquivalenceHint(toStringMethod = Hex.class) char ref4;
+    private final @EquivalenceHint(toStringMethod = Hex.class) byte ref5;
+    private final @EquivalenceHint(toStringMethod = Hex.class) boolean ref6;
+    private final @EquivalenceHint(toStringMethod = Hex.class) long ref7;
+    private final @EquivalenceHint(toStringMethod = Hex.class) String ref8;
+
+    public HexHint(int ref, int ref2, short ref3, char ref4, byte ref5, boolean ref6, long ref7, String ref8) {
+        this.ref = ref;
+        this.ref2 = ref2;
+        this.ref3 = ref3;
+        this.ref4 = ref4;
+        this.ref5 = ref5;
+        this.ref6 = ref6;
+        this.ref7 = ref7;
+        this.ref8 = ref8;
+    }
 }

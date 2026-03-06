@@ -99,7 +99,7 @@ public class EquivalenceLogic {
 
     private static boolean hasIdentity(Object obj) {
         return obj == null
-            || obj instanceof EquivalenceCompliant
+            || (obj instanceof EquivalenceCompliant && ((EquivalenceCompliant) obj).isEquivalenceCompliant())
             || obj instanceof Enum
             || NATURALLY_EQUIVALENT.contains(obj.getClass());
     }
