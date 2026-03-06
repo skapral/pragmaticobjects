@@ -66,7 +66,7 @@
                                                 <include>marker.xml</include>
                                             </includes>
                                             <filtering>true</filtering>
-                                            <targetPath>${build.outputDirectory}</targetPath>
+                                            <targetPath>${project.build.directory}/marker-output</targetPath>
                                         </resource>
                                     </resources>
                                 </configuration>
@@ -84,12 +84,12 @@
                                     <goal>install-file</goal>
                                 </goals>
                                 <configuration>
-                                    <file>${build.outputDirectory}/marker.xml</file>
+                                    <file>${project.build.directory}/marker-output/marker.xml</file>
                                     <groupId>com.pragmaticobjects.oo.equivalence</groupId>
                                     <artifactId>com.pragmaticobjects.oo.equivalence.gradle.plugin</artifactId>
                                     <version>${project.version}</version>
                                     <packaging>pom</packaging>
-                                    <pomFile>${build.outputDirectory}/marker.xml</pomFile>
+                                    <pomFile>${project.build.directory}/marker-output/marker.xml</pomFile>
                                 </configuration>
                             </execution>
                         </executions>
