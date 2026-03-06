@@ -26,8 +26,8 @@
 package com.pragmaticobjects.oo.equivalence.base.tostring;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
 public class Iterating implements ToStringMethod {
@@ -55,12 +55,12 @@ public class Iterating implements ToStringMethod {
     @Override
     public String stringify(Object obj) {
         final String result;
-        if(obj instanceof Array) {
-            result = Arrays
-                .stream((Object[]) obj)
-                .map(methodForEachItem::stringify)
+        if (obj != null && obj.getClass().isArray()) {
+            // Handles both object arrays and primitive arrays via reflection
+            result = IntStream.range(0, Array.getLength(obj))
+                .mapToObj(i -> methodForEachItem.stringify(Array.get(obj, i)))
                 .collect(Collectors.joining(separator));
-        } else if(obj instanceof Iterable) {
+        } else if (obj instanceof Iterable) {
             result = StreamSupport.stream(
                     ((Iterable<?>) obj).spliterator(),
                     false

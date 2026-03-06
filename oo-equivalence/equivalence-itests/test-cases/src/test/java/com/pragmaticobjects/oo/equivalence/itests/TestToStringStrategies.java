@@ -62,7 +62,7 @@ public class TestToStringStrategies extends TestsSuite {
                 "array of hexes hint",
                 new AssertObjectToString(
                     new IterableHexes(),
-                    ""
+                    "IterableHexes([0x01, 0x02, 0x03], [0x01, 0x02, 0x03])"
                 )
             )
         );

@@ -28,24 +28,20 @@ package com.pragmaticobjects.oo.equivalence.itests.fieldlevelhint;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceHint;
 import io.vavr.collection.List;
 
-
 public class IterableHexes {
     private static final int[] REF_ARRAY = new int[] {1, 2, 3};
     private static final List<Integer> REF_LIST = List.of(1, 2, 3);
 
-    private final int[] ref;
-    private final @EquivalenceHint(enabled = false, toStringMethod = HexedIterable.class) int[] ref2;
-    private final @EquivalenceHint(enabled = false, toStringMethod = HexedIterable.class) List<Integer> ref3;
+    private final @EquivalenceHint(enabled = false, toStringMethod = HexedIterable.class) int[] refArray;
+    private final @EquivalenceHint(enabled = false, toStringMethod = HexedIterable.class) List<Integer> refList;
 
-    public IterableHexes(int[] ref, int[] ref2, List<Integer> ref3) {
-        this.ref = ref;
-        this.ref2 = ref2;
-        this.ref3 = ref3;
+    public IterableHexes(int[] refArray, List<Integer> refList) {
+        this.refArray = refArray;
+        this.refList = refList;
     }
 
     public IterableHexes() {
         this(
-            REF_ARRAY,
             REF_ARRAY,
             REF_LIST
         );

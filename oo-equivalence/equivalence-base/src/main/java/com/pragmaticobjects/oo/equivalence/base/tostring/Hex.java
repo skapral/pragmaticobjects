@@ -38,17 +38,29 @@ public class Hex implements ToStringMethod {
         this("0x");
     }
 
+    /**
+     * Formats a hex string with an even number of digits (full bytes).
+     * E.g. 10 → "0a", 260 → "0104".
+     */
+    private static String toEvenHex(long value) {
+        String hex = Long.toHexString(value);
+        if (hex.length() % 2 != 0) {
+            hex = "0" + hex;
+        }
+        return hex;
+    }
+
     @Override
     public final String stringify(Object obj) {
         final String result;
         if (obj instanceof Integer) {
-            result = Integer.toHexString((int) obj);
+            result = toEvenHex(Integer.toUnsignedLong((int) obj));
         } else if (obj instanceof Long) {
-            result = Long.toHexString((long) obj);
+            result = toEvenHex((long) obj);
         } else if (obj instanceof Short) {
-            result = Integer.toHexString((short) obj);
+            result = toEvenHex(Short.toUnsignedLong((short) obj));
         } else if (obj instanceof Byte) {
-            result = Integer.toHexString((byte) obj);
+            result = toEvenHex(Byte.toUnsignedLong((byte) obj));
         } else if (obj instanceof Float) {
             result = Float.toHexString((float) obj);
         } else if (obj instanceof Double) {

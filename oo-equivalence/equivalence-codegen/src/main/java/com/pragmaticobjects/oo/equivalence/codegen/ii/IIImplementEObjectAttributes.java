@@ -220,31 +220,30 @@ public class IIImplementEObjectAttributes implements InstrumentationIteration {
                 new Box(field.getType().asErasure())
             );
         }
-        // Acquire equivalence hint annotation instance
-        AnnotationDescription.Loadable<EquivalenceHint> equivalenceHintLoadable = field.getDeclaredAnnotations().ofType(EquivalenceHint.class);
+        // Acquire equivalence hint annotation description (without reflection-loading the annotation)
+        AnnotationDescription equivalenceHintDesc = field.getDeclaredAnnotations().ofType(EquivalenceHint.class);
         // If the field is annotated, we decorate it into HintedAttribute, below
-        if (equivalenceHintLoadable != null) {
-            final EquivalenceHint eqHint = equivalenceHintLoadable.load();
-            final Class<? extends ToStringMethod> stringifyStrategy = eqHint.toStringMethod();
-            final StackManipulation methodCreation;
-            try {
-                // Bytecode for instantiating a toString strategy object on top of the stack
-                methodCreation = new StackManipulation.Compound(
-                    TypeCreation.of(
-                        TypeDescription.ForLoadedType.of(stringifyStrategy)
-                    ),
-                    Duplication.of(
-                        TypeDescription.ForLoadedType.of(stringifyStrategy)
-                    ),
-                    MethodInvocation.invoke(
-                        new MethodDescription.ForLoadedConstructor(
-                            stringifyStrategy.getConstructor()
-                        )
-                    )
-                );
-            } catch(NoSuchMethodException ex) {
-                throw new RuntimeException("Wasn't able to generate a bytecode for " + stringifyStrategy + " instantiation");
-            }
+        if (equivalenceHintDesc != null) {
+            // Obtain toStringMethod TypeDescription directly from annotation without loading via classloader
+            final TypeDescription stringifyStrategyType = (TypeDescription) equivalenceHintDesc
+                .getValue("toStringMethod")
+                .resolve();
+            log.info("stringifyStrategyType = {}", stringifyStrategyType.getTypeName());
+            // Obtain enabled flag directly from annotation without loading via classloader
+            final boolean enabled = (Boolean) equivalenceHintDesc
+                .getValue("enabled")
+                .resolve();
+            // Find the no-arg constructor of the stringify strategy via ByteBuddy TypeDescription
+            final MethodDescription.InDefinedShape noArgConstructor = stringifyStrategyType
+                .getDeclaredMethods()
+                .filter(ElementMatchers.isDefaultConstructor())
+                .getOnly();
+            // Bytecode for instantiating a toString strategy object on top of the stack
+            final StackManipulation methodCreation = new StackManipulation.Compound(
+                TypeCreation.of(stringifyStrategyType),
+                Duplication.of(stringifyStrategyType),
+                MethodInvocation.invoke(noArgConstructor)
+            );
 
             return new StackManipulation.Compound(
                 TypeCreation.of(
@@ -256,7 +255,7 @@ public class IIImplementEObjectAttributes implements InstrumentationIteration {
                 loadThis,
                 readAttr,
                 methodCreation,
-                IntegerConstant.forValue(eqHint.enabled()),
+                IntegerConstant.forValue(enabled),
                 MethodInvocation.invoke(
                     new MethodDescription.ForLoadedConstructor(
                         HINTEDATTR_CONSTR

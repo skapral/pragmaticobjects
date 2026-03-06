@@ -136,6 +136,11 @@ public class EquivalenceLogic {
     }
 
     private static String toString(Object value) {
+        if (value instanceof HintedAttribute) {
+            // HintedAttribute always delegates toString to its stringify strategy,
+            // regardless of the equivalenceCompliant flag (which only affects equals/hashCode)
+            return value.toString();
+        }
         if (hasIdentity(value)) {
             return value == null ? "null" : value.toString();
         } else {
