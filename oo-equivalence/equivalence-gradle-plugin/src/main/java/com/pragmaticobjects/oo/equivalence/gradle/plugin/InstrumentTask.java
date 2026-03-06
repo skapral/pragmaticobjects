@@ -27,7 +27,6 @@ package com.pragmaticobjects.oo.equivalence.gradle.plugin;
 
 import com.pragmaticobjects.oo.equivalence.codegen.stage.StandardInstrumentationStage;
 import org.gradle.api.file.DirectoryProperty;
-import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.OutputDirectory;
 
 /**
@@ -43,7 +42,6 @@ public abstract class InstrumentTask extends BaseInstrumentTask {
      *
      * @return classes directory
      */
-    @InputDirectory
     @OutputDirectory
     public abstract DirectoryProperty getClassesDirectory();
 

@@ -56,7 +56,6 @@ public abstract class InstrumentTestsTask extends BaseInstrumentTask {
      *
      * @return test classes directory
      */
-    @InputDirectory
     @OutputDirectory
     public abstract DirectoryProperty getTestClassesDirectory();
 
