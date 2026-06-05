@@ -17,48 +17,39 @@ workflows:
     tasks:
       - name: test-java-17
         cubes:
-          - name: build-tools
+          - name: build
             image: eclipse-temurin:17-jdk
             script:
               - ./mvnw clean install -B -Pbuild-tools -Djgitver.skip=true
-          - name: test
-            script:
               - ./mvnw clean install -B -Pmodules
 
       - name: test-java-21
         cubes:
-          - name: build-tools
+          - name: build
             image: eclipse-temurin:21-jdk
             script:
               - ./mvnw clean install -B -Pbuild-tools -Djgitver.skip=true
-          - name: test
-            script:
               - ./mvnw clean install -B -Pmodules
 
       - name: test-java-23
         cubes:
-          - name: build-tools
+          - name: build
             image: eclipse-temurin:23-jdk
             script:
               - ./mvnw clean install -B -Pbuild-tools -Djgitver.skip=true
-          - name: test
-            script:
               - ./mvnw clean install -B -Pmodules
 
   release:
     tasks:
       - name: release
         cubes:
-          - name: build-tools
-            image: eclipse-temurin:21-jdk
-            script:
-              - ./mvnw clean install -B -Pbuild-tools -Djgitver.skip=true
-
           - name: deploy
+            image: eclipse-temurin:21-jdk
             env:
               REGISTRY_USERNAME: iam
               REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
             script:
+              - ./mvnw clean install -B -Pbuild-tools -Djgitver.skip=true
               - |
                 mkdir -p ~/.m2
                 cat > ~/.m2/settings.xml << 'EOF'
