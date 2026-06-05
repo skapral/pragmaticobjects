@@ -1,1 +1,77 @@
+on:
+  pull_request:
+    - workflows: [test]
+      filter:
+        source_branches: ["**"]
+        target_branches: ["master"]
+  push:
+    - workflows: [test]
+      filter:
+        branches: ["**"]
+    - workflows: [release]
+      filter:
+        tags: ["*"]
 
+workflows:
+  test:
+    tasks:
+      - name: test-java-17
+        cubes:
+          - name: build-tools
+            image: eclipse-temurin:17-jdk
+            script:
+              - ./mvnw clean install -B -Pbuild-tools -Djgitver.skip=true
+          - name: test
+            script:
+              - ./mvnw clean install -B -Pmodules
+
+      - name: test-java-21
+        cubes:
+          - name: build-tools
+            image: eclipse-temurin:21-jdk
+            script:
+              - ./mvnw clean install -B -Pbuild-tools -Djgitver.skip=true
+          - name: test
+            script:
+              - ./mvnw clean install -B -Pmodules
+
+      - name: test-java-23
+        cubes:
+          - name: build-tools
+            image: eclipse-temurin:23-jdk
+            script:
+              - ./mvnw clean install -B -Pbuild-tools -Djgitver.skip=true
+          - name: test
+            script:
+              - ./mvnw clean install -B -Pmodules
+
+  release:
+    tasks:
+      - name: release
+        cubes:
+          - name: build-tools
+            image: eclipse-temurin:21-jdk
+            script:
+              - ./mvnw clean install -B -Pbuild-tools -Djgitver.skip=true
+
+          - name: deploy
+            env:
+              REGISTRY_USERNAME: iam
+              REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+            script:
+              - |
+                mkdir -p ~/.m2
+                cat > ~/.m2/settings.xml << 'EOF'
+                <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+                  <servers>
+                    <server>
+                      <id>sourcecraft-releases</id>
+                      <username>${env.REGISTRY_USERNAME}</username>
+                      <password>${env.REGISTRY_PASSWORD}</password>
+                    </server>
+                  </servers>
+                </settings>
+                EOF
+              - ./mvnw clean deploy -B -Pmodules,extras -Djgitver.use-version=${SOURCECRAFT_COMMIT_REF_NAME} -DaltDeploymentRepository=sourcecraft-releases::default::https://pkg.sourcecraft.tech/maven/pragmaticobjects/cn15p9ba1la20u152l4p
