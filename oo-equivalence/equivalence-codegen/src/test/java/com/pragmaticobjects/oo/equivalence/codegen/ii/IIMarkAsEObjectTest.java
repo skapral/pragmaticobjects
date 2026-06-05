@@ -71,7 +71,7 @@ public class IIMarkAsEObjectTest extends TestsSuite {
             this.x = x;
         }
 
-        public int getX() {
+        public final int getX() {
             return x;
         }
     }
@@ -83,7 +83,7 @@ public class IIMarkAsEObjectTest extends TestsSuite {
             this.x = x;
         }
         
-        public int getX() {
+        public final int getX() {
             return x;
         }
     }
@@ -95,7 +95,7 @@ public class IIMarkAsEObjectTest extends TestsSuite {
             this.x = x;
         }
 
-        public T getX() {
+        public final T getX() {
             return x;
         }
     }

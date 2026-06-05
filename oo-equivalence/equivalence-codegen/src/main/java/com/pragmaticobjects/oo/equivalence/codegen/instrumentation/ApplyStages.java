@@ -30,6 +30,7 @@ import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
 import com.pragmaticobjects.oo.equivalence.codegen.cp.CpCombined;
 import com.pragmaticobjects.oo.equivalence.codegen.cp.CpExplicit;
 import com.pragmaticobjects.oo.equivalence.codegen.stage.Stage;
+import com.pragmaticobjects.oo.guidelines.archunit.ArchitecturalExclusion;
 import io.vavr.collection.List;
 
 import java.nio.file.Path;
@@ -44,7 +45,6 @@ public class ApplyStages implements Instrumentation {
     private final Path workingDirectory;
     private final List<Stage> stages;
     private final ClassNames classNames;
-
 
     /**
      * Ctor.
@@ -79,6 +79,7 @@ public class ApplyStages implements Instrumentation {
     }
 
     @Override
+    @ArchitecturalExclusion
     public final void apply() {
         final ClassPath cp = new CpCombined(
             this.classPath,

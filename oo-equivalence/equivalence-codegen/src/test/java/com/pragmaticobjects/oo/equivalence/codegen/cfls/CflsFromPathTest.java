@@ -36,7 +36,7 @@ import java.nio.file.Paths;
  */
 class CflsFromPathTest extends TestsSuite {
     private static final String TEST_CLASS_PATH = System.getProperty("user.dir") + "/target/test-classes";
-
+    private static final String FOO_CLASS = Foo.class.getName();
     /**
      * Ctor.
      */
@@ -57,7 +57,7 @@ class CflsFromPathTest extends TestsSuite {
                     new CflsFromPath(
                         Paths.get(TEST_CLASS_PATH)
                     ),
-                    Foo.class.getName()
+                    FOO_CLASS
                 )
             ),
             new TestCase(
@@ -73,5 +73,5 @@ class CflsFromPathTest extends TestsSuite {
     }
 
     //CHECKSTYLE:OFF
-    private static final class Foo {}
+    private static class Foo {}
 }

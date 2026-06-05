@@ -76,9 +76,9 @@ public class ThisOrSuperClassMatcherTest extends TestsSuite {
     private static class Bar {}
     private static class Foo2 extends Foo {}
 
-    private static final class FooMatcher implements ElementMatcher<TypeDescription> {
+    private static class FooMatcher implements ElementMatcher<TypeDescription> {
         @Override
-        public boolean matches(final TypeDescription target) {
+        public final boolean matches(final TypeDescription target) {
             return target.represents(Foo.class);
         }
     }

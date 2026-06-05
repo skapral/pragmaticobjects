@@ -34,6 +34,7 @@ import com.pragmaticobjects.oo.equivalence.codegen.ii.bb.Implementation;
 import com.pragmaticobjects.oo.equivalence.codegen.sets.Attributes;
 import com.pragmaticobjects.oo.equivalence.codegen.sets.AttributesFromTypeDescription;
 import com.pragmaticobjects.oo.equivalence.codegen.sets.AttributesNonStatic;
+import com.pragmaticobjects.oo.guidelines.archunit.ArchitecturalExclusion;
 import net.bytebuddy.asm.AsmVisitorWrapper;
 import net.bytebuddy.description.annotation.AnnotationDescription;
 import net.bytebuddy.description.field.FieldDescription;
@@ -74,6 +75,8 @@ public class IIImplementEObjectAttributes implements InstrumentationIteration {
     private static final Constructor<HintedAttribute> HINTEDATTR_CONSTR;
     private static final Method ARRAYS_COPYOF;
     private static final Method SYSTEM_ARRAYCOPY;
+    private static final GeneratedMark GENERATED_MARK = new GeneratedMark();
+    private static final OverrideMark OVERRIDE_MARK = new OverrideMark();
 
     static {
         try {
@@ -104,6 +107,7 @@ public class IIImplementEObjectAttributes implements InstrumentationIteration {
     }
 
     @Override
+    @ArchitecturalExclusion
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
         log.debug("attributes() " + typeDescription.getActualName());
         if (!typeDescription.getDeclaredMethods()
@@ -129,12 +133,12 @@ public class IIImplementEObjectAttributes implements InstrumentationIteration {
         }
         if(doOverride) {
             annotations = new Annotation[] {
-                new GeneratedMark(),
-                new OverrideMark()
+                GENERATED_MARK,
+                OVERRIDE_MARK
             };
         } else {
             annotations = new Annotation[] {
-                new GeneratedMark()
+                GENERATED_MARK
             };
         }
         
@@ -207,7 +211,7 @@ public class IIImplementEObjectAttributes implements InstrumentationIteration {
                 .map(field -> loadAttribute(field))
                 .transform(list -> ArrayFactory.forType(TypeDescription.Generic.OBJECT).withValues(list.asJava()));
     }
-    
+
     private StackManipulation loadAttribute(FieldDescription field) {
         // Bytecode for loading 'this' on stack
         StackManipulation loadThis = MethodVariableAccess.REFERENCE.loadFrom(0);
@@ -228,7 +232,7 @@ public class IIImplementEObjectAttributes implements InstrumentationIteration {
             final TypeDescription stringifyStrategyType = (TypeDescription) equivalenceHintDesc
                 .getValue("toStringMethod")
                 .resolve();
-            log.info("stringifyStrategyType = {}", stringifyStrategyType.getTypeName());
+            log.debug("stringifyStrategyType = {}", stringifyStrategyType.getTypeName());
             // Obtain enabled flag directly from annotation without loading via classloader
             final boolean enabled = (Boolean) equivalenceHintDesc
                 .getValue("enabled")

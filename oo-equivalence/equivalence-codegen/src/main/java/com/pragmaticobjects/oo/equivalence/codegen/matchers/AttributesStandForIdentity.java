@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 import java.lang.reflect.Modifier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
@@ -38,14 +39,14 @@ import org.slf4j.LoggerFactory;
 /**
  * Type matcher, checking that type's attributes can be classified as object's identity
  * (which in turn means, that equivalence definition can be applied to the type)
- * 
+ *
  * @author skapral
  */
 public class AttributesStandForIdentity implements ElementMatcher<TypeDescription> {
     private static final Logger LOG = LoggerFactory.getLogger(AttributesStandForIdentity.class);
-            
+
     @Override
-    public boolean matches(TypeDescription td) {
+    public final boolean matches(TypeDescription td) {
         final ElementMatcher<FieldDescription> visibilityMatcher = new DisjunctionMatcher<>(
             td.isAbstract() ?
                 ElementMatchers.isProtected() :
@@ -53,7 +54,7 @@ public class AttributesStandForIdentity implements ElementMatcher<TypeDescriptio
             ElementMatchers.isPublic()
         );
         Stream<FieldDescription.InDefinedShape> stream = td.getDeclaredFields().stream();
-        if(LOG.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Checking AttributesStandForIdentity for " + td.getActualName());
             LOG.debug("{} fields found", td.getDeclaredFields().size());
             stream = stream.peek(item -> {
@@ -66,22 +67,22 @@ public class AttributesStandForIdentity implements ElementMatcher<TypeDescriptio
             });
         }
         return stream
-                .filter(
-                    ElementMatchers.not(
-                        ElementMatchers.isSynthetic()
-                    )::matches
-                )
-                .filter(
-                    ElementMatchers.not(
-                        ElementMatchers.isStatic()
-                    )::matches
-                )
-                .map(
-                    new ConjunctionMatcher<>(
-                        visibilityMatcher,
-                        ElementMatchers.isFinal()
-                    )::matches
-                )
-                .collect(Collectors.reducing(true, Boolean::logicalAnd));
+            .filter(
+                ElementMatchers.not(
+                    ElementMatchers.isSynthetic()
+                )::matches
+            )
+            .filter(
+                ElementMatchers.not(
+                    ElementMatchers.isStatic()
+                )::matches
+            )
+            .map(
+                new ConjunctionMatcher<>(
+                    visibilityMatcher,
+                    ElementMatchers.isFinal()
+                )::matches
+            )
+            .collect(Collectors.reducing(true, Boolean::logicalAnd));
     }
 }

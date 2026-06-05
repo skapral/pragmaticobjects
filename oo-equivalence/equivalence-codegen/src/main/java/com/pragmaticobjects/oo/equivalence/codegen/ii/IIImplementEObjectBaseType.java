@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
  */
 public class IIImplementEObjectBaseType implements InstrumentationIteration {
     private static final Logger log = LoggerFactory.getLogger(IIImplementEObjectBaseType.class);
+
     @Override
     public final DynamicType.Builder<?> apply(DynamicType.Builder<?> builder, TypeDescription typeDescription) {
         log.debug("baseType() " + typeDescription.getActualName());

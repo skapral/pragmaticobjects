@@ -39,7 +39,7 @@ import net.bytebuddy.jar.asm.MethodVisitor;
  *
  * @author skapral
  */
-public final class Box implements StackManipulation {
+public class Box implements StackManipulation {
     private static final Method BOOLEAN_VALUEOF;
     private static final Method BYTE_VALUEOF;
     private static final Method CHAR_VALUEOF;

@@ -19,6 +19,10 @@
             <artifactId>equivalence-assertions</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.pragmaticobjects.oo.guidelines</groupId>
+            <artifactId>guidelines-hints</artifactId>
+        </dependency>
+        <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
         </dependency>

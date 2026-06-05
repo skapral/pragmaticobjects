@@ -53,7 +53,7 @@ public class Iterating implements ToStringMethod {
     }
 
     @Override
-    public String stringify(Object obj) {
+    public final String stringify(Object obj) {
         final String result;
         if (obj != null && obj.getClass().isArray()) {
             // Handles both object arrays and primitive arrays via reflection

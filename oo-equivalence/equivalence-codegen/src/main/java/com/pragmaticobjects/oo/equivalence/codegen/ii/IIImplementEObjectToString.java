@@ -48,6 +48,8 @@ public class IIImplementEObjectToString implements InstrumentationIteration {
     private static final Logger log = LoggerFactory.getLogger(IIImplementEObjectToString.class);
     private static final Method EQLOGIC_TOSTRING;
     private static final ElementMatcher<TypeDescription> GENERATION_CANDIDATE = new MatchEqualsTriadGenerationCandidate();
+    private static final GeneratedMark GENERATED_MARK = new GeneratedMark();
+    private static final OverrideMark OVERRIDE_MARK = new OverrideMark();
 
     static {
         try {
@@ -81,7 +83,7 @@ public class IIImplementEObjectToString implements InstrumentationIteration {
                 return builder
                     .method(ElementMatchers.named("toString"))
                     .intercept(new Implementation(impl))
-                    .annotateMethod(new GeneratedMark(), new OverrideMark());
+                    .annotateMethod(GENERATED_MARK, OVERRIDE_MARK);
             } else {
                 // If for some reason the method is already defined, we fail
                 throw new RuntimeException("Defining toString() for this class is unexpected");
@@ -90,6 +92,6 @@ public class IIImplementEObjectToString implements InstrumentationIteration {
         return builder
             .defineMethod("toString", String.class, modifiers)
             .intercept(new Implementation(impl))
-            .annotateMethod(new GeneratedMark());
+            .annotateMethod(GENERATED_MARK);
     }
 }

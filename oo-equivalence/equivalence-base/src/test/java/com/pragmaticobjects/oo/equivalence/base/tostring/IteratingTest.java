@@ -25,23 +25,29 @@
  */
 package com.pragmaticobjects.oo.equivalence.base.tostring;
 
-import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
-import org.assertj.core.api.Assertions;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class IteratingTest extends TestsSuite {
+    private static final Collection<?> EMPTY = Collections.emptyList();
+    private static final Collection<?> ONLY = Collections.singletonList("only");
+    private static final List<?> HELLO_WORLD_LIST = Arrays.asList("hello", "world");
+    private static final List<?> XYZ_LIST = Arrays.asList("x", "y", "z");
+    private static final List<?> ABC_LIST = Arrays.asList("a", "b", "c");
+
+
     public IteratingTest() {
         super(
             new TestCase(
                 "Iterating over a non-empty List produces bracketed, comma-separated string representations",
                 new AssertStringifyResult(
                     new Iterating(new Default()),
-                    Arrays.asList("hello", "world"),
+                    HELLO_WORLD_LIST,
                     "[hello, world]"
                 )
             ),
@@ -49,7 +55,7 @@ public class IteratingTest extends TestsSuite {
                 "Iterating over an empty List produces empty brackets",
                 new AssertStringifyResult(
                     new Iterating(new Default()),
-                    Collections.emptyList(),
+                    EMPTY,
                     "[]"
                 )
             ),
@@ -65,7 +71,7 @@ public class IteratingTest extends TestsSuite {
                 "Iterating with custom delimiters uses those delimiters",
                 new AssertStringifyResult(
                     new Iterating(new Default(), "(", ")", " | "),
-                    Arrays.asList("a", "b", "c"),
+                    ABC_LIST,
                     "(a | b | c)"
                 )
             ),
@@ -73,7 +79,7 @@ public class IteratingTest extends TestsSuite {
                 "Iterating applies the inner ToStringMethod to each element",
                 new AssertStringifyResult(
                     new Iterating(new Hide("***")),
-                    Arrays.asList("x", "y", "z"),
+                    XYZ_LIST,
                     "[***, ***, ***]"
                 )
             ),
@@ -81,7 +87,7 @@ public class IteratingTest extends TestsSuite {
                 "Iterating over a single-element List produces no separator",
                 new AssertStringifyResult(
                     new Iterating(new Default()),
-                    Collections.singletonList("only"),
+                    ONLY,
                     "[only]"
                 )
             ),

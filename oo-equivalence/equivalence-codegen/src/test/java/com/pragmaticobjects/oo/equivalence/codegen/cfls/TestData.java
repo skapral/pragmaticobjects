@@ -25,12 +25,14 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.cfls;
 
+import com.pragmaticobjects.oo.guidelines.archunit.ArchitecturalExclusion;
 import net.bytebuddy.dynamic.ClassFileLocator;
 import org.apache.commons.io.IOUtils;
 
 import java.util.HashMap;
 
 //CHECKSTYLE:OFF
+@ArchitecturalExclusion
 final class TestData {
     public static final ClassFileLocator CFL_FOO;
 
@@ -49,8 +51,10 @@ final class TestData {
         }
     }
 
+    @ArchitecturalExclusion
     public static final class Foo {}
     public static final String FOO_NAME = Foo.class.getName();
+    @ArchitecturalExclusion
     public static final class Bar {}
     public static final String BAR_NAME = Bar.class.getName();
 }

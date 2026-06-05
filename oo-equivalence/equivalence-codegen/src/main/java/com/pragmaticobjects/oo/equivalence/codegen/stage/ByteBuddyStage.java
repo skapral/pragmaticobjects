@@ -30,6 +30,7 @@ import com.pragmaticobjects.oo.equivalence.codegen.cfls.CflsExplicit;
 import com.pragmaticobjects.oo.equivalence.codegen.cfls.CflsFromClassPath;
 import com.pragmaticobjects.oo.equivalence.codegen.cn.ClassNames;
 import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
+import com.pragmaticobjects.oo.guidelines.archunit.ArchitecturalExclusion;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.ClassFileLocator;
 import net.bytebuddy.pool.TypePool;
@@ -63,6 +64,7 @@ public class ByteBuddyStage implements Stage {
     }
 
     @Override
+    @ArchitecturalExclusion
     public final void apply(final ClassPath classPath, final ClassNames classNames, final Path workingDirectory) {
         final ClassFileLocator cfl = new CflsCompound(
             new CflsFromClassPath(

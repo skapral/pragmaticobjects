@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
 
+import com.pragmaticobjects.oo.guidelines.archunit.ArchitecturalExclusion;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import net.bytebuddy.description.type.TypeDescription;
@@ -104,11 +105,13 @@ public class AllMethodsAreFinalTest extends TestsSuite {
     
     private static class Bar {
         public final void method1() {}
+        @ArchitecturalExclusion
         public void method2() {}
         public final void method3() {}
     }
     
     private static interface G<T> {
+        @ArchitecturalExclusion
         void method(T value);
     }
     

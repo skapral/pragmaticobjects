@@ -25,6 +25,7 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
+import com.pragmaticobjects.oo.guidelines.archunit.ArchitecturalExclusion;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
@@ -173,7 +174,8 @@ public class MatchEObjectAliasTest extends TestsSuite {
             return EquivalenceLogic.toString(this);
         }
     }
-    
+
+    @ArchitecturalExclusion
     public static abstract class Abstract2 extends Abstract {
         protected final int y;
 
@@ -186,7 +188,8 @@ public class MatchEObjectAliasTest extends TestsSuite {
             return y;
         }
     }
-    
+
+    @ArchitecturalExclusion
     public static class AbstractBase extends Abstract {
         protected final int y;
 

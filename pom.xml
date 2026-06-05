@@ -24,6 +24,7 @@
             <modules>
                 <module>oo-equivalence</module>
                 <module>oo-tests</module>
+                <module>oo-guidelines</module>
                 <module>oo-meta</module>
                 <module>oo-inference</module>
                 <module>oo-memoized</module>

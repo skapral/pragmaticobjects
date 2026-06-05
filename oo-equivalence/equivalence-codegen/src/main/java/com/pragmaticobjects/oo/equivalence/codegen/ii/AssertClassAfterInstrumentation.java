@@ -25,6 +25,7 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
+import com.pragmaticobjects.oo.guidelines.archunit.ArchitecturalExclusion;
 import com.pragmaticobjects.oo.equivalence.assertions.Assertion;
 import java.util.concurrent.atomic.AtomicReference;
 import net.bytebuddy.ByteBuddy;
@@ -43,6 +44,7 @@ import static org.assertj.core.api.Assertions.*;
  * @author Kapralov Sergey
  */
 public class AssertClassAfterInstrumentation implements Assertion {
+    private static final AnonymousClassLoader ANONYMOUS_CLASS_LOADER = new AnonymousClassLoader();
     private final InstrumentationIteration ii;
     private final Class<?> type;
     private final ElementMatcher<TypeDescription> matcher;
@@ -69,7 +71,7 @@ public class AssertClassAfterInstrumentation implements Assertion {
             final DynamicType.Unloaded<?> make = ii
                     .apply(builder, typeDescription)
                     .make();
-            final Class<?> clazz = make.load(new AnonymousClassLoader(), ClassLoadingStrategy.Default.CHILD_FIRST).getLoaded();
+            final Class<?> clazz = make.load(ANONYMOUS_CLASS_LOADER, ClassLoadingStrategy.Default.CHILD_FIRST).getLoaded();
             clazz.getMethods(); // Initiate validation.
             typeRef.set(clazz);
         }).doesNotThrowAnyException();
@@ -87,5 +89,6 @@ public class AssertClassAfterInstrumentation implements Assertion {
      *
      * @author Kapralov Sergey
      */
+    @ArchitecturalExclusion
     private static final class AnonymousClassLoader extends ClassLoader {}
 }

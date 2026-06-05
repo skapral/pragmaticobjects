@@ -41,7 +41,7 @@ public class MatchSuperClass implements ElementMatcher<TypeDescription> {
     }
     
     @Override
-    public boolean matches(TypeDescription td) {
+    public final boolean matches(TypeDescription td) {
         return Optional.of(td)
                 .map(TypeDescription::getSuperClass)
                 .map(TypeDescription.Generic::asErasure)

@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
  */
 public class IIImplementEObjectHashSeed implements InstrumentationIteration {
     private static final Logger log = LoggerFactory.getLogger(IIImplementEObjectHashSeed.class);
+    private static final GeneratedMark GENERATED_MARK = new GeneratedMark();
     private final int seedValue;
 
     public IIImplementEObjectHashSeed(int seedValue) {
@@ -75,6 +76,6 @@ public class IIImplementEObjectHashSeed implements InstrumentationIteration {
         return builder
                 .defineMethod("hashSeed", int.class, modifiers)
                 .intercept(new Implementation(baseTypeImpl))
-                .annotateMethod(new GeneratedMark());
+                .annotateMethod(GENERATED_MARK);
     }
 }

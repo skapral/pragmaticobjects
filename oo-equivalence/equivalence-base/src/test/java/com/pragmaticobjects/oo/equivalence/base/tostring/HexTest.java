@@ -33,87 +33,87 @@ import io.vavr.collection.List;
 public class HexTest extends TestsSuite {
     public HexTest() {
         super(
-                new TestCase(
-                    "Hex with default prefix formats Integer as hex with '0x' prefix",
-                    new AssertCombined(
-                        new AssertStringifyResult(
-                                new Hex(),
-                                10,
-                                "0x0a"
-                        ),
-                        new AssertStringifyResult(
-                            new Hex(),
-                            255,
-                            "0xff"
-                        ),
-                        new AssertStringifyResult(
-                            new Hex(),
-                            260,
-                            "0x0104"
-                        ),
-                        new AssertStringifyResult(
-                            new Hex(),
-                            6666,
-                            "0x1a0a"
-                        )
+            new TestCase(
+                "Hex with default prefix formats Integer as hex with '0x' prefix",
+                new AssertCombined(
+                    new AssertStringifyResult(
+                        new Hex(),
+                        10,
+                        "0x0a"
+                    ),
+                    new AssertStringifyResult(
+                        new Hex(),
+                        255,
+                        "0xff"
+                    ),
+                    new AssertStringifyResult(
+                        new Hex(),
+                        260,
+                        "0x0104"
+                    ),
+                    new AssertStringifyResult(
+                        new Hex(),
+                        6666,
+                        "0x1a0a"
                     )
-                ),
-                new TestCase(
-                        "Hex with custom prefix formats Integer using that prefix",
-                        new AssertStringifyResult(
-                                new Hex("#"),
-                                255,
-                                "#ff"
-                        )
-                ),
-                new TestCase(
-                        "Hex with default prefix formats Long as hex with '0x' prefix",
-                        new AssertStringifyResult(
-                                new Hex(),
-                                255L,
-                                "0xff"
-                        )
-                ),
-                new TestCase(
-                        "Hex with default prefix formats Short as hex with '0x' prefix",
-                        new AssertStringifyResult(
-                                new Hex(),
-                                (short) 255,
-                                "0xff"
-                        )
-                ),
-                new TestCase(
-                        "Hex with default prefix formats Byte as hex with '0x' prefix",
-                        new AssertStringifyResult(
-                                new Hex(),
-                                (byte) 15,
-                                "0x0f"
-                        )
-                ),
-                new TestCase(
-                        "Hex with default prefix formats Float via Float.toHexString",
-                        new AssertStringifyResult(
-                                new Hex(),
-                                1.0f,
-                                "0x" + Float.toHexString(1.0f)
-                        )
-                ),
-                new TestCase(
-                        "Hex with default prefix formats Double via Double.toHexString",
-                        new AssertStringifyResult(
-                                new Hex(),
-                                1.0,
-                                "0x" + Double.toHexString(1.0)
-                        )
-                ),
-                new TestCase(
-                        "Hex delegates non-numeric objects to Default (no '0x' prefix)",
-                        new AssertStringifyResult(
-                                new Hex(),
-                                "hello",
-                                new Default().stringify("hello")
-                        )
                 )
+            ),
+            new TestCase(
+                "Hex with custom prefix formats Integer using that prefix",
+                new AssertStringifyResult(
+                    new Hex("#"),
+                    255,
+                    "#ff"
+                )
+            ),
+            new TestCase(
+                "Hex with default prefix formats Long as hex with '0x' prefix",
+                new AssertStringifyResult(
+                    new Hex(),
+                    255L,
+                    "0xff"
+                )
+            ),
+            new TestCase(
+                "Hex with default prefix formats Short as hex with '0x' prefix",
+                new AssertStringifyResult(
+                    new Hex(),
+                    (short) 255,
+                    "0xff"
+                )
+            ),
+            new TestCase(
+                "Hex with default prefix formats Byte as hex with '0x' prefix",
+                new AssertStringifyResult(
+                    new Hex(),
+                    (byte) 15,
+                    "0x0f"
+                )
+            ),
+            new TestCase(
+                "Hex with default prefix formats Float via Float.toHexString",
+                new AssertStringifyResult(
+                    new Hex(),
+                    1.0f,
+                    "0x" + Float.toHexString(1.0f)
+                )
+            ),
+            new TestCase(
+                "Hex with default prefix formats Double via Double.toHexString",
+                new AssertStringifyResult(
+                    new Hex(),
+                    1.0,
+                    "0x" + Double.toHexString(1.0)
+                )
+            ),
+            new TestCase(
+                "Hex delegates non-numeric objects to Default (no '0x' prefix)",
+                new AssertStringifyResult(
+                    new Hex(),
+                    "hello",
+                    "hello"
+                )
+            )
         );
     }
 }

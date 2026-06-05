@@ -37,6 +37,9 @@ public class EObjectTest extends TestsSuite {
     private static final ETuple CONSTANT = new ETuple();
     private static final Object CONSTANT_OBJ = new Object();
     private static final EObject[] CONSTANT_ARRAY = new EObject[]{};
+    private static final Object OBJ = new Object();
+    private static final Object OBJ2 = new Object();
+
 
     public EObjectTest() {
         super(
@@ -92,7 +95,7 @@ public class EObjectTest extends TestsSuite {
                 "Comparing with non-EObject",
                 new AssertTwoObjectsEquality(
                     new ETuple(),
-                    new Object(),
+                    OBJ,
                     false
                 )
             ),
@@ -115,8 +118,8 @@ public class EObjectTest extends TestsSuite {
                 "Non-EObject identity",
                 new AssertCombined(
                     new AssertTwoObjectsEquality(
-                        new ETuple(new Object()),
-                        new ETuple(new Object()),
+                        new ETuple(OBJ),
+                        new ETuple(OBJ2),
                         false
                     ),
                     new AssertTwoObjectsEquality(
@@ -181,7 +184,7 @@ public class EObjectTest extends TestsSuite {
                 new AssertCombined(
                     new AssertObjectHashCode(new ETuple(42), 152399067),
                     new AssertObjectHashCode(new ETuple(new ETuple(42)), 304798092),
-                    new AssertObjectHashCode(new ETuple(new Object()), 1216276036),
+                    new AssertObjectHashCode(new ETuple(OBJ), 1216276036),
                     new AssertObjectHashCode(new ETuple((Object) null), 152399025)
                 )
             ),
@@ -189,7 +192,7 @@ public class EObjectTest extends TestsSuite {
                 "toString",
                 new AssertCombined(
                     new AssertObjectToString(new ETuple(42), "ETuple(42)"),
-                    new AssertObjectToStringMatchesRegex(new ETuple(new Object()), "ETuple\\(java\\.lang\\.Object\\#\\p{Digit}+\\)"),
+                    new AssertObjectToStringMatchesRegex(new ETuple(OBJ), "ETuple\\(java\\.lang\\.Object\\#\\p{Digit}+\\)"),
                     new AssertObjectToString(new ETuple(TestEnum.B), "ETuple(B)")
                 )
             )

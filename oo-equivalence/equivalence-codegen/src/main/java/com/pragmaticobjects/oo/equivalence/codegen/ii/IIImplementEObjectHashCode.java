@@ -48,7 +48,8 @@ public class IIImplementEObjectHashCode implements InstrumentationIteration {
     private static final Logger log = LoggerFactory.getLogger(IIImplementEObjectHashCode.class);
     private static final Method EQLOGIC_HASHCODE;
     private static final ElementMatcher<TypeDescription> GENERATION_CANDIDATE = new MatchEqualsTriadGenerationCandidate();
-
+    private static final GeneratedMark GENERATED_MARK = new GeneratedMark();
+    private static final OverrideMark OVERRIDE_MARK = new OverrideMark();
     static {
         try {
             EQLOGIC_HASHCODE = EquivalenceLogic.class.getDeclaredMethod(
@@ -81,7 +82,7 @@ public class IIImplementEObjectHashCode implements InstrumentationIteration {
                 return builder
                     .method(ElementMatchers.named("hashCode"))
                     .intercept(new Implementation(impl))
-                    .annotateMethod(new GeneratedMark(), new OverrideMark());
+                    .annotateMethod(GENERATED_MARK, OVERRIDE_MARK);
             } else {
                 // If for some reason the method is already defined, we fail
                 throw new RuntimeException("Defining hashCode() for this class is unexpected");
@@ -90,6 +91,6 @@ public class IIImplementEObjectHashCode implements InstrumentationIteration {
         return builder
             .defineMethod("hashCode", int.class, modifiers)
             .intercept(new Implementation(impl))
-            .annotateMethod(new GeneratedMark());
+            .annotateMethod(GENERATED_MARK);
     }
 }

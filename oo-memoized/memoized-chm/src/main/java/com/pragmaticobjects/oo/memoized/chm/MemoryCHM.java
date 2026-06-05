@@ -40,16 +40,16 @@ import java.util.concurrent.FutureTask;
  * @author skapral
  */
 public class MemoryCHM implements Memory {
-    private static final ConcurrentHashMap<Object, FutureTask> DEFAULT = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Object, FutureTask<?>> DEFAULT = new ConcurrentHashMap<>();
     private static final Logger LOG = LoggerFactory.getLogger(MemoryCHM.class);
-    private final ConcurrentHashMap<Object, FutureTask> memoizedObjects;
+    private final ConcurrentHashMap<Object, FutureTask<?>> memoizedObjects;
 
     /**
      * Ctor.
      * 
      * @param memoizedObjects hash map for memoized calculations
      */
-    public MemoryCHM(ConcurrentHashMap<Object, FutureTask> memoizedObjects) {
+    public MemoryCHM(ConcurrentHashMap<Object, FutureTask<?>> memoizedObjects) {
         this.memoizedObjects = memoizedObjects;
     }
 
@@ -60,10 +60,11 @@ public class MemoryCHM implements Memory {
         this(DEFAULT);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public final <T> T memoized(MemoizedCallable<T> callable) {
         try {
-            FutureTask t = memoizedObjects.computeIfAbsent(callable, k -> new FutureTask(() -> {
+            FutureTask<?> t = memoizedObjects.computeIfAbsent(callable, k -> new FutureTask<>(() -> {
                 if(LOG.isTraceEnabled()) {
                     LOG.trace("New calculation: {}", callable.toString());
                 }
