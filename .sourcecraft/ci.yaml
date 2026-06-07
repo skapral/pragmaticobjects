@@ -65,4 +65,4 @@ workflows:
                   </servers>
                 </settings>
                 EOF
-              - ./mvnw clean deploy -B -Pmodules,extras -Djgitver.use-version=${SOURCECRAFT_COMMIT_REF_NAME} -DaltDeploymentRepository=sourcecraft-releases::default::https://pkg.sourcecraft.tech/maven/pragmaticobjects/cn15p9ba1la20u152l4p
+              - ./mvnw clean deploy -B -Pmodules,extras -Djgitver.use-version=${SOURCECRAFT_COMMIT_REF_NAME} -DaltDeploymentRepository=sourcecraft-releases::https://pkg.sourcecraft.tech/maven/pragmaticobjects/cn15p9ba1la20u152l4p
