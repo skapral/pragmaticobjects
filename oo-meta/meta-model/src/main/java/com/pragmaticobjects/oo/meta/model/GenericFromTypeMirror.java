@@ -29,7 +29,20 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
 
+/**
+ * {@link Generic} implementation that infers the correct generic representation
+ * from a {@link javax.lang.model.type.TypeMirror} obtained during annotation processing.
+ * Dispatches to {@link GenericFromWildcardType}, {@link GenericFromTypeVariable},
+ * or {@link GenericType} based on the mirror's runtime kind.
+ *
+ * @author Kapralov Sergey
+ */
 public class GenericFromTypeMirror extends GenericInferred{
+    /**
+     * Ctor.
+     *
+     * @param typeMirror the type mirror to derive the generic representation from
+     */
     public GenericFromTypeMirror(TypeMirror typeMirror) {
         super(
             new Inference<Generic>() {

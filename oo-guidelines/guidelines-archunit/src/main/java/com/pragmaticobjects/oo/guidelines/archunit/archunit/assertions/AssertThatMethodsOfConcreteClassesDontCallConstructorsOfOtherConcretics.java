@@ -45,6 +45,12 @@ import static com.tngtech.archunit.lang.conditions.ArchConditions.callConstructo
 import static com.tngtech.archunit.lang.conditions.ArchPredicates.are;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
+/**
+ * Assertion that enforces the guideline that non-static methods of concrete classes must not
+ * call constructors of other concrete classes (to avoid hidden side effects and coupling).
+ *
+ * @author Kapralov Sergey
+ */
 public class AssertThatMethodsOfConcreteClassesDontCallConstructorsOfOtherConcretics extends AssertThatClassesFollowProvidedArchunitGuidelines {
     private static DescribedPredicate<JavaClass> concretics(DescribedPredicate<JavaClass> concretics) {
         return and(
@@ -82,6 +88,12 @@ public class AssertThatMethodsOfConcreteClassesDontCallConstructorsOfOtherConcre
         );
     }
 
+    /**
+     * Ctor.
+     *
+     * @param javaClasses classes to check
+     * @param concretics  predicate identifying the concrete classes to enforce the rule on
+     */
     public AssertThatMethodsOfConcreteClassesDontCallConstructorsOfOtherConcretics(
         JavaClasses javaClasses,
         DescribedPredicate<JavaClass> concretics

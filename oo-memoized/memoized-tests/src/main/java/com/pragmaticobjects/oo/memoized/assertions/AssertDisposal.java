@@ -33,12 +33,27 @@ import org.assertj.core.api.Assertions;
 
 import java.util.Optional;
 
+/**
+ * Assertion that verifies the behaviour of {@link Memory#dispose} — checking that it returns
+ * the expected value for a callable that was previously memoized, while other callables are
+ * first memoized as preparation.
+ *
+ * @author Kapralov Sergey
+ */
 public class AssertDisposal implements Assertion {
     private final Memory memoryUnderTest;
     private final List<MemoizedCallable<?>> preparationCallables;
     private final MemoizedCallable<?> callableToDispose;
     private final Optional<?> expectedDisposedValue;
 
+    /**
+     * Ctor.
+     *
+     * @param memoryUnderTest       the memory implementation under test
+     * @param preparationCallables  callables to memoize before the disposal check
+     * @param callableToDispose     the callable whose memoized value is to be disposed
+     * @param expectedDisposedValue the expected value returned by {@link Memory#dispose}
+     */
     public AssertDisposal(Memory memoryUnderTest, List<MemoizedCallable<?>> preparationCallables, MemoizedCallable<?> callableToDispose, Optional<?> expectedDisposedValue) {
         this.memoryUnderTest = memoryUnderTest;
         this.preparationCallables = preparationCallables;

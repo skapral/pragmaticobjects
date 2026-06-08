@@ -25,6 +25,14 @@
  */
 package com.pragmaticobjects.oo.meta.model;
 
+/**
+ * Enum representing the bound kind of a wildcard generic type: {@code extends} or {@code super}.
+ *
+ * @author Kapralov Sergey
+ */
 public enum GenericBoundary {
-    EXTENDS, SUPER
+    /** Represents {@code ? extends T}. */
+    EXTENDS,
+    /** Represents {@code ? super T}. */
+    SUPER
 }

@@ -29,11 +29,22 @@ import com.pragmaticobjects.oo.memoized.core.MemoizedCallable;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Test-purpose {@link MemoizedCallable} that increments a counter each time it is invoked.
+ * Used by memoization assertions to verify call count behaviour.
+ *
+ * @author Kapralov Sergey
+ */
 // NOTE: equals, hashCode and toString are implicitly generated
 // by equivalence-maven-plugin
 class TestCallable implements MemoizedCallable {
     private final AtomicInteger counter;
 
+    /**
+     * Ctor.
+     *
+     * @param counter the counter incremented on each {@link #call()} invocation
+     */
     public TestCallable(AtomicInteger counter) {
         this.counter = counter;
     }

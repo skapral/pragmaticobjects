@@ -28,6 +28,12 @@ package com.pragmaticobjects.oo.meta.model;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * {@link Generic} implementation that represents the absence of generic parameters,
+ * producing an empty string.
+ *
+ * @author Kapralov Sergey
+ */
 public class GenericEmpty implements Generic {
     @Override
     public final String asString() {

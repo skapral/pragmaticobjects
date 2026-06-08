@@ -44,6 +44,13 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 
+/**
+ * Instrumentation iteration that generates a bytecode {@code toString()} implementation
+ * for {@link com.pragmaticobjects.oo.equivalence.base.EObject} candidates, delegating to
+ * {@link com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic#toString}.
+ *
+ * @author Kapralov Sergey
+ */
 public class IIImplementEObjectToString implements InstrumentationIteration {
     private static final Logger log = LoggerFactory.getLogger(IIImplementEObjectToString.class);
     private static final Method EQLOGIC_TOSTRING;

@@ -30,12 +30,26 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
+/**
+ * {@link ToStringMethod} that iterates over array or {@link Iterable} attribute values,
+ * applying a delegate strategy to each element and joining the results.
+ *
+ * @author Kapralov Sergey
+ */
 public class Iterating implements ToStringMethod {
     private final ToStringMethod methodForEachItem;
     private final String start;
     private final String end;
     private final String separator;
 
+    /**
+     * Ctor.
+     *
+     * @param methodForEachItem strategy applied to each element
+     * @param start             opening bracket string (e.g. {@code "["})
+     * @param end               closing bracket string (e.g. {@code "]"})
+     * @param separator         delimiter between elements (e.g. {@code ", "})
+     */
     public Iterating(ToStringMethod methodForEachItem, String start, String end, String separator) {
         this.methodForEachItem = methodForEachItem;
         this.start = start;
@@ -43,6 +57,11 @@ public class Iterating implements ToStringMethod {
         this.separator = separator;
     }
 
+    /**
+     * Ctor. Uses default brackets {@code "["} / {@code "]"} and separator {@code ", "}.
+     *
+     * @param methodForEachItem strategy applied to each element
+     */
     public Iterating(ToStringMethod methodForEachItem) {
         this(
             methodForEachItem,

@@ -25,7 +25,20 @@
  */
 package com.external;
 
+/**
+ * A mathematical fraction with a numerator and denominator.
+ * Used as a test fixture for the inference integration tests.
+ *
+ * @author Kapralov Sergey
+ */
 public interface Fraction {
+    /**
+     * @return the numerator of this fraction
+     */
     int numerator();
+
+    /**
+     * @return the denominator of this fraction
+     */
     int denumenator();
 }

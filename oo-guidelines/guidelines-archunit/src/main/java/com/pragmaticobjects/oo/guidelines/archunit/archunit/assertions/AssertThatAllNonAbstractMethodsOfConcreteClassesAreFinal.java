@@ -39,7 +39,19 @@ import static com.tngtech.archunit.core.domain.JavaModifier.ABSTRACT;
 import static com.tngtech.archunit.core.domain.properties.HasModifiers.Predicates.modifier;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 
+/**
+ * Assertion that enforces the guideline that all non-abstract, non-static, non-private methods
+ * of concrete classes must be declared {@code final}.
+ *
+ * @author Kapralov Sergey
+ */
 public class AssertThatAllNonAbstractMethodsOfConcreteClassesAreFinal extends AssertThatClassesFollowProvidedArchunitGuidelines {
+    /**
+     * Ctor.
+     *
+     * @param javaClasses classes to check
+     * @param concretics  predicate identifying the concrete classes to enforce the rule on
+     */
     public AssertThatAllNonAbstractMethodsOfConcreteClassesAreFinal(
         JavaClasses javaClasses,
         DescribedPredicate<JavaClass> concretics

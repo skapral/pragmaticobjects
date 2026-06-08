@@ -29,9 +29,20 @@ import io.vavr.collection.List;
 
 import java.util.Collection;
 
+/**
+ * {@link Generic} implementation that wraps a concrete {@link Type}, using the type's
+ * declaration as the generic parameter string.
+ *
+ * @author Kapralov Sergey
+ */
 public class GenericType implements Generic {
     private final Type type;
 
+    /**
+     * Ctor.
+     *
+     * @param type the type to represent as a generic parameter
+     */
     public GenericType(Type type) {
         this.type = type;
     }

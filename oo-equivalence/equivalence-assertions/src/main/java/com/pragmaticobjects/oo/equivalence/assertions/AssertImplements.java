@@ -31,17 +31,36 @@ import org.assertj.core.api.Assertions;
 import java.lang.reflect.Type;
 import java.util.stream.Collectors;
 
+/**
+ * Assertion that passes when a given class implements (or is assignable to) a specified interface.
+ * Supports both shallow (direct interfaces only) and deep (full type hierarchy) search.
+ *
+ * @author Kapralov Sergey
+ */
 public class AssertImplements implements Assertion {
     private final Class<?> source;
     private final Class<?> typeName;
     private final boolean deepSearch;
 
+    /**
+     * Ctor.
+     *
+     * @param source     the class to inspect
+     * @param typeName   the interface the class is expected to implement
+     * @param deepSearch {@code true} to search the full type hierarchy; {@code false} for direct interfaces only
+     */
     public AssertImplements(Class<?> source, Class<?> typeName, boolean deepSearch) {
         this.source = source;
         this.typeName = typeName;
         this.deepSearch = deepSearch;
     }
 
+    /**
+     * Ctor. Uses shallow search (direct interfaces only).
+     *
+     * @param source   the class to inspect
+     * @param typeName the interface the class is expected to implement
+     */
     public AssertImplements(Class<?> source, Class<?> typeName) {
         this(source, typeName, false);
     }

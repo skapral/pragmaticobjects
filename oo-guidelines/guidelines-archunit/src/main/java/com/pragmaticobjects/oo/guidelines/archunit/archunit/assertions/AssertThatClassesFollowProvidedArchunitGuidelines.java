@@ -29,10 +29,23 @@ import com.pragmaticobjects.oo.tests.Assertion;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.lang.ArchRule;
 
+/**
+ * Base assertion that bridges between the oo-tests {@link Assertion} abstraction and an
+ * ArchUnit {@link ArchRule}. Subclasses configure the rule in their constructor and this class
+ * executes it against a provided set of {@link JavaClasses}.
+ *
+ * @author Kapralov Sergey
+ */
 public class AssertThatClassesFollowProvidedArchunitGuidelines implements Assertion {
     private final ArchRule archunitRule;
     private final JavaClasses javaClasses;
 
+    /**
+     * Ctor.
+     *
+     * @param archunitRule the ArchUnit rule to evaluate
+     * @param javaClasses  the classes to evaluate the rule against
+     */
     public AssertThatClassesFollowProvidedArchunitGuidelines(ArchRule archunitRule, JavaClasses javaClasses) {
         this.archunitRule = archunitRule;
         this.javaClasses = javaClasses;

@@ -27,9 +27,20 @@ package com.pragmaticobjects.oo.meta.model;
 
 import java.util.Collection;
 
+/**
+ * {@link Generic} implementation that lazily delegates to an {@link Inference} strategy,
+ * allowing the concrete generic type to be determined at call time.
+ *
+ * @author Kapralov Sergey
+ */
 public class GenericInferred implements Generic {
     private final Inference<Generic> inference;
 
+    /**
+     * Ctor.
+     *
+     * @param inference the strategy used to resolve the actual {@link Generic} instance
+     */
     public GenericInferred(Inference<Generic> inference) {
         this.inference = inference;
     }

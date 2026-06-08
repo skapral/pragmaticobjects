@@ -29,7 +29,19 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.WildcardType;
 import java.util.Objects;
 
+/**
+ * {@link Generic} implementation that builds a bounded wildcard ({@code ? extends T}
+ * or {@code ? super T}) from a {@link javax.lang.model.type.WildcardType} obtained
+ * during annotation processing.
+ *
+ * @author Kapralov Sergey
+ */
 public class GenericFromWildcardType extends GenericInferred {
+    /**
+     * Ctor.
+     *
+     * @param wildcard the wildcard type to derive the generic representation from
+     */
     public GenericFromWildcardType(WildcardType wildcard) {
         super(
             new Inference<Generic>() {

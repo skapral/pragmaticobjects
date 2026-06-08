@@ -28,7 +28,15 @@ package com.pragmaticobjects.oo.equivalence.itests.fieldlevelhint;
 import com.pragmaticobjects.oo.equivalence.base.tostring.Hex;
 import com.pragmaticobjects.oo.equivalence.base.tostring.Iterating;
 
+/**
+ * Test-fixture {@link Iterating} strategy that formats each element using {@link Hex}.
+ *
+ * @author Kapralov Sergey
+ */
 public class HexedIterable extends Iterating {
+    /**
+     * Ctor.
+     */
     public HexedIterable() {
         super(new Hex());
     }

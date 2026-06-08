@@ -33,7 +33,21 @@ import io.vavr.collection.HashMap;
 import java.util.Collection;
 
 
+/**
+ * Freemarker model for generating a concrete inferred implementation class.
+ * Exposes the generated class type, the target interface, and the list of methods
+ * to implement as template variables.
+ *
+ * @author Kapralov Sergey
+ */
 public class InferredClassModel extends FAMStandard {
+    /**
+     * Ctor.
+     *
+     * @param _this      the type being generated
+     * @param _interface the interface that the generated class implements
+     * @param _methods   the list of methods to delegate via inference
+     */
     public InferredClassModel(Type _this, Type _interface, Collection<Method> _methods) {
         super(
             _this,

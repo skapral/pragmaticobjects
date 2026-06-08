@@ -31,10 +31,22 @@ import org.assertj.core.api.Assertions;
 import java.lang.reflect.Type;
 import java.util.stream.Collectors;
 
+/**
+ * Assertion that passes when a given class directly implements an interface identified by its
+ * fully-qualified type name string.
+ *
+ * @author Kapralov Sergey
+ */
 public class AssertImplementsTypeName implements Assertion {
     private final Class<?> source;
     private final String typeName;
 
+    /**
+     * Ctor.
+     *
+     * @param source   the class to inspect
+     * @param typeName the fully-qualified name of the interface the class is expected to implement
+     */
     public AssertImplementsTypeName(Class<?> source, String typeName) {
         this.source = source;
         this.typeName = typeName;

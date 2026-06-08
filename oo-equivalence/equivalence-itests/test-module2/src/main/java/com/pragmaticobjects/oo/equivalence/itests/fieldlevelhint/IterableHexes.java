@@ -28,6 +28,12 @@ package com.pragmaticobjects.oo.equivalence.itests.fieldlevelhint;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceHint;
 import io.vavr.collection.List;
 
+/**
+ * Test fixture class with array and {@link io.vavr.collection.List} fields annotated to use
+ * {@link HexedIterable} as the toString strategy, used to verify iterable hex rendering.
+ *
+ * @author Kapralov Sergey
+ */
 public class IterableHexes {
     private static final int[] REF_ARRAY = new int[] {1, 2, 3};
     private static final List<Integer> REF_LIST = List.of(1, 2, 3);
@@ -35,11 +41,20 @@ public class IterableHexes {
     private final @EquivalenceHint(enabled = false, toStringMethod = HexedIterable.class) int[] refArray;
     private final @EquivalenceHint(enabled = false, toStringMethod = HexedIterable.class) List<Integer> refList;
 
+    /**
+     * Ctor.
+     *
+     * @param refArray int array rendered with {@link HexedIterable}
+     * @param refList  integer list rendered with {@link HexedIterable}
+     */
     public IterableHexes(int[] refArray, List<Integer> refList) {
         this.refArray = refArray;
         this.refList = refList;
     }
 
+    /**
+     * Ctor. Uses default reference values.
+     */
     public IterableHexes() {
         this(
             REF_ARRAY,

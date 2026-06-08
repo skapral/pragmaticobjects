@@ -28,12 +28,24 @@ package com.pragmaticobjects.oo.equivalence.itests.fieldlevelhint;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceHint;
 import com.pragmaticobjects.oo.equivalence.base.tostring.Stub;
 
+/**
+ * Test fixture class with a field annotated to use {@link com.pragmaticobjects.oo.equivalence.base.tostring.Stub}
+ * as the toString strategy, verifying that hidden field values appear as {@code "..."} in output.
+ *
+ * @author Kapralov Sergey
+ */
 public class StubHint {
     private final String ref;
     private final @EquivalenceHint(
         toStringMethod = Stub.class
     ) String ref2;
 
+    /**
+     * Ctor.
+     *
+     * @param ref  the first (visible) string field
+     * @param ref2 the second (stubbed) string field
+     */
     public StubHint(String ref, String ref2) {
         this.ref = ref;
         this.ref2 = ref2;

@@ -30,9 +30,20 @@ import io.vavr.collection.List;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+/**
+ * {@link Generic} implementation that joins multiple generic parameters into a
+ * comma-separated sequence (e.g. {@code K, V} for a two-parameter type).
+ *
+ * @author Kapralov Sergey
+ */
 public class GenericSequence implements Generic {
     private final List<Generic> generics;
 
+    /**
+     * Ctor.
+     *
+     * @param generics the list of generic parameters to join
+     */
     public GenericSequence(List<Generic> generics) {
         this.generics = generics;
     }

@@ -25,9 +25,20 @@
  */
 package com.pragmaticobjects.oo.equivalence.base.tostring;
 
+/**
+ * {@link ToStringMethod} that replaces the attribute value with a fixed stub string,
+ * effectively hiding the actual value from the {@code toString} output.
+ *
+ * @author Kapralov Sergey
+ */
 public class Hide implements ToStringMethod {
     private final String stub;
 
+    /**
+     * Ctor.
+     *
+     * @param stub the fixed string to use instead of the actual attribute value
+     */
     public Hide(String stub) {
         this.stub = stub;
     }

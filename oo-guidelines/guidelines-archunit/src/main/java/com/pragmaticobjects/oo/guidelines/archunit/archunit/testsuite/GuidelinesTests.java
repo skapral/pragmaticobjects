@@ -37,9 +37,26 @@ import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import io.vavr.collection.List;
 
+/**
+ * JUnit 5 test suite that runs all standard architectural guideline checks powered by ArchUnit.
+ * Bundles rules for class finality, field finality, method finality, and constructor patterns.
+ *
+ * @author Kapralov Sergey
+ */
 public class GuidelinesTests extends TestsSuite {
+    /** Default predicate identifying concrete classes: all {@link EquivalenceCompliant} implementors. */
     public static DescribedPredicate<JavaClass> DEFAULT_CONCRETICS = JavaClass.Predicates.implement(EquivalenceCompliant.class);
 
+    /**
+     * Ctor.
+     *
+     * @param javaClasses                                        classes to check
+     * @param concretics                                         predicate identifying the concrete classes
+     * @param fieldAccessExclusionsAllowedInPrimaryConstructor   additional field-access exclusions for primary constructors
+     * @param callsAllowedInPrimaryConstructor                   additional call exclusions for primary constructors
+     * @param fieldAccessExclusionsAllowedInSecondaryConstructor additional field-access exclusions for secondary constructors
+     * @param callsAllowedInSecondaryConstructor                 additional call exclusions for secondary constructors
+     */
     public GuidelinesTests(
         JavaClasses javaClasses,
         DescribedPredicate<JavaClass> concretics,
@@ -82,6 +99,11 @@ public class GuidelinesTests extends TestsSuite {
         );
     }
 
+    /**
+     * Ctor. Uses {@link #DEFAULT_CONCRETICS} predicate and empty exclusion lists.
+     *
+     * @param javaClasses classes to check
+     */
     public GuidelinesTests(
         JavaClasses javaClasses
     ) {

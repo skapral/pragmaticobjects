@@ -25,6 +25,18 @@
  */
 package com.pragmaticobjects.oo.meta.model;
 
+/**
+ * Abstraction for a Java type's generic parameter (e.g. {@code T}, {@code ? extends Foo},
+ * {@code String}). Implementations produce the textual form used in generated source code
+ * and expose the imports they require.
+ *
+ * @author Kapralov Sergey
+ */
 public interface Generic extends ImportsProvider {
+    /**
+     * Returns the source-code representation of this generic parameter.
+     *
+     * @return generic parameter string (e.g. {@code "T"}, {@code "? extends Foo"})
+     */
     String asString();
 }

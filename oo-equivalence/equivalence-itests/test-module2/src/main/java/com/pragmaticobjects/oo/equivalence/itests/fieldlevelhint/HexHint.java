@@ -28,6 +28,12 @@ package com.pragmaticobjects.oo.equivalence.itests.fieldlevelhint;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceHint;
 import com.pragmaticobjects.oo.equivalence.base.tostring.Hex;
 
+/**
+ * Test fixture with multiple fields annotated with {@link com.pragmaticobjects.oo.equivalence.base.EquivalenceHint}
+ * using {@link Hex} as the toString strategy, covering all supported primitive and string types.
+ *
+ * @author Kapralov Sergey
+ */
 public class HexHint {
     private final int ref;
     private final @EquivalenceHint(toStringMethod = Hex.class) int ref2;
@@ -38,6 +44,18 @@ public class HexHint {
     private final @EquivalenceHint(toStringMethod = Hex.class) long ref7;
     private final @EquivalenceHint(toStringMethod = Hex.class) String ref8;
 
+    /**
+     * Ctor.
+     *
+     * @param ref   plain int field
+     * @param ref2  int rendered as hex
+     * @param ref3  short rendered as hex
+     * @param ref4  char rendered as hex
+     * @param ref5  byte rendered as hex
+     * @param ref6  boolean rendered as hex
+     * @param ref7  long rendered as hex
+     * @param ref8  String rendered as hex
+     */
     public HexHint(int ref, int ref2, short ref3, char ref4, byte ref5, boolean ref6, long ref7, String ref8) {
         this.ref = ref;
         this.ref2 = ref2;

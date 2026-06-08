@@ -25,10 +25,22 @@
  */
 package com.external;
 
+/**
+ * A fixed-value {@link Fraction} with constant numerator and denominator.
+ * Used as a test fixture for the inference integration tests.
+ *
+ * @author Kapralov Sergey
+ */
 public class FracFixed implements Fraction {
     private final int num;
     private final int denum;
 
+    /**
+     * Ctor.
+     *
+     * @param num   the numerator
+     * @param denum the denominator
+     */
     public FracFixed(int num, int denum) {
         this.num = num;
         this.denum = denum;

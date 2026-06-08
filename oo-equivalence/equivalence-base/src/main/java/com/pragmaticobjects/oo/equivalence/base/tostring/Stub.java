@@ -25,7 +25,16 @@
  */
 package com.pragmaticobjects.oo.equivalence.base.tostring;
 
+/**
+ * {@link ToStringMethod} that always outputs {@code "..."}, indicating that
+ * the actual attribute value is intentionally omitted from the {@code toString} representation.
+ *
+ * @author Kapralov Sergey
+ */
 public class Stub extends Hide {
+    /**
+     * Ctor.
+     */
     public Stub() {
         super("...");
     }

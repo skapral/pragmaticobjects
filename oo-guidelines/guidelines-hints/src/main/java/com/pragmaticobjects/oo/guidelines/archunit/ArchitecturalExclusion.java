@@ -30,6 +30,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Marker annotation that excludes an annotated type, constructor, or method from the
+ * architectural guideline checks enforced by the {@code guidelines-archunit} module.
+ *
+ * @author Kapralov Sergey
+ */
 @Target({ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ArchitecturalExclusion {

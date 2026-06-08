@@ -25,6 +25,16 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests.classes;
 
+/**
+ * Test fixture interface with a single generic return method,
+ * used to verify that the instrumentor handles generic types correctly.
+ *
+ * @param <T> the type produced by {@link #get()}
+ * @author Kapralov Sergey
+ */
 public interface GenericsTestIface<T> {
+    /**
+     * @return a value of type {@code T}
+     */
     T get();
 }

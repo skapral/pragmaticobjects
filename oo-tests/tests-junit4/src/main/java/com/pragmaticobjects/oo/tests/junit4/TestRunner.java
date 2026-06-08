@@ -30,9 +30,19 @@ import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 
+/**
+ * JUnit 4 runner that executes {@link JUnit4TestsSuite} test cases.
+ *
+ * @author Kapralov Sergey
+ */
 public class TestRunner extends Runner {
     private final Class<JUnit4TestsSuite> testClass;
 
+    /**
+     * Ctor.
+     *
+     * @param testClass Test suite class to run
+     */
     public TestRunner(Class<JUnit4TestsSuite> testClass) {
         super();
         this.testClass = testClass;

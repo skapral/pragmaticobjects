@@ -28,16 +28,27 @@ package com.pragmaticobjects.oo.tests;
 import io.vavr.collection.List;
 
 /**
+ * Assertion that combines several assertions, checking each one in order.
  *
- * @author skapral
+ * @author Kapralov Sergey
  */
 public class AssertCombined implements Assertion {
     private final List<Assertion> assertions;
 
+    /**
+     * Ctor.
+     *
+     * @param assertions List of assertions to combine
+     */
     public AssertCombined(List<Assertion> assertions) {
         this.assertions = assertions;
     }
-    
+
+    /**
+     * Ctor.
+     *
+     * @param assertions Assertions to combine
+     */
     public AssertCombined(Assertion... assertions) {
         this(List.of(assertions));
     }

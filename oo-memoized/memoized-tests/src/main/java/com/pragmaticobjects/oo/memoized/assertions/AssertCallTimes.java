@@ -32,11 +32,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.pragmaticobjects.oo.memoized.core.Memory;
 
+/**
+ * Assertion that verifies the number of times a {@link Memory} actually invokes the underlying
+ * callable when accessed multiple times. Memoization should cause the callable to be executed
+ * exactly once on repeated calls with the same key.
+ *
+ * @author Kapralov Sergey
+ */
 public class AssertCallTimes implements Assertion {
     private final Memory memory;
     private final int callNums;
     private final int expectedNumCalls;
 
+    /**
+     * Ctor.
+     *
+     * @param memory           the memory implementation under test
+     * @param callNums         how many times to call {@code memory.memoized(...)}
+     * @param expectedNumCalls the expected number of actual callable invocations
+     */
     public AssertCallTimes(Memory memory, int callNums, int expectedNumCalls) {
         this.memory = memory;
         this.callNums = callNums;
