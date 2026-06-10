@@ -32,6 +32,9 @@ import org.apache.commons.io.IOUtils;
 import java.util.HashMap;
 
 //CHECKSTYLE:OFF
+/**
+ * Shared test data for class file locator scenarios.
+ */
 @ArchitecturalExclusion
 final class TestData {
     public static final ClassFileLocator CFL_FOO;
@@ -51,9 +54,15 @@ final class TestData {
         }
     }
 
+    /**
+     * Test class available in the class file locator.
+     */
     @ArchitecturalExclusion
     public static final class Foo {}
     public static final String FOO_NAME = Foo.class.getName();
+    /**
+     * Test class absent from the class file locator.
+     */
     @ArchitecturalExclusion
     public static final class Bar {}
     public static final String BAR_NAME = Bar.class.getName();

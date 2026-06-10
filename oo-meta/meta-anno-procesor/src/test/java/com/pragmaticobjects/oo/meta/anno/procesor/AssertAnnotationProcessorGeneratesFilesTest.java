@@ -36,6 +36,7 @@ import static com.pragmaticobjects.oo.meta.anno.procesor.AssertAnnotationProcess
 import com.test.assertions.DummyProcessor;
 
 /**
+ * Tests the annotation processor generates files assertion.
  *
  * @author skapral
  */

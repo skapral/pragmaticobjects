@@ -29,6 +29,9 @@ import com.pragmaticobjects.oo.guidelines.archunit.archunit.testsuite.Guidelines
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
+/**
+ * Self-test suite that applies guidelines to oo-inference classes.
+ */
 public class GuidelinesForOOInferenceTest extends GuidelinesTests {
     private static final JavaClasses CLASSES_TO_TEST = new ClassFileImporter(
     ).importPackages("com.pragmaticobjects.oo.inference..");

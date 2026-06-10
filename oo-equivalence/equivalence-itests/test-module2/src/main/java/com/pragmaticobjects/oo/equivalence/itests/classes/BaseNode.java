@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.itests.classes;
 
 /**
+ * Base tree node fixture for equivalence integration tests.
  *
  * @author skapral
  * @param <T> type

@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.meta.freemarker;
 
 /**
+ * Model values supplied to Freemarker artifact templates.
  *
  * @author skapral
  */

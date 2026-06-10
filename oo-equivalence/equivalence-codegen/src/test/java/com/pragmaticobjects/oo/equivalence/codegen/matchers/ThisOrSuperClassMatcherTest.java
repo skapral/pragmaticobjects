@@ -72,10 +72,22 @@ public class ThisOrSuperClassMatcherTest extends TestsSuite {
     }
 
     //CHECKSTYLE:OFF
+    /**
+     * Simple test fixture type.
+     */
     private static class Foo {}
+    /**
+     * Simple test fixture subtype.
+     */
     private static class Bar {}
+    /**
+     * Test helper type used by this or super class matcher test scenarios.
+     */
     private static class Foo2 extends Foo {}
 
+    /**
+     * Test helper type used by this or super class matcher test scenarios.
+     */
     private static class FooMatcher implements ElementMatcher<TypeDescription> {
         @Override
         public final boolean matches(final TypeDescription target) {

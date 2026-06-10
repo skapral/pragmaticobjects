@@ -29,6 +29,12 @@ import com.pragmaticobjects.oo.equivalence.base.EquivalenceHint;
 
 import java.time.LocalDate;
 
+/**
+ * Test record with date components explicitly marked as equivalent attributes.
+ *
+ * @param beginDate beginning date
+ * @param endDate ending date
+ */
 public record TimeRange(
     @EquivalenceHint(enabled = true) LocalDate beginDate,
     @EquivalenceHint(enabled = true) LocalDate endDate

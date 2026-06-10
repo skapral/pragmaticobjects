@@ -30,6 +30,7 @@ import io.vavr.collection.List;
 import javax.lang.model.element.ExecutableElement;
 
 /**
+ * Method model derived from an executable element.
  *
  * @author skapral
  */

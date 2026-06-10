@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.itests.classes;
 
 /**
+ * Three-dimensional point fixture used by tests.
  *
  * @author skapral
  */

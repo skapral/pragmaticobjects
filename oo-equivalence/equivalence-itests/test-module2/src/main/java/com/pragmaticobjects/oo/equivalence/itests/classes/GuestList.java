@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.itests.classes;
 import java.util.HashSet;
 
 /**
+ * Guest list fixture used by equivalence integration tests.
  *
  * @author skapral
  */

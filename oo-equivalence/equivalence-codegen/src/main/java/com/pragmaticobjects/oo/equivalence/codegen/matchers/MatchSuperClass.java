@@ -30,6 +30,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
+ * Matcher that applies another matcher to a type's superclass.
  *
  * @author skapral
  */

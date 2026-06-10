@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.maven.plugin;
 
 /**
+ * Smoke test for the module test setup.
  *
  * @author skapral
  */

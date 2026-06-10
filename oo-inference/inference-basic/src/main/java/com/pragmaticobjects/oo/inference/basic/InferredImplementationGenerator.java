@@ -53,6 +53,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
+ * Annotation processor that generates inferred implementation source files.
  *
  * @author skapral
  */

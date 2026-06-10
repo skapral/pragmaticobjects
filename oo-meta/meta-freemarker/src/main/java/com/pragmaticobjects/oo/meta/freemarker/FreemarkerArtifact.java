@@ -36,6 +36,7 @@ import java.io.Writer;
 import java.lang.reflect.Method;
 
 /**
+ * Artifact rendered from a Freemarker template and model.
  *
  * @author skapral
  */

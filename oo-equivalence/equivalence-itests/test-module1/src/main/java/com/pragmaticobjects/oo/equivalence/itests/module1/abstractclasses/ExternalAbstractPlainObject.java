@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses;
 
 /**
+ * External abstract plain object fixture used by integration tests.
  *
  * @author skapral
  */

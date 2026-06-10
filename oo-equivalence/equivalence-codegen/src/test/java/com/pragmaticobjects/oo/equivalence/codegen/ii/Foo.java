@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
 /**
+ * Simple test fixture type.
  *
  * @author skapral
  */

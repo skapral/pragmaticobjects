@@ -31,6 +31,7 @@ import java.nio.file.Paths;
 
 
 /**
+ * Tests class-name extraction from a path.
  *
  * @author skapral
  */

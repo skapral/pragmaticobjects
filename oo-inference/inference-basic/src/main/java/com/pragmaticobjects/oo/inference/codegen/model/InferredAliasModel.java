@@ -32,6 +32,7 @@ import io.vavr.Tuple2;
 import io.vavr.collection.HashMap;
 
 /**
+ * Freemarker model for generated inferred aliases.
  *
  * @author skapral
  */

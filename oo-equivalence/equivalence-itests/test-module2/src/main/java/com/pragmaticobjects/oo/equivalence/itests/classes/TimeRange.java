@@ -36,9 +36,7 @@ import java.time.LocalDate;
  * @author Kapralov Sergey
  */
 public class TimeRange {
-    /** Start date (equivalence-hint enabled). */
     public final @EquivalenceHint(enabled = true) LocalDate beginDate;
-    /** End date (equivalence-hint enabled). */
     public final @EquivalenceHint(enabled = true) LocalDate endDate;
 
     /**

@@ -27,6 +27,11 @@ package com.pragmaticobjects.oo.equivalence.itests.sealed;
 
 import java.util.Optional;
 
+/**
+ * Empty implementation of a sealed optional-like test type.
+ *
+ * @param <T> value type
+ */
 public non-sealed class Nothingness<T> implements Maybe<T> {
     @Override
     public final T get() {

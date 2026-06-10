@@ -33,7 +33,30 @@ import com.pragmaticobjects.oo.equivalence.codegen.matchers.*;
 import net.bytebuddy.matcher.ElementMatchers;
 
 /**
- * Standard instrumentation scenario
+ * Standard instrumentation scenario used by the code generation agent.
+ *
+ * <p>This stage is the default {@link SequenceStage} for EObject instrumentation. It composes
+ * validation, transformation, and verification stages into the production pipeline that prepares
+ * user classes for participation in the {@link EObject} equality model.</p>
+ *
+ * <p>The scenario is intentionally declarative: this class does not perform bytecode manipulation
+ * itself, but wires smaller stages, matchers, and instrumentation instructions in the order in
+ * which they must be executed. The order is part of the contract:</p>
+ *
+ * <ol>
+ *     <li>print the startup banner and current instrumentation statistics;</li>
+ *     <li>run pre-checks that reject unsupported class hierarchies, for example inherited classes
+ *         annotated with {@link EObjectHint};</li>
+ *     <li>mark eligible classes as {@link EObject} implementations;</li>
+ *     <li>generate the EObject infrastructure: identity attributes, base type, hash seed,
+ *         {@code equals(Object)}, {@code hashCode()}, and {@code toString()};</li>
+ *     <li>run post-checks that enforce the EObject model: non-abstract methods must be final,
+ *         identity fields must be final, and EObject aliases must not declare additional fields or
+ *         methods.</li>
+ * </ol>
+ *
+ * <p>Instances of this class are stateless. Creating a new instance creates a ready-to-run
+ * standard instrumentation pipeline with all required stages already configured.</p>
  *
  * @author Kapralov Sergey
  */

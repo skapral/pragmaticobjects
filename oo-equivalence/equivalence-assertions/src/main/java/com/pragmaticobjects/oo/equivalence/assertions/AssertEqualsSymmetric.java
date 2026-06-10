@@ -29,6 +29,7 @@ import java.util.Optional;
 import org.assertj.core.api.Assertions;
 
 /**
+ * Assertion that verifies equals is symmetric.
  *
  * @author skapral
  */

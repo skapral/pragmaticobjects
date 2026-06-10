@@ -25,5 +25,8 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
+/**
+ * Test subclass used by instrumentation iteration tests.
+ */
 public class Foo2 extends Foo {
 }

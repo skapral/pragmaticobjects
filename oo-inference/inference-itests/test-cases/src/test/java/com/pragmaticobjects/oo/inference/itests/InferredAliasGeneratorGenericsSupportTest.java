@@ -33,6 +33,9 @@ import com.pragmaticobjects.oo.meta.anno.procesor.AssertAnnotationProcessorGener
 
 import static com.pragmaticobjects.oo.meta.anno.procesor.AssertAnnotationProcessorGeneratesFiles.SourceFile;
 
+/**
+ * Test suite for generic inferred alias generation.
+ */
 public class InferredAliasGeneratorGenericsSupportTest extends TestsSuite {
     public InferredAliasGeneratorGenericsSupportTest() {
         super(

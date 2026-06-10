@@ -28,6 +28,9 @@ package com.pragmaticobjects.oo.equivalence.codegen.ii;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import net.bytebuddy.matcher.ElementMatchers;
 
+/**
+ * Java 16 test suite for equals instrumentation on records.
+ */
 public class IIImplementEObjectEqualsTest extends BaseSetForIIImplementEObjectEquals {
     public IIImplementEObjectEqualsTest() {
         super(

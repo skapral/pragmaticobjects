@@ -25,6 +25,9 @@
  */
 package com.pragmaticobjects.oo.equivalence.base;
 
+/**
+ * Test enum for equivalence logic scenarios.
+ */
 public enum TestEnum {
     A, B, C;
 }

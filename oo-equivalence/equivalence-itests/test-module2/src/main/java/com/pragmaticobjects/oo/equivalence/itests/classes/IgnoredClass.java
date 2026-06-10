@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.itests.classes;
 import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 
 /**
+ * Fixture type excluded from equivalence instrumentation.
  *
  * @author skapral
  */

@@ -31,6 +31,7 @@ import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
 /**
+ * Tests decisions for implementing EObject methods.
  *
  * @author skapral
  */
@@ -82,6 +83,9 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
         );
     }
     
+    /**
+     * Test helper type used by should implement EObject methods test scenarios.
+     */
     private static class SimpleType { 
         private final Object obj;
 
@@ -90,6 +94,9 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
         }
     }
     
+    /**
+     * Test helper type used by should implement EObject methods test scenarios.
+     */
     private static class EObjectDirectSubtype implements EObject {
         private final Object obj;
 
@@ -128,18 +135,30 @@ public class ShouldImplementEObjectMethodsTest extends TestsSuite {
         }
     }
     
+    /**
+     * Test helper type used by should implement EObject methods test scenarios.
+     */
     private static class EObjectIndirectSubtype extends EObjectDirectSubtype {
         public EObjectIndirectSubtype(Object obj) {
             super(obj);
         }
     }
     
+    /**
+     * Test helper type used by should implement EObject methods test scenarios.
+     */
     private static abstract class AbstractType {
     }
     
+    /**
+     * Test helper type used by should implement EObject methods test scenarios.
+     */
     private static abstract class AbstractEObjectSubtype implements EObject {
     }
     
+    /**
+     * Test helper type used by should implement EObject methods test scenarios.
+     */
     private static class AbstractEObjectSubtypeImpl extends AbstractEObjectSubtype {
         @Override
         public final Object[] attributes() {

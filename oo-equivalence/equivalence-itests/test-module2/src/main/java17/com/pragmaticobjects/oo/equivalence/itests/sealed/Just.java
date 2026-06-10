@@ -27,6 +27,11 @@ package com.pragmaticobjects.oo.equivalence.itests.sealed;
 
 import java.util.Optional;
 
+/**
+ * Non-empty implementation of a sealed optional-like test type.
+ *
+ * @param <T> value type
+ */
 public non-sealed class Just<T> implements Maybe<T> {
     private final T value;
 

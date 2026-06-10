@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
+ * Type model for primitive Java types.
  *
  * @author skapral
  */

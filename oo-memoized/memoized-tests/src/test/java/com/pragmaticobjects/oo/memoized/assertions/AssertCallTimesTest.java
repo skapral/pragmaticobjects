@@ -29,6 +29,9 @@ import com.pragmaticobjects.oo.tests.AssertAssertionPasses;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 
+/**
+ * Test suite for {@link AssertCallTimes}.
+ */
 public class AssertCallTimesTest extends TestsSuite {
     public AssertCallTimesTest() {
         super(

@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.meta.model;
 import javax.lang.model.element.VariableElement;
 
 /**
+ * Argument model derived from a variable element.
  *
  * @author skapral
  */

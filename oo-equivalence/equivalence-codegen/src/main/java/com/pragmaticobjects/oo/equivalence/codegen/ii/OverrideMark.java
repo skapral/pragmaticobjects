@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.codegen.ii;
 import java.lang.annotation.Annotation;
 
 /**
+ * Runtime instance of the Override annotation used during instrumentation.
  *
  * @author skapral
  */

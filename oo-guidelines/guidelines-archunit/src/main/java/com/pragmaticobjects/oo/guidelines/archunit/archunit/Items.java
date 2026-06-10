@@ -38,6 +38,9 @@ import static com.tngtech.archunit.core.domain.JavaClass.Predicates.*;
 import static com.tngtech.archunit.core.domain.properties.CanBeAnnotated.Predicates.annotatedWith;
 import static com.tngtech.archunit.core.domain.properties.HasModifiers.Predicates.modifier;
 
+/**
+ * Common ArchUnit predicates used by guideline checks.
+ */
 public class Items {
     private Items() {
     }

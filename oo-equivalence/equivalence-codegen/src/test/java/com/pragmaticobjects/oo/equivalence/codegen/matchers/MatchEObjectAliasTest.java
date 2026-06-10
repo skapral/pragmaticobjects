@@ -32,6 +32,7 @@ import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
 /**
+ * Tests matching of EObject alias types.
  *
  * @author skapral
  */
@@ -98,10 +99,19 @@ public class MatchEObjectAliasTest extends TestsSuite {
         );
     }
     
+    /**
+     * Test helper type used by match EObject alias test scenarios.
+     */
     public static class NonBase {}
     
+    /**
+     * Test helper type used by match EObject alias test scenarios.
+     */
     public static class NonBaseInheritor extends NonBase {}
     
+    /**
+     * Test helper type used by match EObject alias test scenarios.
+     */
     public static class Base implements EObject {
         private final int x;
         private final int y;
@@ -142,12 +152,18 @@ public class MatchEObjectAliasTest extends TestsSuite {
         }
     }
     
+    /**
+     * Test helper type used by match EObject alias test scenarios.
+     */
     public static class BaseAlias extends Base {
         public BaseAlias() {
             super(1, 2);
         }
     }
     
+    /**
+     * Test helper type used by match EObject alias test scenarios.
+     */
     public static abstract class Abstract implements EObject {
         protected final int x;
 
@@ -175,6 +191,9 @@ public class MatchEObjectAliasTest extends TestsSuite {
         }
     }
 
+    /**
+     * Test helper type used by match EObject alias test scenarios.
+     */
     @ArchitecturalExclusion
     public static abstract class Abstract2 extends Abstract {
         protected final int y;
@@ -189,6 +208,9 @@ public class MatchEObjectAliasTest extends TestsSuite {
         }
     }
 
+    /**
+     * Test helper type used by match EObject alias test scenarios.
+     */
     @ArchitecturalExclusion
     public static class AbstractBase extends Abstract {
         protected final int y;
@@ -218,6 +240,9 @@ public class MatchEObjectAliasTest extends TestsSuite {
         }
     }
     
+    /**
+     * Test helper type used by match EObject alias test scenarios.
+     */
     public static class AbstractBaseAlias extends AbstractBase {
         public AbstractBaseAlias() {
             super(1, 2);

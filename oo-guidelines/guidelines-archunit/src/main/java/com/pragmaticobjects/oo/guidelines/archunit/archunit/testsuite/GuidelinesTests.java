@@ -44,7 +44,6 @@ import io.vavr.collection.List;
  * @author Kapralov Sergey
  */
 public class GuidelinesTests extends TestsSuite {
-    /** Default predicate identifying concrete classes: all {@link EquivalenceCompliant} implementors. */
     public static DescribedPredicate<JavaClass> DEFAULT_CONCRETICS = JavaClass.Predicates.implement(EquivalenceCompliant.class);
 
     /**
@@ -99,11 +98,6 @@ public class GuidelinesTests extends TestsSuite {
         );
     }
 
-    /**
-     * Ctor. Uses {@link #DEFAULT_CONCRETICS} predicate and empty exclusion lists.
-     *
-     * @param javaClasses classes to check
-     */
     public GuidelinesTests(
         JavaClasses javaClasses
     ) {

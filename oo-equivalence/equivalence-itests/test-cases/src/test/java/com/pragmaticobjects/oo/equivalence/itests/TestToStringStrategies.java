@@ -32,6 +32,9 @@ import com.pragmaticobjects.oo.equivalence.itests.fieldlevelhint.HexHint;
 import com.pragmaticobjects.oo.equivalence.itests.fieldlevelhint.IterableHexes;
 import com.pragmaticobjects.oo.equivalence.itests.fieldlevelhint.StubHint;
 
+/**
+ * Integration test suite for field-level to-string strategies.
+ */
 public class TestToStringStrategies extends TestsSuite {
     public TestToStringStrategies() {
         super(

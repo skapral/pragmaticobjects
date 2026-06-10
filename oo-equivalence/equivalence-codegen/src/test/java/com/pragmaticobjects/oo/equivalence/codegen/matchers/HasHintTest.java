@@ -35,6 +35,7 @@ import com.tests.hint.markedpackage1.Type4;
 import com.tests.hint.markedpackage1.Type5;
 
 /**
+ * Tests matching of annotation hints.
  *
  * @author skapral
  */

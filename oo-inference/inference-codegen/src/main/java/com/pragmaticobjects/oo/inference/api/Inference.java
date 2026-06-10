@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.inference.api;
 
 /**
+ * Contract for producing an inferred value.
  *
  * @author skapral
  * @param <T> inference type

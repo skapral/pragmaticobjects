@@ -25,5 +25,8 @@
  */
 package com.pragmaticobjects.oo.equivalence.codegen.ii;
 
+/**
+ * Test record used by instrumentation iteration tests.
+ */
 public record Foo3() {
 }

@@ -30,6 +30,9 @@ import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import io.vavr.collection.List;
 
+/**
+ * Test suite for the hexadecimal to-string strategy.
+ */
 public class HexTest extends TestsSuite {
     public HexTest() {
         super(

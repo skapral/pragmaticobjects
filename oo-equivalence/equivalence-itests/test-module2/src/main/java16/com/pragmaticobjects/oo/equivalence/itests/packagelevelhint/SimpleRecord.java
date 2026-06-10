@@ -25,6 +25,11 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests.packagelevelhint;
 
+/**
+ * Test record located in a package with disabled equivalence instrumentation.
+ *
+ * @param a record value
+ */
 public record SimpleRecord(int a) {
     public void nonFinalMethodThatUsuallyFailsTheInstrumentation() {}
 }

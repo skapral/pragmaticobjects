@@ -33,6 +33,7 @@ import java.util.Comparator;
 import java.util.function.Supplier;
 
 /**
+ * Standard Freemarker artifact model backed by method and type metadata.
  *
  * @author skapral
  */

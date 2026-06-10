@@ -27,6 +27,9 @@ package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 
 import net.bytebuddy.matcher.ElementMatchers;
 
+/**
+ * Matcher for types that can receive generated equals, hashCode, and toString methods.
+ */
 public class MatchEqualsTriadGenerationCandidate  extends MatchSuperClass {
     public MatchEqualsTriadGenerationCandidate() {
         super(

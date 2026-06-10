@@ -32,6 +32,9 @@ import net.bytebuddy.matcher.ElementMatchers;
 import java.lang.annotation.Annotation;
 import java.util.function.Function;
 
+/**
+ * Matcher for classes and records that should be marked as EObjects.
+ */
 public class ShouldBeMarkedAsEObject extends DisjunctionMatcher<TypeDescription> {
     public <Hint extends Annotation> ShouldBeMarkedAsEObject(Class<Hint> eobjectHint, Function<Hint, Boolean> hintStatus) {
         super(

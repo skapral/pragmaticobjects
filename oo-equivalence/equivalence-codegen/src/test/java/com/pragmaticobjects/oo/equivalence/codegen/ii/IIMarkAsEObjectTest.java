@@ -31,6 +31,7 @@ import com.pragmaticobjects.oo.equivalence.base.EObject;
 import net.bytebuddy.matcher.ElementMatchers;
 
 /**
+ * Tests the instrumentation instruction that marks types as EObjects.
  *
  * @author skapral
  */
@@ -64,6 +65,9 @@ public class IIMarkAsEObjectTest extends TestsSuite {
         );
     }
     
+    /**
+     * Test helper type used by instrumentation instruction mark as EObject test scenarios.
+     */
     private static class Type1 {
         private final int x;
 
@@ -76,6 +80,9 @@ public class IIMarkAsEObjectTest extends TestsSuite {
         }
     }
     
+    /**
+     * Test helper type used by instrumentation instruction mark as EObject test scenarios.
+     */
     private static abstract class Type2 {
         protected final int x;
 
@@ -88,6 +95,11 @@ public class IIMarkAsEObjectTest extends TestsSuite {
         }
     }
     
+    /**
+     * Test helper type used by instrumentation instruction mark as EObject test scenarios.
+     *
+     * @param <T> value type used by this declaration
+     */
     private static class Type3<T> {
         private final T x;
 

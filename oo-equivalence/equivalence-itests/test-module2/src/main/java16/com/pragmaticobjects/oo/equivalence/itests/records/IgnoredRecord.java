@@ -27,6 +27,11 @@ package com.pragmaticobjects.oo.equivalence.itests.records;
 
 import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 
+/**
+ * Test record explicitly excluded from equivalence instrumentation.
+ *
+ * @param id record identifier
+ */
 @EObjectHint(enabled = false)
 public record IgnoredRecord(int id) {
 }

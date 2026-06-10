@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.assertions;
 import org.assertj.core.api.Assertions;
 
 /**
+ * Assertion that verifies an object's string representation.
  *
  * @author skapral
  */

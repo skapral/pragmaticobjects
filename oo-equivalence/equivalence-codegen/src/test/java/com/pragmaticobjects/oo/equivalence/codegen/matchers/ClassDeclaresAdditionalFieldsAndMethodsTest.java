@@ -66,14 +66,23 @@ public class ClassDeclaresAdditionalFieldsAndMethodsTest extends TestsSuite {
         );
     }
     
+    /**
+     * Test helper type used by class declares additional fields and methods test scenarios.
+     */
     public static class Base {
     }
     
+    /**
+     * Test helper type used by class declares additional fields and methods test scenarios.
+     */
     public static class Base2Negative extends Base {
         public Base2Negative() {
         }
     }
     
+    /**
+     * Test helper type used by class declares additional fields and methods test scenarios.
+     */
     public static class Base2Positive_ExtraFields extends Base {
         private final int z;
         
@@ -83,6 +92,9 @@ public class ClassDeclaresAdditionalFieldsAndMethodsTest extends TestsSuite {
         }
     }
     
+    /**
+     * Test helper type used by class declares additional fields and methods test scenarios.
+     */
     public static class Base2Positive_ExtraMethods extends Base {
         public final void additionalMethod() {}
     }

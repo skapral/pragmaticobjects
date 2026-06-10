@@ -25,5 +25,11 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests.records;
 
+/**
+ * Generic test record used by equivalence instrumentation scenarios.
+ *
+ * @param <T> value type
+ * @param value record value
+ */
 public record TRecord<T>(T value) {
 }

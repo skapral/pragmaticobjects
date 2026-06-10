@@ -28,7 +28,8 @@ package com.pragmaticobjects.oo.meta.base;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
 
 /**
- * 
+ * Smoke test for the module test setup.
+ *
  * @author skapral
  */
 public class DummyTest extends TestsSuite {

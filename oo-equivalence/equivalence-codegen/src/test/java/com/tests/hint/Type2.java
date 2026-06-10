@@ -25,5 +25,8 @@
  */
 package com.tests.hint;
 
+/**
+ * Test type with a disabled hint annotation.
+ */
 public @Hint(enabled = false) class Type2 {
 }

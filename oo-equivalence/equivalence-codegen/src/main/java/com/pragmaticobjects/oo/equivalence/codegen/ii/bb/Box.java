@@ -36,6 +36,7 @@ import net.bytebuddy.implementation.bytecode.member.MethodInvocation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 
 /**
+ * Stack manipulation that boxes primitive values.
  *
  * @author skapral
  */

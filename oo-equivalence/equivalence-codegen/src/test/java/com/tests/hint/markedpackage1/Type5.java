@@ -27,5 +27,8 @@ package com.tests.hint.markedpackage1;
 
 import com.tests.hint.Hint;
 
+/**
+ * Test type with an explicit hint inside a hinted package.
+ */
 public @Hint class Type5 {
 }

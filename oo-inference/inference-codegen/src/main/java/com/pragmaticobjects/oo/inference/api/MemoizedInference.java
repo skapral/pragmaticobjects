@@ -29,6 +29,7 @@ import com.pragmaticobjects.oo.memoized.core.MemoizedCallable;
 import com.pragmaticobjects.oo.memoized.core.Memory;
 
 /**
+ * Inference wrapper that memoizes the produced value.
  *
  * @author skapral
  * @param <T> type

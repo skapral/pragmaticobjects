@@ -29,6 +29,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
+ * Byte Buddy stage that validates processed class descriptions.
  *
  * @author skapral
  */

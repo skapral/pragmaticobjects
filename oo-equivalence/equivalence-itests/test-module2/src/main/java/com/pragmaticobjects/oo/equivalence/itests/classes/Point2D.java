@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.itests.classes;
 
 /**
+ * Two-dimensional point fixture used by tests.
  *
  * @author skapral
  */

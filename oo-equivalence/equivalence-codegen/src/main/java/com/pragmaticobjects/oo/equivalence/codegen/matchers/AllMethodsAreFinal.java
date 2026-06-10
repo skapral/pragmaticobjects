@@ -38,6 +38,9 @@ import java.util.function.Function;
 
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
+/**
+ * Matcher that verifies all relevant methods are final except configured methods.
+ */
 class AllMethodsAreFinalExcept implements ElementMatcher<TypeDescription> {
     private static final Logger LOG = LoggerFactory.getLogger(AllMethodsAreFinal.class);
 

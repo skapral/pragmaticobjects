@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.itests.classes;
 
 /**
+ * Abstract fixture without an EObject hint.
  *
  * @author skapral
  */

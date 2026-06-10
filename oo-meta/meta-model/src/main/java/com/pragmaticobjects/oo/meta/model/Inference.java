@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.meta.model;
 
 /**
+ * Contract for producing an inferred value.
  *
  * @author skapral
  * @param <T> inferred type

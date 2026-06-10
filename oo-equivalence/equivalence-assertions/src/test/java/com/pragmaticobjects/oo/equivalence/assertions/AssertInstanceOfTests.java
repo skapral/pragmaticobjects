@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.assertions;
 
 /**
+ * Tests instance-of assertions.
  *
  * @author skapral
  */

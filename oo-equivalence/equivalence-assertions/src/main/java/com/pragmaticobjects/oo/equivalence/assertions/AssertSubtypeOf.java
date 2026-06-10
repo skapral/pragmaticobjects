@@ -29,6 +29,7 @@ import org.assertj.core.api.Assertions;
 import static org.assertj.core.api.Assertions.*;
 
 /**
+ * Assertion that verifies one type is a subtype of another.
  *
  * @author skapral
  */

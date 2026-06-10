@@ -35,7 +35,6 @@ import com.tngtech.archunit.core.domain.JavaField;
  * @author Kapralov Sergey
  */
 public class FieldAccessExclusion {
-    /** Predicate that matches fields whose access is permitted. */
     public final DescribedPredicate<JavaField> field;
 
     /**

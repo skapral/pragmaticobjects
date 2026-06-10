@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.itests.abstractclasses;
 
 /**
+ * Concrete EObject fixture for abstract class integration tests.
  *
  * @author skapral
  */

@@ -25,9 +25,23 @@
  */
 package com.pragmaticobjects.oo.equivalence.assertions;
 
+/**
+ * Test suite for subtype assertions.
+ */
 public class AssertSubtypeOfTest extends TestsSuite {
+    /**
+     * Base class for subtype assertion tests.
+     */
     static class A {}
+
+    /**
+     * Direct subtype for subtype assertion tests.
+     */
     static class B extends A {}
+
+    /**
+     * Indirect subtype for subtype assertion tests.
+     */
     static class C extends B {}
     
     public AssertSubtypeOfTest() {

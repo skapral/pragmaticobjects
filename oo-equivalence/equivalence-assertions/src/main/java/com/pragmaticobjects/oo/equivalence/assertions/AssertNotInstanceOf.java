@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.assertions;
 import static org.assertj.core.api.Assertions.*;
 
 /**
+ * Assertion that verifies an object is not an instance of a type.
  *
  * @author skapral
  */

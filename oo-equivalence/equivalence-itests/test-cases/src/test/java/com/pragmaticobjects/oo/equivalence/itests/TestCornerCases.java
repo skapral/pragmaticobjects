@@ -31,6 +31,9 @@ import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.itests.classes.PublicPoint;
 
+/**
+ * Integration test suite for equivalence instrumentation corner cases.
+ */
 public class TestCornerCases extends TestsSuite {
     public TestCornerCases() {
         super(

@@ -32,6 +32,7 @@ import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
 
 /**
+ * Type model derived from a type mirror.
  *
  * @author skapral
  */

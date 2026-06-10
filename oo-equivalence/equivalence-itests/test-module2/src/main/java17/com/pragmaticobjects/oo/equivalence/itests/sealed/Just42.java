@@ -25,6 +25,9 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests.sealed;
 
+/**
+ * Test specialization of {@link Just} with the value 42.
+ */
 public class Just42 extends Just<Integer> {
     public Just42() {
         super(42);

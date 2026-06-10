@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.meta.model;
 import java.util.Collection;
 
 /**
+ * Method model inferred from another model value.
  *
  * @author skapral
  */

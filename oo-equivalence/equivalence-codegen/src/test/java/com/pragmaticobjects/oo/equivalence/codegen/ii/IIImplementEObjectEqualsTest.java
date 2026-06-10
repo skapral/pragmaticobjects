@@ -32,6 +32,9 @@ import io.vavr.collection.List;
 import net.bytebuddy.matcher.ElementMatchers;
 
 
+/**
+ * Base test set for equals instrumentation iteration tests.
+ */
 class BaseSetForIIImplementEObjectEquals extends TestsSuite {
     public static final List<TestCase> BASE_SET = List.of(
         new TestCase(
@@ -67,6 +70,7 @@ class BaseSetForIIImplementEObjectEquals extends TestsSuite {
 
 
 /**
+ * Tests the instrumentation instruction that implements EObject equality.
  *
  * @author skapral
  */

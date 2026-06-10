@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses;
 import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 
 /**
+ * External abstract non-EObject fixture used by integration tests.
  *
  * @author skapral
  */

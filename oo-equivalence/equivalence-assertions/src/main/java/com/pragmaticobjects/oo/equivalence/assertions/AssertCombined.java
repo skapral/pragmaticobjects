@@ -29,6 +29,7 @@ import io.vavr.collection.List;
 
 
 /**
+ * Assertion that executes several assertions as a single check.
  *
  * @author skapral
  */

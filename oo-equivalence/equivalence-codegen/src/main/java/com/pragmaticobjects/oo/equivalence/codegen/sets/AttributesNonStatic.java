@@ -30,6 +30,7 @@ import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.matcher.ElementMatchers;
 
 /**
+ * Attributes view that excludes static fields.
  *
  * @author skapral
  */

@@ -32,6 +32,8 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 /**
+ * Fixed method declaration model.
+ *
  * @author skapral
  */
 public class MethodFixed implements Method {

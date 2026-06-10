@@ -36,6 +36,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 
 /**
+ * Integration test suite for simple class scenarios.
+ *
  * @author skapral
  */
 public class TestSimpleClasses extends TestsSuite {

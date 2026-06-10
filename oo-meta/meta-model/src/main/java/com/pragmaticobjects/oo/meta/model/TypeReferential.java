@@ -30,6 +30,7 @@ import io.vavr.collection.List;
 import java.util.Collection;
 
 /**
+ * Type model for a type referenced by package and name.
  *
  * @author skapral
  */

@@ -33,6 +33,7 @@ import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.itests.classes.AnonymousClass;
 
 /**
+ * Integration test suite for anonymous implementation scenarios.
  *
  * @author skapral
  */

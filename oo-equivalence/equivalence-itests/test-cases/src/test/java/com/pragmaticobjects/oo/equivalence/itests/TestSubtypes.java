@@ -32,6 +32,7 @@ import com.pragmaticobjects.oo.equivalence.itests.classes.Counter;
 import com.pragmaticobjects.oo.equivalence.itests.classes.CounterA;
 
 /**
+ * Integration test suite for subtype equivalence scenarios.
  *
  * @author skapral
  */

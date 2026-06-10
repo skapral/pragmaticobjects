@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.itests.classes;
 import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 
 /**
+ * Abstract tree node fixture for equivalence integration tests.
  *
  * @author skapral
  * @param <T> type

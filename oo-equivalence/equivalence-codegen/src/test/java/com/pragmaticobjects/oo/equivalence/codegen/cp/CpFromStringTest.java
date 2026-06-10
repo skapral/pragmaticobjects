@@ -28,6 +28,9 @@ package com.pragmaticobjects.oo.equivalence.codegen.cp;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 
+/**
+ * Test suite for class path parsing from strings.
+ */
 public class CpFromStringTest extends TestsSuite {
     public CpFromStringTest() {
         super(

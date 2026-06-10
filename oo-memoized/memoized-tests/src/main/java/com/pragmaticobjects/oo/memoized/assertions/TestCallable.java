@@ -37,6 +37,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 // NOTE: equals, hashCode and toString are implicitly generated
 // by equivalence-maven-plugin
+/**
+ * Memoized callable that increments a shared counter for assertion checks.
+ */
 class TestCallable implements MemoizedCallable {
     private final AtomicInteger counter;
 

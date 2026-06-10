@@ -33,6 +33,7 @@ import com.pragmaticobjects.oo.equivalence.itests.classes.LeafNode;
 import com.pragmaticobjects.oo.equivalence.itests.classes.NonHintedAbstractClass;
 
 /**
+ * Integration test suite for abstract class equivalence scenarios.
  *
  * @author skapral
  */

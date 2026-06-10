@@ -33,6 +33,9 @@ import com.pragmaticobjects.oo.equivalence.base.EquivalenceCompliant;
 import com.pragmaticobjects.oo.equivalence.itests.packagelevelhint.SimpleClass;
 import com.pragmaticobjects.oo.equivalence.itests.packagelevelhint.SimpleRecord;
 
+/**
+ * Integration test suite for package-level hints on records.
+ */
 public class TestPackageLevelHintForRecords extends TestsSuite {
     public TestPackageLevelHintForRecords() {
         super(

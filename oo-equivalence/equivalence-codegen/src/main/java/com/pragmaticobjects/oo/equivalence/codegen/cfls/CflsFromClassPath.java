@@ -33,6 +33,9 @@ import com.pragmaticobjects.oo.equivalence.codegen.cp.ClassPath;
  * @author Kapralov Sergey
  */
 public class CflsFromClassPath extends CflsInferred implements ClassFileLocatorSource {
+    /**
+     * Inference that creates a class file locator source from a class path.
+     */
     private static class Inference implements ClassFileLocatorSource.Inference {
         private final ClassPath classPath;
 

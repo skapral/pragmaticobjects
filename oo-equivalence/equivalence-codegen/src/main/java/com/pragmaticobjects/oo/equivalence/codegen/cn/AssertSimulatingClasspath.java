@@ -32,6 +32,7 @@ import java.nio.file.Path;
 import java.util.function.Function;
 
 /**
+ * Assertion that verifies class-name discovery on a simulated classpath.
  *
  * @author skapral
  */

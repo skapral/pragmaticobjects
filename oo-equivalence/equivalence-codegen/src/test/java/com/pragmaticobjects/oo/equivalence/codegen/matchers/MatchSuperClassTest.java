@@ -33,6 +33,7 @@ import net.bytebuddy.matcher.ElementMatcher;
 
 
 /**
+ * Test suite for superclass matching.
  *
  * @author skapral
  */
@@ -79,6 +80,9 @@ public class MatchSuperClassTest extends TestsSuite {
     }
 }
 
+/**
+ * Matcher that compares type descriptions with a loaded class.
+ */
 class MatchClass implements ElementMatcher<TypeDescription> {
     private final Class<?> clazz;
 

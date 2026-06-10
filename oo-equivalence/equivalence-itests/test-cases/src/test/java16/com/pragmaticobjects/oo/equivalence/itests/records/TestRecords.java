@@ -32,6 +32,9 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Integration test suite for equivalence instrumentation of records.
+ */
 public class TestRecords extends TestsSuite {
     private static final Map<String, Object> CONSTANT = new HashMap<>();
 

@@ -30,6 +30,7 @@ import net.bytebuddy.description.field.FieldDescription;
 import net.bytebuddy.description.type.TypeDescription;
 
 /**
+ * Attributes extracted from a Byte Buddy type description.
  *
  * @author skapral
  */

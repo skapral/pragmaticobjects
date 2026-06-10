@@ -34,6 +34,9 @@ import java.nio.file.Path;
  * @author Kapralov Sergey
  */
 public interface ClassPath {
+    /**
+     * Inference that creates a class path instance.
+     */
     interface Inference {
         ClassPath classPath();
     }

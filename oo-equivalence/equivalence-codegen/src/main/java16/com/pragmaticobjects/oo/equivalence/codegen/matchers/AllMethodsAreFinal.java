@@ -29,6 +29,9 @@ import io.vavr.collection.List;
 
 import static net.bytebuddy.matcher.ElementMatchers.*;
 
+/**
+ * Matcher that treats record component accessors as allowed non-final methods.
+ */
 public class AllMethodsAreFinal extends AllMethodsAreFinalExcept {
     public AllMethodsAreFinal() {
         super(

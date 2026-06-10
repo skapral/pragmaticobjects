@@ -25,5 +25,8 @@
  */
 package com.tests.hint;
 
+/**
+ * Test type without an explicit hint annotation.
+ */
 public class Type3 {
 }

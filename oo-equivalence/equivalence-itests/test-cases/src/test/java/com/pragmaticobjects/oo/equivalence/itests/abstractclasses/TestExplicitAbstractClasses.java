@@ -31,6 +31,9 @@ import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.Extern
 import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractNonEObject;
 import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractPlainObject;
 
+/**
+ * Integration test suite for explicit hints on abstract classes.
+ */
 public class TestExplicitAbstractClasses extends TestsSuite {
     private static final Object KEY1 = new Object();
     private static final Object KEY2 = new Object();

@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Instrumentation instruction that adds the EObject hash seed.
  *
  * @author skapral
  */

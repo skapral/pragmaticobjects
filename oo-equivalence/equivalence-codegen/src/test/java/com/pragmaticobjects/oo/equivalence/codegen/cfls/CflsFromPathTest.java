@@ -73,5 +73,8 @@ class CflsFromPathTest extends TestsSuite {
     }
 
     //CHECKSTYLE:OFF
+    /**
+     * Simple test fixture type.
+     */
     private static class Foo {}
 }

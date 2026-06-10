@@ -34,6 +34,9 @@ import net.bytebuddy.dynamic.ClassFileLocator;
  * @author Kapralov Sergey
  */
 public class CflsCompound extends CflsInferred implements ClassFileLocatorSource {
+    /**
+     * Inference that creates the compound class file locator source.
+     */
     private static class Inference implements ClassFileLocatorSource.Inference {
         private final List<ClassFileLocatorSource> parts;
 

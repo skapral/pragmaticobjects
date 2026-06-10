@@ -33,6 +33,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Tests decisions for marking types as EObjects.
  *
  * @author skapral
  */
@@ -78,24 +79,42 @@ public class ShouldBeMarkedAsEObjectTest extends TestsSuite {
     }
     
     
+    /**
+     * Test hint annotation used by should be marked as EObject test scenarios.
+     */
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
     private static @interface EObjectHint {
         boolean enabled() default true;
     }
     
+    /**
+     * Test helper type used by should be marked as EObject test scenarios.
+     */
     private static abstract @EObjectHint class Type1 {
     }
     
+    /**
+     * Test helper type used by should be marked as EObject test scenarios.
+     */
     private static abstract @EObjectHint class Type2 extends Type1 {
     }
     
+    /**
+     * Test helper type used by should be marked as EObject test scenarios.
+     */
     private static abstract class Type3 {
     }
     
+    /**
+     * Test helper type used by should be marked as EObject test scenarios.
+     */
     private static class Type4 extends Type3 {
     }
     
+    /**
+     * Test helper type used by should be marked as EObject test scenarios.
+     */
     private static class Type5 {
     }
 }

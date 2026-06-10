@@ -31,6 +31,7 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.MethodVisitor;
 
 /**
+ * Byte Buddy implementation backed by a stack manipulation.
  *
  * @author skapral
  */

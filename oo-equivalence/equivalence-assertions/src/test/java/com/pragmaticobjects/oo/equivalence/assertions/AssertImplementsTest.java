@@ -25,6 +25,9 @@
  */
 package com.pragmaticobjects.oo.equivalence.assertions;
 
+/**
+ * Test suite for implements assertions.
+ */
 public class AssertImplementsTest extends TestsSuite {
     public AssertImplementsTest() {
         super(
@@ -67,14 +70,26 @@ public class AssertImplementsTest extends TestsSuite {
     }
 }
 
+/**
+ * Base test interface for implements assertions.
+ */
 interface A {
 }
 
+/**
+ * Direct test implementation of {@link A}.
+ */
 class Ao implements A {
 }
 
+/**
+ * Derived test interface for implements assertions.
+ */
 interface B extends A {
 }
 
+/**
+ * Direct test implementation of {@link B}.
+ */
 class Bo implements B {
 }

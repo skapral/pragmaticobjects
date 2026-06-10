@@ -29,6 +29,7 @@ import io.vavr.collection.List;
 import net.bytebuddy.description.field.FieldDescription;
 
 /**
+ * Identity attributes extracted from a type.
  *
  * @author skapral
  */

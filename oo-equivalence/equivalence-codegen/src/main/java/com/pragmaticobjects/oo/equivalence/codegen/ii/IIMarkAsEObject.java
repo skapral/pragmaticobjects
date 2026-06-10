@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Instrumentation instruction that marks a type as an EObject.
  *
  * @author skapral
  */

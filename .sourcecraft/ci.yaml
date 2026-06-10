@@ -2,27 +2,34 @@ on:
   pull_request:
     - workflows: [test]
       filter:
+        # Test every source branch that targets the main integration branch.
         source_branches: ["**"]
         target_branches: ["master"]
   push:
     - workflows: [test]
       filter:
+        # Branch pushes are tested even before a pull request is opened.
         branches: ["**"]
     - workflows: [release]
       filter:
+        # Tags are treated as release markers and publish the tagged Maven version.
         tags: ["*"]
 
 workflows:
   test:
     tasks:
+      # Java 17 is the compatibility baseline for the project.
       - name: test-java-17
         cubes:
           - name: build
             image: eclipse-temurin:17-jdk
             script:
+              # Build tools are installed first because module builds depend on generated build-time helpers.
               - ./mvnw clean install -B -Pbuild-tools -Djgitver.skip=true
+              # The modules profile validates the artifacts that downstream consumers use.
               - ./mvnw clean install -B -Pmodules
 
+      # Java 21 covers the current LTS runtime and matches the release environment.
       - name: test-java-21
         cubes:
           - name: build
@@ -31,6 +38,7 @@ workflows:
               - ./mvnw clean install -B -Pbuild-tools -Djgitver.skip=true
               - ./mvnw clean install -B -Pmodules
 
+      # Java 23 keeps the project visible against newer JVM behavior before it becomes the default runtime.
       - name: test-java-23
         cubes:
           - name: build
@@ -46,10 +54,13 @@ workflows:
           - name: deploy
             image: eclipse-temurin:21-jdk
             env:
+              # SourceCraft authenticates to the Maven registry through an IAM token stored as a secret.
               REGISTRY_USERNAME: iam
               REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
             script:
               - ./mvnw clean install -B -Pbuild-tools -Djgitver.skip=true
+              # SourceCraft does not provide this Maven server entry by default, so the deploy job
+              # writes a minimal settings.xml that exposes credentials only to this container.
               - |
                 mkdir -p ~/.m2
                 cat > ~/.m2/settings.xml << 'EOF'
@@ -65,4 +76,5 @@ workflows:
                   </servers>
                 </settings>
                 EOF
+              # jgitver uses the tag name as the published version; modules and extras are deployed together.
               - ./mvnw clean deploy -B -Pmodules,extras -Djgitver.use-version=${SOURCECRAFT_COMMIT_REF_NAME} -DaltDeploymentRepository=sourcecraft-releases::https://pkg.sourcecraft.tech/maven/pragmaticobjects/cn15p9ba1la20u152l4p

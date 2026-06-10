@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Matcher decorator that emits verbose diagnostics for another matcher.
  *
  * @author skapral
  * @param <T> type

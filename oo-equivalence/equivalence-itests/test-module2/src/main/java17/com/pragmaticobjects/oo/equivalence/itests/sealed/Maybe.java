@@ -27,6 +27,11 @@ package com.pragmaticobjects.oo.equivalence.itests.sealed;
 
 import java.util.Optional;
 
+/**
+ * Sealed optional-like test type for equivalence instrumentation scenarios.
+ *
+ * @param <T> value type
+ */
 public sealed interface Maybe<T> permits Just, Nothingness {
     T get();
     Optional<T> tryGetting();

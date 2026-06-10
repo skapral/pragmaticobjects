@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.assertions;
 
 /**
+ * Assertion that verifies an object's hashCode contract.
  *
  * @author skapral
  */

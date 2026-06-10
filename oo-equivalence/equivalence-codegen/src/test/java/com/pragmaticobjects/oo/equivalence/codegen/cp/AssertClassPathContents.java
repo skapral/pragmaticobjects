@@ -31,6 +31,9 @@ import org.assertj.core.api.Assertions;
 
 import java.nio.file.Path;
 
+/**
+ * Assertion that verifies class path contents.
+ */
 public class AssertClassPathContents implements Assertion {
     private final ClassPath cpUnderTest;
     private final List<String> expectedPaths;

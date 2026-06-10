@@ -33,6 +33,7 @@ import io.vavr.collection.LinkedHashMap;
 import io.vavr.collection.List;
 
 /**
+ * Tests the standard Freemarker artifact model.
  *
  * @author skapral
  */

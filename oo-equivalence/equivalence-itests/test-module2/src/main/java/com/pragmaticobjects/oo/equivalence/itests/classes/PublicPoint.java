@@ -32,9 +32,7 @@ package com.pragmaticobjects.oo.equivalence.itests.classes;
  * @author Kapralov Sergey
  */
 public class PublicPoint {
-    /** X coordinate. */
     public final int x;
-    /** Z coordinate. */
     public final int z;
 
     /**

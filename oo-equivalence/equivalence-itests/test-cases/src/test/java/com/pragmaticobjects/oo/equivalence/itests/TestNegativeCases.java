@@ -33,6 +33,7 @@ import com.pragmaticobjects.oo.equivalence.itests.classes.Point2D;
 import com.pragmaticobjects.oo.equivalence.itests.classes.Point3D;
 
 /**
+ * Integration test suite for negative equivalence scenarios.
  *
  * @author skapral
  */

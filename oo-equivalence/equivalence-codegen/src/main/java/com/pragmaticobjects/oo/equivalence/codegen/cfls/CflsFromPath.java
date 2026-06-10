@@ -38,6 +38,9 @@ import java.nio.file.Path;
  * @author Kapralov Sergey
  */
 public class CflsFromPath extends CflsInferred implements ClassFileLocatorSource {
+    /**
+     * Inference that creates a class file locator source from one path.
+     */
     private static class Inference implements ClassFileLocatorSource.Inference {
         private final Path path;
 

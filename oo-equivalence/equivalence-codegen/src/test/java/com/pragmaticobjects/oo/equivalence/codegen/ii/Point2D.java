@@ -30,6 +30,7 @@ import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
 /**
+ * Two-dimensional point fixture used by instrumentation tests.
  *
  * @author skapral
  */

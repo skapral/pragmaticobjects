@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.assertions;
 import org.assertj.core.api.Assertions;
 
 /**
+ * Assertion that verifies the expected hashCode result.
  *
  * @author skapral
  */

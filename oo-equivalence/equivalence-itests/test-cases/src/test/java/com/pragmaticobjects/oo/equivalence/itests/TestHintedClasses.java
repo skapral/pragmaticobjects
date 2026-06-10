@@ -31,6 +31,7 @@ import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import com.pragmaticobjects.oo.equivalence.itests.classes.IgnoredClass;
 
 /**
+ * Integration test suite for hinted class scenarios.
  *
  * @author skapral
  */

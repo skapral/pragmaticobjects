@@ -34,6 +34,9 @@ import com.pragmaticobjects.oo.equivalence.base.EquivalenceCompliant;
 import com.pragmaticobjects.oo.equivalence.itests.classes.Point2D;
 import com.pragmaticobjects.oo.equivalence.itests.packagelevelhint.SimpleClass;
 
+/**
+ * Integration test suite for package-level equivalence hints.
+ */
 public class TestPackageLevelHint extends TestsSuite {
     public TestPackageLevelHint() {
         super(

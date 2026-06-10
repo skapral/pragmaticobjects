@@ -25,4 +25,7 @@
  */
 package com.tests.hint;
 
+/**
+ * Test type with an enabled hint annotation.
+ */
 public @Hint class Type1 {}

@@ -30,6 +30,7 @@ import org.assertj.core.api.Assertions;
 import java.util.regex.Pattern;
 
 /**
+ * Assertion that verifies an object's string representation matches a pattern.
  *
  * @author skapral
  */

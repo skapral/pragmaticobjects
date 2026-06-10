@@ -33,6 +33,7 @@ import com.pragmaticobjects.oo.equivalence.base.EquivalenceCompliant;
 import com.pragmaticobjects.oo.equivalence.itests.classes.IgnoredClass;
 
 /**
+ * Integration test suite for hinted record scenarios.
  *
  * @author skapral
  */

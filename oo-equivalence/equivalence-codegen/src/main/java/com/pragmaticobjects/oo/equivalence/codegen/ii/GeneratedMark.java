@@ -29,6 +29,7 @@ import java.lang.annotation.Annotation;
 import lombok.Generated;
 
 /**
+ * Runtime instance of the Lombok generated annotation used during instrumentation.
  *
  * @author skapral
  */

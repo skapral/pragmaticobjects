@@ -30,6 +30,7 @@ import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
 /**
+ * EObject tuple fixture variant used by equivalence base tests.
  *
  * @author skapral
  */

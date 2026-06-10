@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.gradle.plugin;
 
 /**
+ * Smoke test for the module test setup.
  *
  * @author skapral
  */

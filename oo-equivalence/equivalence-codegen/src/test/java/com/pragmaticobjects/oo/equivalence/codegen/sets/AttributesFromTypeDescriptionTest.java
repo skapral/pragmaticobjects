@@ -30,6 +30,7 @@ import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import net.bytebuddy.matcher.ElementMatchers;
 
 /**
+ * Tests attribute extraction from type descriptions.
  *
  * @author skapral
  */
@@ -69,6 +70,9 @@ public class AttributesFromTypeDescriptionTest extends TestsSuite {
         );
     }
     
+    /**
+     * Test helper type used by attributes from type description test scenarios.
+     */
     private static class Type1 {
         private final int a;
         private final int b;
@@ -79,6 +83,9 @@ public class AttributesFromTypeDescriptionTest extends TestsSuite {
         }
     }
     
+    /**
+     * Test helper type used by attributes from type description test scenarios.
+     */
     private static abstract class Type2 {
         private final int a;
         
@@ -87,6 +94,9 @@ public class AttributesFromTypeDescriptionTest extends TestsSuite {
         }
     }
     
+    /**
+     * Test helper type used by attributes from type description test scenarios.
+     */
     public static class Type3 extends Type2 {
         private final String b;
 
@@ -96,6 +106,9 @@ public class AttributesFromTypeDescriptionTest extends TestsSuite {
         }
     }
     
+    /**
+     * Test helper interface used by attributes from type description test scenarios.
+     */
     public interface Interface1 {
         int value();
         

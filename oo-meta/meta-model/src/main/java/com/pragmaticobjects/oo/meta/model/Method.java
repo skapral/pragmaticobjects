@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.meta.model;
 
 /**
+ * Model contract for a method declaration.
  *
  * @author skapral
  */

@@ -30,6 +30,7 @@ import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.matcher.ElementMatcher;
 
 /**
+ * Instrumentation instruction that applies another instruction conditionally.
  *
  * @author skapral
  */

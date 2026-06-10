@@ -36,8 +36,6 @@ import io.vavr.collection.List;
 /**
  * Base ArchUnit condition that analyses a constructor's field accesses and method calls,
  * reporting violations for any that are not covered by the provided exclusion lists.
- * Subclasses ({@link BePrimaryConstructor}, {@link BeSecondaryConstructor}) configure
- * the allowed patterns.
  *
  * @author Kapralov Sergey
  */

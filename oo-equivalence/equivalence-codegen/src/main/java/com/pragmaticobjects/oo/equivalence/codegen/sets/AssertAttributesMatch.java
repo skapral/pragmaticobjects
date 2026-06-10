@@ -34,6 +34,7 @@ import net.bytebuddy.matcher.ElementMatchers;
 import org.assertj.core.api.Assertions;
 
 /**
+ * Assertion that verifies extracted attributes match expectations.
  *
  * @author skapral
  */

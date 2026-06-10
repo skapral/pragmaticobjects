@@ -36,6 +36,7 @@ import com.pragmaticobjects.oo.equivalence.base.testobjects.ETuple42_2;
 import com.pragmaticobjects.oo.equivalence.base.testobjects.ETuple_2;
 
 /**
+ * Tests EObject subtype behavior.
  *
  * @author skapral
  */

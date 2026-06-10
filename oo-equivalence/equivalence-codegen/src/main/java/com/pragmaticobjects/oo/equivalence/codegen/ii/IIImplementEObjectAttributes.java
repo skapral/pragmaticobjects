@@ -70,6 +70,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.Function;
 
+/**
+ * Instrumentation iteration that implements {@link EObject#attributes()}.
+ */
 public class IIImplementEObjectAttributes implements InstrumentationIteration {
     private static final Logger log = LoggerFactory.getLogger(IIImplementEObjectAttributes.class);
     private static final Constructor<HintedAttribute> HINTEDATTR_CONSTR;

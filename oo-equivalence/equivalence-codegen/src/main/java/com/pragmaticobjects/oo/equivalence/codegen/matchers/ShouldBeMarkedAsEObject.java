@@ -36,6 +36,9 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
 
+/**
+ * Matcher for direct non-abstract candidates with identity-bearing attributes.
+ */
 class DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal extends ConjunctionMatcher<TypeDescription> {
     public <Hint extends Annotation> DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal(
         ElementMatcher<TypeDescription> allowedBaseClasses,
@@ -75,6 +78,9 @@ class DirectNonAbstractSubtypeOfObjectAttributesOfWhichAreAllFinal extends Conju
     }
 }
 
+/**
+ * Matcher for abstract classes explicitly hinted as equivalence candidates.
+ */
 class ExplicitlyHintedAbstractClass extends ConjunctionMatcher<TypeDescription> {
     public <Hint extends Annotation> ExplicitlyHintedAbstractClass(
         Class<Hint> eobjectHint,

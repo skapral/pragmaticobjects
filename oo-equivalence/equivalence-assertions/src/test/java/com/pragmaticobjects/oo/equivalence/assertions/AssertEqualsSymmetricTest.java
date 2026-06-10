@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.assertions;
 
 /**
+ * Tests the equals symmetry assertion.
  *
  * @author skapral
  */
@@ -54,6 +55,9 @@ public class AssertEqualsSymmetricTest extends TestsSuite {
     }
    
     
+    /**
+     * Test helper type used by assert equals symmetric test scenarios.
+     */
     public static final class TestObject {
         private final boolean symmetric;
 

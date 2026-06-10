@@ -34,6 +34,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Matcher that detects classes declaring fields or methods beyond inherited ones.
+ *
  * @see MatchEObjectAlias
  * @author skapral
  */

@@ -31,6 +31,8 @@ import com.pragmaticobjects.oo.equivalence.base.testobjects.ETuple;
 import java.time.LocalDate;
 
 /**
+ * Tests the EObject base contract.
+ *
  * @author skapral
  */
 public class EObjectTest extends TestsSuite {

@@ -97,12 +97,18 @@ public class AllMethodsAreFinalTest extends TestsSuite {
     }
 
     //CHECKSTYLE:OFF
+    /**
+     * Simple test fixture type.
+     */
     private static class Foo {
         public final void method1() {}
         public final void method2() {}
         public final void method3() {}
     }
     
+    /**
+     * Simple test fixture subtype.
+     */
     private static class Bar {
         public final void method1() {}
         @ArchitecturalExclusion
@@ -110,16 +116,27 @@ public class AllMethodsAreFinalTest extends TestsSuite {
         public final void method3() {}
     }
     
+    /**
+     * Test helper interface used by all methods are final test scenarios.
+     *
+     * @param <T> value type used by this declaration
+     */
     private static interface G<T> {
         @ArchitecturalExclusion
         void method(T value);
     }
     
+    /**
+     * Test helper type used by all methods are final test scenarios.
+     */
     private static class Baz implements G<UUID> {
         @Override
         public final void method(UUID value) {}
     }
     
+    /**
+     * Test helper enum used by all methods are final test scenarios.
+     */
     private static enum Faz {
         ONE(1), TWO(2), THREE(3);
         
@@ -134,15 +151,24 @@ public class AllMethodsAreFinalTest extends TestsSuite {
         }
     }
     
+    /**
+     * Test helper type used by all methods are final test scenarios.
+     */
     private static class Haz {
         private static void method() {}
     }
     
+    /**
+     * Test helper type used by all methods are final test scenarios.
+     */
     private static class Taz {
         public final void method() {}
         private void privateMethod() {}
     }
     
+    /**
+     * Test helper type used by all methods are final test scenarios.
+     */
     private static abstract class Maz {
         public abstract void a();
     }

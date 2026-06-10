@@ -33,6 +33,7 @@ import io.vavr.collection.List;
 
 
 /**
+ * Integration test suite for inferred aliases using external inference.
  *
  * @author skapral
  */

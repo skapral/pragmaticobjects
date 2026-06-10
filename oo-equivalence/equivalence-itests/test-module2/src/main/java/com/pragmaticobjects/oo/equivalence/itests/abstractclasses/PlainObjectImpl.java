@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.equivalence.itests.abstractclasses;
 import com.pragmaticobjects.oo.equivalence.itests.module1.abstractclasses.ExternalAbstractPlainObject;
 
 /**
+ * Concrete plain object fixture for abstract class integration tests.
  *
  * @author skapral
  */

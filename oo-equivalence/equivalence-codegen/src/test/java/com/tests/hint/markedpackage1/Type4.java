@@ -25,5 +25,8 @@
  */
 package com.tests.hint.markedpackage1;
 
+/**
+ * Test type that inherits a package-level hint.
+ */
 public class Type4 {
 }

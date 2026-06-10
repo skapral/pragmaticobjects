@@ -25,6 +25,9 @@
  */
 package com.tests.hint;
 
+/**
+ * Test matcher that checks the custom hint annotation status.
+ */
 public class HasHint extends com.pragmaticobjects.oo.equivalence.codegen.matchers.HasHint<Hint> {
     public HasHint(boolean enabled) {
         super(Hint.class, Hint::enabled, enabled);

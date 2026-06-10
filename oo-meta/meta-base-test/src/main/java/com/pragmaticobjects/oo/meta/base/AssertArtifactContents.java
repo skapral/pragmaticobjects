@@ -29,6 +29,7 @@ import com.pragmaticobjects.oo.tests.Assertion;
 import org.assertj.core.api.Assertions;
 
 /**
+ * Assertion that verifies generated artifact contents.
  *
  * @author skapral
  */

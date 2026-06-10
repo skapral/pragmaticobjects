@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.meta.model;
 import java.util.Collection;
 
 /**
+ * Fixed method argument model.
  *
  * @author skapral
  */

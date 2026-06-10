@@ -46,6 +46,9 @@ import org.slf4j.LoggerFactory;
  * @author Kapralov Sergey
  */
 public class ByteBuddyStage implements Stage {
+    /**
+     * Callback that handles each resolved Byte Buddy type.
+     */
     interface ClassHandler {
         void handle(TypeDescription td, ClassFileLocator cfl, Path workingDirectory, java.util.List<String> errors);
     }

@@ -44,11 +44,23 @@ import static com.tngtech.archunit.core.domain.JavaCodeUnit.Predicates.construct
 import static com.tngtech.archunit.core.domain.properties.HasModifiers.Predicates.modifier;
 
 /**
- * ArchUnit condition that checks whether a constructor is a <em>secondary constructor</em>:
- * it may delegate to other concrete class constructors, access static constants, use Vavr
- * collections, and call certain safe static factory methods, but must not assign instance fields.
+ * ArchUnit condition that recognizes secondary constructors.
  *
- * @author Kapralov Sergey
+ * <p>A secondary constructor is expected to delegate object creation without
+ * performing direct state mutation. During the deep constructor analysis this
+ * condition therefore rejects arbitrary field accesses and calls, allowing only
+ * operations that are considered safe for argument preparation or delegation.</p>
+ *
+ * <p>The default field-access exclusions allow reading static constants and enum
+ * members. The default call exclusions allow calls to constructors of configured
+ * concretics, Vavr collection APIs, stateless {@code java.time} factory methods,
+ * selected side-effect-free JDK helpers, and {@link StringBuilder} usage that is
+ * typically produced by the compiler for string concatenation.</p>
+ *
+ * <p>The {@code concretics} predicate defines which concrete classes may be
+ * instantiated from a secondary constructor. Use the constructor with additional
+ * exclusions to permit project-specific safe accesses or calls while preserving
+ * the default secondary-constructor restrictions.</p>
  */
 public class BeSecondaryConstructor extends DeepConstructorAnalysisCondition {
     /**

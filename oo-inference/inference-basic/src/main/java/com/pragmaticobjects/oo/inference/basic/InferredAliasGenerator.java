@@ -47,6 +47,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Annotation processor that generates inferred alias source files.
  *
  * @author skapral
  */

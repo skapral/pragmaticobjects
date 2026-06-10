@@ -31,6 +31,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotation that requests generation of inferred implementations or aliases.
  *
  * @author skapral
  */

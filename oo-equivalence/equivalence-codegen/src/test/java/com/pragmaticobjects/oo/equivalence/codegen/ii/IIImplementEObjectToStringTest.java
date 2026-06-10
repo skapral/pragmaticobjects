@@ -30,6 +30,8 @@ import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 import net.bytebuddy.matcher.ElementMatchers;
 
 /**
+ * Tests the instrumentation instruction that implements EObject string output.
+ *
  * @author skapral
  */
 public class IIImplementEObjectToStringTest extends TestsSuite {

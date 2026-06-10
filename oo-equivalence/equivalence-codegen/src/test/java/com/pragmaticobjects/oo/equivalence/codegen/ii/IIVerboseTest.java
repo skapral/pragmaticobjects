@@ -29,6 +29,7 @@ import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 
 /**
+ * Tests verbose instrumentation instruction logging.
  *
  * @author skapral
  */

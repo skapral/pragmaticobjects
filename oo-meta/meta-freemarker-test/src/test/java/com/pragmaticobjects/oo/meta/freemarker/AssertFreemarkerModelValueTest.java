@@ -33,6 +33,7 @@ import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 
 /**
+ * Tests the Freemarker model value assertion.
  *
  * @author skapral
  */
@@ -61,6 +62,9 @@ public class AssertFreemarkerModelValueTest extends TestsSuite {
     }
 }
 
+/**
+ * A simple Freemarker model backed by a map for tests.
+ */
 class FAMSimple implements FreemarkerArtifactModel {
     private final Map<String, Object> contents;
 

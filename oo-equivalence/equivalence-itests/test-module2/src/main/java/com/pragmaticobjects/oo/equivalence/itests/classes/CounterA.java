@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.itests.classes;
 
 /**
+ * Counter fixture variant used by equivalence integration tests.
  *
  * @author skapral
  */

@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.assertions;
 
 /**
+ * Assertion that checks equality behavior between two objects.
  *
  * @author skapral
  */

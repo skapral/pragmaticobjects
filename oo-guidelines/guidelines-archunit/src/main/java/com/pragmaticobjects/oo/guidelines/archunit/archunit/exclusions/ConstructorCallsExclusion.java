@@ -37,9 +37,7 @@ import com.tngtech.archunit.core.domain.JavaCodeUnit;
  * @author Kapralov Sergey
  */
 public class ConstructorCallsExclusion {
-    /** Predicate that matches the class that owns the called code unit. */
     public final DescribedPredicate<JavaClass> owner;
-    /** Predicate that matches the called code unit (constructor or method). */
     public final DescribedPredicate<JavaCodeUnit> target;
 
     /**

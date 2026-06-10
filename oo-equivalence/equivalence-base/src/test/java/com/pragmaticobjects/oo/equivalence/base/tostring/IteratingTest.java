@@ -33,6 +33,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Test suite for the iterating to-string strategy.
+ */
 public class IteratingTest extends TestsSuite {
     private static final Collection<?> EMPTY = Collections.emptyList();
     private static final Collection<?> ONLY = Collections.singletonList("only");

@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.meta.model;
 import java.util.Collection;
 
 /**
+ * Contract for model objects that expose required imports.
  *
  * @author skapral
  */

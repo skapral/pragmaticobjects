@@ -32,6 +32,7 @@ import net.bytebuddy.dynamic.DynamicType;
 import static org.assertj.core.api.Assertions.*;
 
 /**
+ * Assertion that verifies instrumentation leaves the class type unchanged.
  *
  * @author skapral
  */

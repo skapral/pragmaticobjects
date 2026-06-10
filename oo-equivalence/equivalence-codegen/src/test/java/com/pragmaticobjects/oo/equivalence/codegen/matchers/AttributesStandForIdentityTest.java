@@ -29,6 +29,7 @@ import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 
 /**
+ * Tests detection of attributes that stand for identity.
  *
  * @author skapral
  */
@@ -67,6 +68,9 @@ public class AttributesStandForIdentityTest extends TestsSuite {
     }
     
     
+    /**
+     * Test helper type used by attributes stand for identity test scenarios.
+     */
     private static class Type1 {
         private final Object id;
 
@@ -75,6 +79,9 @@ public class AttributesStandForIdentityTest extends TestsSuite {
         }
     }
 
+    /**
+     * Test helper type used by attributes stand for identity test scenarios.
+     */
     private static abstract class Type2 {
         private final Object id;
 
@@ -83,6 +90,9 @@ public class AttributesStandForIdentityTest extends TestsSuite {
         }
     }
 
+    /**
+     * Test helper type used by attributes stand for identity test scenarios.
+     */
     private static class Type3 {
         private final Object id;
         private Object state;
@@ -92,6 +102,9 @@ public class AttributesStandForIdentityTest extends TestsSuite {
         }
     }
     
+    /**
+     * Test helper type used by attributes stand for identity test scenarios.
+     */
     private static abstract class Type4 {
         protected final Object id;
 

@@ -31,6 +31,7 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.type.DeclaredType;
 
 /**
+ * Type model derived from a declared type.
  *
  * @author skapral
  */

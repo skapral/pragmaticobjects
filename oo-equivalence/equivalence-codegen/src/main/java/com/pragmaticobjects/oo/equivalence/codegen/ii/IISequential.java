@@ -30,6 +30,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 
 /**
+ * Instrumentation instruction that applies several instrumentation instructions in sequence.
  *
  * @author skapral
  */

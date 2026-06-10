@@ -33,6 +33,9 @@ import io.vavr.collection.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Test suite for {@link AssertDisposal}.
+ */
 public class AssertDisposalTest extends TestsSuite {
     public AssertDisposalTest() {
         super(

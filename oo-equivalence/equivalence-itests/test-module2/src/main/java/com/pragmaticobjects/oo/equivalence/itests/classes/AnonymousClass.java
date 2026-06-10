@@ -28,10 +28,14 @@ package com.pragmaticobjects.oo.equivalence.itests.classes;
 import com.pragmaticobjects.oo.equivalence.base.EObjectHint;
 
 /**
+ * Fixture that provides anonymous class implementations for integration tests.
  *
  * @author skapral
  */
 public @EObjectHint(enabled = false) class AnonymousClass {
+    /**
+     * Interface used to create anonymous class fixtures.
+     */
     public interface Interface {
         int value();
     }

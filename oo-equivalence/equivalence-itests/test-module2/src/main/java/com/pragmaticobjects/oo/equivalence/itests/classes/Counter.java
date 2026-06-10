@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
+ * Counter fixture used by equivalence integration tests.
  *
  * @author skapral
  */

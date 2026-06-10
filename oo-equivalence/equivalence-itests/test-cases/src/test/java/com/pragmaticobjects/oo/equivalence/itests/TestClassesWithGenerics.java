@@ -30,6 +30,7 @@ import com.pragmaticobjects.oo.equivalence.itests.classes.GenericsTest;
 import com.pragmaticobjects.oo.equivalence.itests.classes.TreeNode;
 
 /**
+ * Integration test suite for generic class scenarios.
  *
  * @author skapral
  */

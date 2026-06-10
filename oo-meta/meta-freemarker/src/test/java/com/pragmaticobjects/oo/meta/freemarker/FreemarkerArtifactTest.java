@@ -32,6 +32,7 @@ import io.vavr.collection.HashMap;
 import java.util.Map;
 
 /**
+ * Tests Freemarker artifact behavior.
  *
  * @author skapral
  */
@@ -77,6 +78,9 @@ public class FreemarkerArtifactTest extends TestsSuite {
         );
     }
     
+    /**
+     * Freemarker model fixture with a single string value.
+     */
     public static class ModelObject {
         private final String greeting;
         private final String name;
@@ -95,6 +99,9 @@ public class FreemarkerArtifactTest extends TestsSuite {
         }
     }
     
+    /**
+     * Freemarker model fixture backed by generic model access.
+     */
     public static class GenericModel implements FreemarkerArtifactModel {
         private final Map<String, Object> map;
 

@@ -64,6 +64,9 @@ public class AssertThatTypeDoesNotMatchTest extends TestsSuite {
     }
 
     //CHECKSTYLE:OFF
+    /**
+     * Simple test fixture type.
+     */
     private static class Foo {}
     private static String FOO_CLASS_NAME = Foo.class.getName();
 }

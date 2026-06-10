@@ -30,6 +30,9 @@ import com.pragmaticobjects.oo.equivalence.assertions.AssertEqualsResult;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 
+/**
+ * Integration test suite for equivalence instrumentation of sealed types.
+ */
 public class TestSealed extends TestsSuite {
     public TestSealed() {
         super(

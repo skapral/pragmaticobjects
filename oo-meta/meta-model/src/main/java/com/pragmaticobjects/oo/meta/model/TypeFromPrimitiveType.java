@@ -28,6 +28,7 @@ package com.pragmaticobjects.oo.meta.model;
 import javax.lang.model.type.TypeMirror;
 
 /**
+ * Type model derived from a primitive type mirror.
  *
  * @author skapral
  */

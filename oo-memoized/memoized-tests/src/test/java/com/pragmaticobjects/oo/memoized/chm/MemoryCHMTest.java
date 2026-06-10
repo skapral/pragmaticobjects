@@ -36,6 +36,9 @@ import io.vavr.collection.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Memoized callable that returns a fixed integer value.
+ */
 class TestCallable implements MemoizedCallable<Integer> {
     private final int id;
 
@@ -50,6 +53,9 @@ class TestCallable implements MemoizedCallable<Integer> {
 }
 
 
+/**
+ * Test suite for {@link MemoryCHM}.
+ */
 class MemoryCHMTest extends TestsSuite {
     public MemoryCHMTest() {
         super(

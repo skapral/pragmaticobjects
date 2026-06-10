@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.assertions;
 
 /**
+ * Tests the equals consistency assertion.
  *
  * @author skapral
  */
@@ -53,6 +54,9 @@ public class AssertEqualsConsistentTest extends TestsSuite {
         );
     }
     
+    /**
+     * Test helper type used by assert equals consistent test scenarios.
+     */
     private static final class TestObject {
         private final boolean consistentEquality;
         private int i = 0;

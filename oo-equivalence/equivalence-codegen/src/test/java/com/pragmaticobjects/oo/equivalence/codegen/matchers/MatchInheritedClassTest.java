@@ -28,6 +28,9 @@ package com.pragmaticobjects.oo.equivalence.codegen.matchers;
 import com.pragmaticobjects.oo.equivalence.assertions.TestCase;
 import com.pragmaticobjects.oo.equivalence.assertions.TestsSuite;
 
+/**
+ * Test suite for inherited class matching.
+ */
 public class MatchInheritedClassTest extends TestsSuite {
     public MatchInheritedClassTest() {
         super(
@@ -49,7 +52,13 @@ public class MatchInheritedClassTest extends TestsSuite {
     }
 }
 
+/**
+ * Base class for inherited class matcher tests.
+ */
 class BaseClass {}
 
+/**
+ * Inherited class for inherited class matcher tests.
+ */
 class InheritedClass extends BaseClass {}
 

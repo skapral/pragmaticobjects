@@ -39,6 +39,9 @@ import net.bytebuddy.matcher.ElementMatchers;
 import static com.tngtech.archunit.base.DescribedPredicate.and;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.*;
 
+/**
+ * Self-test suite that applies guidelines to oo-equivalence classes.
+ */
 public class GuidelinesForOOEquivalenceTests extends GuidelinesTests {
     private static final JavaClasses CLASSES_TO_TEST = new ClassFileImporter(
     ).importPackages("com.pragmaticobjects.oo.equivalence..");

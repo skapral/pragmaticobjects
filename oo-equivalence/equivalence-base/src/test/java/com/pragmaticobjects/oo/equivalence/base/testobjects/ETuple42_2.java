@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.equivalence.base.testobjects;
 
 /**
+ * Second EObject tuple fixture with values 4 and 2.
  *
  * @author skapral
  */

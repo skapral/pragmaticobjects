@@ -26,6 +26,7 @@
 package com.pragmaticobjects.oo.meta.base;
 
 /**
+ * Abstraction for a generated artifact.
  *
  * @author skapral
  */
