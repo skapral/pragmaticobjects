@@ -25,12 +25,25 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests.packagelevelhint;
 
+/**
+ * Test fixture class used to verify package-level {@link com.pragmaticobjects.oo.equivalence.base.EObjectHint}
+ * instrumentation. Intentionally contains a non-final method to confirm that the instrumentor
+ * can handle such classes when the package hint is in effect.
+ *
+ * @author Kapralov Sergey
+ */
 public class SimpleClass {
     private final int a;
 
+    /**
+     * Ctor.
+     *
+     * @param a the integer value held by this object
+     */
     public SimpleClass(int a) {
         this.a = a;
     }
 
+    /** Non-final method present to test instrumentation behaviour with package-level hints. */
     public void nonFinalMethodThatUsuallyFailsTheInstrumentation() {}
 }

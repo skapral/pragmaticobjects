@@ -30,9 +30,27 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Package-level annotation that instructs the annotation processor to generate an
+ * inferred implementation for the specified interface in the annotated package.
+ *
+ * @author Kapralov Sergey
+ */
 @Target(ElementType.PACKAGE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface GenerateInferred {
+    /**
+     * The interface for which to generate an inferred implementation.
+     *
+     * @return the target interface class
+     */
     Class<?> value();
+
+    /**
+     * Optional custom name for the generated class.
+     * Defaults to {@code <InterfaceName>Inferred} when left empty.
+     *
+     * @return the desired class name, or empty string to use the default
+     */
     String className() default "";
 }

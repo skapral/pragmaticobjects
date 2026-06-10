@@ -29,10 +29,24 @@ import com.pragmaticobjects.oo.equivalence.base.EquivalenceHint;
 
 import java.time.LocalDate;
 
+/**
+ * Test fixture representing a date range with {@link EquivalenceHint}-annotated fields,
+ * used to verify instrumentation of classes that use the field-level equivalence hint.
+ *
+ * @author Kapralov Sergey
+ */
 public class TimeRange {
+    /** Start date (equivalence-hint enabled). */
     public final @EquivalenceHint(enabled = true) LocalDate beginDate;
+    /** End date (equivalence-hint enabled). */
     public final @EquivalenceHint(enabled = true) LocalDate endDate;
 
+    /**
+     * Ctor.
+     *
+     * @param beginDate start of the range
+     * @param endDate   end of the range
+     */
     public TimeRange(LocalDate beginDate, LocalDate endDate) {
         this.beginDate = beginDate;
         this.endDate = endDate;

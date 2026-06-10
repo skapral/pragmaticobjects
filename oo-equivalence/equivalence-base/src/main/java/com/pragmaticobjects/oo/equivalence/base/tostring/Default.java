@@ -28,6 +28,13 @@ package com.pragmaticobjects.oo.equivalence.base.tostring;
 import com.pragmaticobjects.oo.equivalence.base.EObject;
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic;
 
+/**
+ * Default {@link ToStringMethod} that delegates to {@link com.pragmaticobjects.oo.equivalence.base.EquivalenceLogic#toString}
+ * for {@link com.pragmaticobjects.oo.equivalence.base.EObject} instances, and to
+ * {@link Object#toString()} for all other types.
+ *
+ * @author Kapralov Sergey
+ */
 public class Default implements ToStringMethod {
     @Override
     public final String stringify(Object obj) {

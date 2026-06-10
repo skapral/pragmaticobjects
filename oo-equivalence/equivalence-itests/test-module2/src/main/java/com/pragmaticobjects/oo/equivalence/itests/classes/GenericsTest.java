@@ -29,6 +29,12 @@ package com.pragmaticobjects.oo.equivalence.itests.classes;
 import io.vavr.collection.Map;
 
 
+/**
+ * Test fixture class implementing {@link GenericsTestIface} with a concrete generic argument,
+ * used to verify instrumentation of classes with generic interfaces.
+ *
+ * @author Kapralov Sergey
+ */
 public class GenericsTest implements GenericsTestIface<Map<String, Object>> {
     @Override
     public final Map<String, Object> get() {

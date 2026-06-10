@@ -25,10 +25,24 @@
  */
 package com.pragmaticobjects.oo.equivalence.itests.classes;
 
+/**
+ * Test fixture representing a 2D point with public final fields,
+ * used to verify instrumentation of classes with public fields.
+ *
+ * @author Kapralov Sergey
+ */
 public class PublicPoint {
+    /** X coordinate. */
     public final int x;
+    /** Z coordinate. */
     public final int z;
 
+    /**
+     * Ctor.
+     *
+     * @param x x coordinate
+     * @param z z coordinate
+     */
     public PublicPoint(int x, int z) {
         this.x = x;
         this.z = z;

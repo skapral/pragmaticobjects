@@ -32,5 +32,11 @@ package com.pragmaticobjects.oo.equivalence.base;
  * or use {@link NaturallyEquivalent} decorator
  */
 public interface EquivalenceCompliant {
+    /**
+     * Returns whether instances of this class participate in equivalence checks
+     * (i.e., can be reliably compared via {@code equals} and {@code hashCode}).
+     *
+     * @return {@code true} if equivalence checks are applicable to this instance
+     */
     boolean isEquivalenceCompliant();
 }

@@ -58,5 +58,11 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.PACKAGE})
 @Retention(RetentionPolicy.CLASS)
 public @interface EObjectHint {
+    /**
+     * Whether the hint is enabled.
+     * Set to {@code false} to explicitly exclude a class from instrumentation.
+     *
+     * @return {@code true} by default
+     */
     boolean enabled() default true;
 }

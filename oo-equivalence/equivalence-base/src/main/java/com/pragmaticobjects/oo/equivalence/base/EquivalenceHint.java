@@ -42,6 +42,17 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EquivalenceHint {
+    /**
+     * Whether equivalence check is enabled for this field.
+     *
+     * @return {@code true} by default
+     */
     boolean enabled() default true;
+
+    /**
+     * The {@link ToStringMethod} strategy to use for this field's string representation.
+     *
+     * @return {@link Default} strategy by default
+     */
     Class<? extends ToStringMethod> toStringMethod() default Default.class;
 }

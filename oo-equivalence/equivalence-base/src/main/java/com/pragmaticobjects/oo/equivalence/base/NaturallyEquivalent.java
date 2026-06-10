@@ -34,6 +34,11 @@ import com.pragmaticobjects.oo.equivalence.base.tostring.ToStringMethod;
 public class NaturallyEquivalent extends HintedAttribute {
     private static final ToStringMethod DEFAULT = new Default();
 
+    /**
+     * Ctor.
+     *
+     * @param obj the object to wrap and mark as equivalence-compliant
+     */
     public NaturallyEquivalent(Object obj) {
         super(
             obj,

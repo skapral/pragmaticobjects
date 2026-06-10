@@ -25,6 +25,19 @@
  */
 package com.pragmaticobjects.oo.equivalence.base.tostring;
 
+/**
+ * Strategy interface for producing a string representation of an object attribute.
+ * Implementations are used by {@link com.pragmaticobjects.oo.equivalence.base.HintedAttribute}
+ * to customise how individual fields appear in {@code toString} output.
+ *
+ * @author Kapralov Sergey
+ */
 public interface ToStringMethod {
+    /**
+     * Converts the given object to its string representation.
+     *
+     * @param obj the object to stringify
+     * @return string representation of {@code obj}
+     */
     String stringify(Object obj);
 }

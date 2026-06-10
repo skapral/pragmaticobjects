@@ -40,7 +40,24 @@ import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.constructors;
 
+/**
+ * Assertion that enforces the guideline that every constructor of a concrete class must be either
+ * a <em>primary constructor</em> (sets final fields, calls super) or a
+ * <em>secondary constructor</em> (delegates to another constructor without field assignments).
+ *
+ * @author Kapralov Sergey
+ */
 public class AssertThatAllConstructorsOfConcreticsAreEitherPrimaryOrSecondary extends AssertThatClassesFollowProvidedArchunitGuidelines {
+    /**
+     * Ctor.
+     *
+     * @param javaClasses                                       classes to check
+     * @param concretics                                        predicate identifying the concrete classes to enforce the rule on
+     * @param fieldAccessExclusionsAllowedInPrimaryConstructor  additional field-access patterns that are allowed in primary constructors
+     * @param callsAllowedInPrimaryConstructor                  additional constructor-call patterns that are allowed in primary constructors
+     * @param fieldAccessExclusionsAllowedInSecondaryConstructor additional field-access patterns that are allowed in secondary constructors
+     * @param callsAllowedInSecondaryConstructor                additional constructor-call patterns that are allowed in secondary constructors
+     */
     public AssertThatAllConstructorsOfConcreticsAreEitherPrimaryOrSecondary(
         JavaClasses javaClasses,
         DescribedPredicate<JavaClass> concretics,
@@ -77,6 +94,12 @@ public class AssertThatAllConstructorsOfConcreticsAreEitherPrimaryOrSecondary ex
         );
     }
 
+    /**
+     * Ctor. Uses empty exclusion lists (no additional exclusions).
+     *
+     * @param javaClasses classes to check
+     * @param concretics  predicate identifying the concrete classes to enforce the rule on
+     */
     public AssertThatAllConstructorsOfConcreticsAreEitherPrimaryOrSecondary(
         JavaClasses javaClasses,
         DescribedPredicate<JavaClass> concretics

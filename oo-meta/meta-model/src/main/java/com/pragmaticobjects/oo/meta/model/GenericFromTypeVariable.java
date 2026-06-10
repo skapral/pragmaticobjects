@@ -29,9 +29,20 @@ import javax.lang.model.type.TypeVariable;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * {@link Generic} implementation backed by a {@link javax.lang.model.type.TypeVariable},
+ * producing the variable's name as its string representation.
+ *
+ * @author Kapralov Sergey
+ */
 public class GenericFromTypeVariable implements Generic {
     private final TypeVariable variable;
 
+    /**
+     * Ctor.
+     *
+     * @param variable the type variable to represent
+     */
     public GenericFromTypeVariable(TypeVariable variable) {
         this.variable = variable;
     }

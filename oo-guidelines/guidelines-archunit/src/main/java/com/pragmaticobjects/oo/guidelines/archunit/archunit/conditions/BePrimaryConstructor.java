@@ -34,7 +34,16 @@ import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
 import static com.tngtech.archunit.core.domain.JavaCodeUnit.Predicates.constructor;
 import static com.tngtech.archunit.core.domain.properties.HasModifiers.Predicates.modifier;
 
+/**
+ * ArchUnit condition that checks whether a constructor is a <em>primary constructor</em>:
+ * it may only assign {@code final} fields and call the {@link Object} super constructor.
+ *
+ * @author Kapralov Sergey
+ */
 public class BePrimaryConstructor extends DeepConstructorAnalysisCondition {
+    /**
+     * Ctor. Uses default exclusions (final field assignments and {@code Object} super call).
+     */
     public BePrimaryConstructor() {
         this(
             List.empty(),
@@ -42,6 +51,12 @@ public class BePrimaryConstructor extends DeepConstructorAnalysisCondition {
         );
     }
 
+    /**
+     * Ctor.
+     *
+     * @param additionalFieldAccessExclusions  extra field-access patterns allowed in a primary constructor
+     * @param additionalCtorCallsExclusion     extra constructor-call patterns allowed in a primary constructor
+     */
     public BePrimaryConstructor(
         List<FieldAccessExclusion> additionalFieldAccessExclusions,
         List<ConstructorCallsExclusion> additionalCtorCallsExclusion

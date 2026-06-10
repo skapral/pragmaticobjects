@@ -25,15 +25,29 @@
  */
 package com.pragmaticobjects.oo.equivalence.base.tostring;
 
+/**
+ * {@link ToStringMethod} that formats numeric values as hexadecimal strings.
+ * Non-numeric objects fall back to the {@link Default} strategy.
+ *
+ * @author Kapralov Sergey
+ */
 public class Hex implements ToStringMethod {
     private static final ToStringMethod DEFAULT = new Default();
 
     private final String prefix;
 
+    /**
+     * Ctor.
+     *
+     * @param prefix prefix to prepend to the hex string (e.g. {@code "0x"})
+     */
     public Hex(String prefix) {
         this.prefix = prefix;
     }
 
+    /**
+     * Ctor. Uses the default prefix {@code "0x"}.
+     */
     public Hex() {
         this("0x");
     }

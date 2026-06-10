@@ -29,11 +29,24 @@ import com.pragmaticobjects.oo.equivalence.base.tostring.ToStringMethod;
 
 import java.util.Objects;
 
+/**
+ * Wrapper for an object attribute that attaches a custom {@link ToStringMethod} strategy
+ * and controls whether the attribute participates in equivalence checks.
+ *
+ * @author Kapralov Sergey
+ */
 public class HintedAttribute implements EquivalenceCompliant {
     private final Object obj;
     private final ToStringMethod stringifyMethod;
     private final boolean equivalenceCompliant;
 
+    /**
+     * Ctor.
+     *
+     * @param obj                  the wrapped attribute value
+     * @param stringifyMethod      strategy used to produce the string representation
+     * @param equivalenceCompliant whether this attribute participates in equals/hashCode checks
+     */
     public HintedAttribute(Object obj, ToStringMethod stringifyMethod, boolean equivalenceCompliant) {
         this.obj = obj;
         this.stringifyMethod = stringifyMethod;

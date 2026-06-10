@@ -37,7 +37,19 @@ import static com.tngtech.archunit.core.domain.JavaClass.Predicates.RECORDS;
 import static com.tngtech.archunit.lang.conditions.ArchConditions.notBeFinal;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
+/**
+ * Assertion that enforces the guideline that concrete classes must not be declared {@code final},
+ * allowing them to be subclassed for decoration or extension purposes.
+ *
+ * @author Kapralov Sergey
+ */
 public class AssertThatConcreteClassesAreNotFinal extends AssertThatClassesFollowProvidedArchunitGuidelines {
+    /**
+     * Ctor.
+     *
+     * @param javaClasses classes to check
+     * @param concretics  predicate identifying the concrete classes to enforce the rule on
+     */
     public AssertThatConcreteClassesAreNotFinal(
         JavaClasses javaClasses,
         DescribedPredicate<JavaClass> concretics

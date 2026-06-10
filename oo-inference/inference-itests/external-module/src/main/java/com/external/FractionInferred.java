@@ -27,9 +27,20 @@ package com.external;
 
 import com.pragmaticobjects.oo.inference.api.Inference;
 
+/**
+ * Inferred {@link Fraction} implementation that delegates all calls to a provided
+ * {@link Inference} strategy. Used as a test fixture for the inference integration tests.
+ *
+ * @author Kapralov Sergey
+ */
 public class FractionInferred implements Fraction {
     private final Inference<Fraction> inference;
 
+    /**
+     * Ctor.
+     *
+     * @param inference the inference strategy that provides the actual {@link Fraction} instance
+     */
     public FractionInferred(Inference<Fraction> inference) {
         this.inference = inference;
     }

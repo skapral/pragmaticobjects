@@ -31,9 +31,24 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Static utility class that implements {@code equals}, {@code hashCode}, and {@code toString}
+ * logic for {@link EObject} instances. All {@link EObject} implementors must delegate
+ * those methods to this class.
+ *
+ * @author Kapralov Sergey
+ */
 public class EquivalenceLogic {
     private static final boolean FIXED_STATIC_IDENTITY = System.getProperty("fixedStaticIdentity") != null;
 
+    /**
+     * Implements equality check for {@link EObject} instances by comparing their base types
+     * and attributes pairwise.
+     *
+     * @param that the object on which {@code equals} was called
+     * @param obj  the object to compare with
+     * @return {@code true} if both objects have the same base type and all attributes are equal
+     */
     public static boolean equals(EObject that, Object obj) {
         if (that == obj) {
             return true;
@@ -58,6 +73,12 @@ public class EquivalenceLogic {
         return false;
     }
 
+    /**
+     * Computes a hash code for an {@link EObject} using its hash seed and attributes.
+     *
+     * @param that the object whose hash code is being computed
+     * @return the computed hash code
+     */
     public static int hashCode(EObject that) {
         final Object[] attrs = that.attributes();
         final int hashSeed = that.hashSeed();
@@ -68,6 +89,13 @@ public class EquivalenceLogic {
         return result;
     }
 
+    /**
+     * Produces a human-readable string representation of an {@link EObject}, listing its
+     * simple class name and all attribute values.
+     *
+     * @param that the object to stringify
+     * @return string representation in the form {@code ClassName(attr1, attr2, ...)}
+     */
     public static String toString(EObject that) {
         final Object[] attrs = that.attributes();
         StringBuilder sb = new StringBuilder();

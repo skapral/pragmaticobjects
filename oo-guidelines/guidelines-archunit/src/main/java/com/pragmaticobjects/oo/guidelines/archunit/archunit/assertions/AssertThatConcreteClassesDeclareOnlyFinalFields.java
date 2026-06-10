@@ -35,7 +35,19 @@ import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.ENUMS;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
+/**
+ * Assertion that enforces the guideline that all fields of concrete classes must be declared
+ * {@code final}, ensuring immutability.
+ *
+ * @author Kapralov Sergey
+ */
 public class AssertThatConcreteClassesDeclareOnlyFinalFields extends AssertThatClassesFollowProvidedArchunitGuidelines {
+    /**
+     * Ctor.
+     *
+     * @param javaClasses classes to check
+     * @param concretics  predicate identifying the concrete classes to enforce the rule on
+     */
     public AssertThatConcreteClassesDeclareOnlyFinalFields(
         JavaClasses javaClasses,
         DescribedPredicate<JavaClass> concretics

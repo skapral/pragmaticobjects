@@ -43,7 +43,19 @@ import static com.tngtech.archunit.core.domain.JavaClass.Predicates.type;
 import static com.tngtech.archunit.core.domain.JavaCodeUnit.Predicates.constructor;
 import static com.tngtech.archunit.core.domain.properties.HasModifiers.Predicates.modifier;
 
+/**
+ * ArchUnit condition that checks whether a constructor is a <em>secondary constructor</em>:
+ * it may delegate to other concrete class constructors, access static constants, use Vavr
+ * collections, and call certain safe static factory methods, but must not assign instance fields.
+ *
+ * @author Kapralov Sergey
+ */
 public class BeSecondaryConstructor extends DeepConstructorAnalysisCondition {
+    /**
+     * Ctor. Uses default exclusions.
+     *
+     * @param concretics predicate identifying concrete classes whose constructors are allowed targets
+     */
     public BeSecondaryConstructor(
         DescribedPredicate<JavaClass> concretics
     ) {
@@ -54,6 +66,13 @@ public class BeSecondaryConstructor extends DeepConstructorAnalysisCondition {
         );
     }
 
+    /**
+     * Ctor.
+     *
+     * @param concretics                        predicate identifying concrete classes whose constructors are allowed targets
+     * @param additionalFieldAccessExclusions   extra field-access patterns allowed in a secondary constructor
+     * @param additionalCtorCallsExclusions     extra constructor-call patterns allowed in a secondary constructor
+     */
     public BeSecondaryConstructor(
         DescribedPredicate<JavaClass> concretics,
         List<FieldAccessExclusion> additionalFieldAccessExclusions,

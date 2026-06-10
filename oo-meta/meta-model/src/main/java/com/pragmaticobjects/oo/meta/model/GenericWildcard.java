@@ -27,10 +27,22 @@ package com.pragmaticobjects.oo.meta.model;
 
 import java.util.Collection;
 
+/**
+ * {@link Generic} implementation representing a bounded wildcard such as
+ * {@code ? extends Foo} or {@code ? super Bar}.
+ *
+ * @author Kapralov Sergey
+ */
 public class GenericWildcard implements Generic {
     private final GenericBoundary boundaryType;
     private final Generic boundary;
 
+    /**
+     * Ctor.
+     *
+     * @param boundaryType whether the wildcard uses {@code extends} or {@code super}
+     * @param boundary     the generic representing the bound type
+     */
     public GenericWildcard(GenericBoundary boundaryType, Generic boundary) {
         this.boundaryType = boundaryType;
         this.boundary = boundary;

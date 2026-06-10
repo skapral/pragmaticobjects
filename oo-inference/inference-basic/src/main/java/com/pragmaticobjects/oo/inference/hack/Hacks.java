@@ -40,7 +40,23 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class with workarounds for annotation processing limitations.
+ * In particular, accessing {@link Class} values from annotations during annotation processing
+ * requires catching {@link javax.lang.model.type.MirroredTypeException} to obtain the
+ * corresponding {@link TypeMirror}.
+ *
+ * @author Kapralov Sergey
+ */
 public class Hacks {
+    /**
+     * Extracts a {@link TypeMirror} from an annotation attribute that holds a {@link Class} reference.
+     * This works by provoking a {@link javax.lang.model.type.MirroredTypeException} and reading the
+     * type mirror from it.
+     *
+     * @param classSupplier supplier of the annotation's class attribute (e.g. {@code anno::value})
+     * @return the corresponding {@link TypeMirror}
+     */
     public static TypeMirror extractType(Supplier<Class<?>> classSupplier) {
         try {
             Class<?> clazz = classSupplier.get();

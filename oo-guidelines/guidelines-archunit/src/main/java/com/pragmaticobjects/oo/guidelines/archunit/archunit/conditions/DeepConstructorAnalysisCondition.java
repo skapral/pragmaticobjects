@@ -33,11 +33,26 @@ import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
 import io.vavr.collection.List;
 
+/**
+ * Base ArchUnit condition that analyses a constructor's field accesses and method calls,
+ * reporting violations for any that are not covered by the provided exclusion lists.
+ * Subclasses ({@link BePrimaryConstructor}, {@link BeSecondaryConstructor}) configure
+ * the allowed patterns.
+ *
+ * @author Kapralov Sergey
+ */
 public class DeepConstructorAnalysisCondition extends ArchCondition<JavaConstructor> {
     private final String constructorType;
     private final List<FieldAccessExclusion> fieldAccessExclusions;
     private final List<ConstructorCallsExclusion> ctorCallExclusion;
 
+    /**
+     * Ctor.
+     *
+     * @param constructorType    human-readable name of the constructor type (e.g. "primary")
+     * @param fieldAccessExclusions  patterns of field accesses that are permitted
+     * @param ctorCallExclusion      patterns of constructor/method calls that are permitted
+     */
     public DeepConstructorAnalysisCondition(String constructorType, List<FieldAccessExclusion> fieldAccessExclusions, List<ConstructorCallsExclusion> ctorCallExclusion) {
         super(constructorType + " constructor");
         this.constructorType = constructorType;
