@@ -44,7 +44,7 @@ import io.vavr.collection.List;
  * @author Kapralov Sergey
  */
 public class GuidelinesTests extends TestsSuite {
-    public static DescribedPredicate<JavaClass> DEFAULT_CONCRETICS = JavaClass.Predicates.implement(EquivalenceCompliant.class);
+    public static final DescribedPredicate<JavaClass> DEFAULT_CONCRETICS = JavaClass.Predicates.implement(EquivalenceCompliant.class);
 
     /**
      * Ctor.
