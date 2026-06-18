@@ -23,70 +23,43 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.guidelines.archunit.archunit.assertions;
+package com.pragmaticobjects.oo.guidelines.archunit.assertions;
 
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 
-import static com.pragmaticobjects.oo.guidelines.archunit.archunit.Items.ARCHITECTURAL_EXCLUSION;
-import static com.pragmaticobjects.oo.guidelines.archunit.archunit.Items.DECLARED_METHODS;
+import static com.pragmaticobjects.oo.guidelines.archunit.Items.ARCHITECTURAL_EXCLUSION;
 import static com.tngtech.archunit.base.DescribedPredicate.and;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.ENUMS;
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.INTERFACES;
-import static com.tngtech.archunit.core.domain.JavaModifier.ABSTRACT;
-import static com.tngtech.archunit.core.domain.properties.HasModifiers.Predicates.modifier;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 /**
- * Assertion that enforces the guideline that all non-abstract, non-static, non-private methods
- * of concrete classes must be declared {@code final}.
+ * Assertion that enforces the guideline that all fields of concrete classes must be declared
+ * {@code final}, ensuring immutability.
  *
  * @author Kapralov Sergey
  */
-public class AssertThatAllNonAbstractMethodsOfConcreteClassesAreFinal extends AssertThatClassesFollowProvidedArchunitGuidelines {
+public class AssertThatConcreteClassesDeclareOnlyFinalFields extends AssertThatClassesFollowProvidedArchunitGuidelines {
     /**
      * Ctor.
      *
      * @param javaClasses classes to check
      * @param concretics  predicate identifying the concrete classes to enforce the rule on
      */
-    public AssertThatAllNonAbstractMethodsOfConcreteClassesAreFinal(
+    public AssertThatConcreteClassesDeclareOnlyFinalFields(
         JavaClasses javaClasses,
         DescribedPredicate<JavaClass> concretics
     ) {
         super(
-            methods().that(
-                    and(
-                        DECLARED_METHODS,
-                        not(
-                            ARCHITECTURAL_EXCLUSION
-                        ),
-                        not(
-                            modifier(ABSTRACT)
-                        )
-                    )
-                ).and()
-                .areDeclaredInClassesThat(
-                    and(
-                        concretics,
-                        not(ENUMS),
-                        not(
-                            // Since anonymous classes are typically not extended, it is allowed to
-                            // leave its methods non-final
-                            JavaClass.Predicates.ANONYMOUS_CLASSES
-                        ),
-                        not(INTERFACES),
-                        not(ARCHITECTURAL_EXCLUSION)
-                    )
+            classes().that(
+                and(
+                    concretics,
+                    not(ENUMS),
+                    not(ARCHITECTURAL_EXCLUSION)
                 )
-                .and()
-                .areNotPrivate()
-                .and()
-                .areNotStatic()
-                .should()
-                .beFinal(),
+            ).should().haveOnlyFinalFields(),
             javaClasses
         );
     }

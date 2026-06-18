@@ -23,50 +23,70 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.guidelines.archunit.archunit.assertions;
+package com.pragmaticobjects.oo.guidelines.archunit.assertions;
 
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 
-import static com.pragmaticobjects.oo.guidelines.archunit.archunit.Items.ARCHITECTURAL_EXCLUSION;
+import static com.pragmaticobjects.oo.guidelines.archunit.Items.ARCHITECTURAL_EXCLUSION;
+import static com.pragmaticobjects.oo.guidelines.archunit.Items.DECLARED_METHODS;
 import static com.tngtech.archunit.base.DescribedPredicate.and;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.ENUMS;
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.RECORDS;
-import static com.tngtech.archunit.lang.conditions.ArchConditions.notBeFinal;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.INTERFACES;
+import static com.tngtech.archunit.core.domain.JavaModifier.ABSTRACT;
+import static com.tngtech.archunit.core.domain.properties.HasModifiers.Predicates.modifier;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 
 /**
- * Assertion that enforces the guideline that concrete classes must not be declared {@code final},
- * allowing them to be subclassed for decoration or extension purposes.
+ * Assertion that enforces the guideline that all non-abstract, non-static, non-private methods
+ * of concrete classes must be declared {@code final}.
  *
  * @author Kapralov Sergey
  */
-public class AssertThatConcreteClassesAreNotFinal extends AssertThatClassesFollowProvidedArchunitGuidelines {
+public class AssertThatAllNonAbstractMethodsOfConcreteClassesAreFinal extends AssertThatClassesFollowProvidedArchunitGuidelines {
     /**
      * Ctor.
      *
      * @param javaClasses classes to check
      * @param concretics  predicate identifying the concrete classes to enforce the rule on
      */
-    public AssertThatConcreteClassesAreNotFinal(
+    public AssertThatAllNonAbstractMethodsOfConcreteClassesAreFinal(
         JavaClasses javaClasses,
         DescribedPredicate<JavaClass> concretics
     ) {
         super(
-            classes(
-            ).that(
-                and(
-                    concretics,
-                    not(ENUMS), // Enums are always final
-                    not(RECORDS), // Records are always final
-                    not(ARCHITECTURAL_EXCLUSION)
+            methods().that(
+                    and(
+                        DECLARED_METHODS,
+                        not(
+                            ARCHITECTURAL_EXCLUSION
+                        ),
+                        not(
+                            modifier(ABSTRACT)
+                        )
+                    )
+                ).and()
+                .areDeclaredInClassesThat(
+                    and(
+                        concretics,
+                        not(ENUMS),
+                        not(
+                            // Since anonymous classes are typically not extended, it is allowed to
+                            // leave its methods non-final
+                            JavaClass.Predicates.ANONYMOUS_CLASSES
+                        ),
+                        not(INTERFACES),
+                        not(ARCHITECTURAL_EXCLUSION)
+                    )
                 )
-            )
-            .should(
-                notBeFinal()
-            ),
+                .and()
+                .areNotPrivate()
+                .and()
+                .areNotStatic()
+                .should()
+                .beFinal(),
             javaClasses
         );
     }

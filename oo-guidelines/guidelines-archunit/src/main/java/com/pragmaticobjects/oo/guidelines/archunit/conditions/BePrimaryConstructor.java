@@ -23,10 +23,10 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.guidelines.archunit.archunit.conditions;
+package com.pragmaticobjects.oo.guidelines.archunit.conditions;
 
-import com.pragmaticobjects.oo.guidelines.archunit.archunit.exclusions.ConstructorCallsExclusion;
-import com.pragmaticobjects.oo.guidelines.archunit.archunit.exclusions.FieldAccessExclusion;
+import com.pragmaticobjects.oo.guidelines.archunit.exclusions.ConstructorCallsExclusion;
+import com.pragmaticobjects.oo.guidelines.archunit.exclusions.FieldAccessExclusion;
 import com.tngtech.archunit.core.domain.JavaModifier;
 import io.vavr.collection.List;
 

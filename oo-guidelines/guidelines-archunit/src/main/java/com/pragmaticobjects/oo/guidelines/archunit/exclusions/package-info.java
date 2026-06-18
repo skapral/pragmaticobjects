@@ -23,28 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.guidelines.archunit.archunit.exclusions;
-
-import com.tngtech.archunit.base.DescribedPredicate;
-import com.tngtech.archunit.core.domain.JavaField;
-
-/**
- * Exclusion record that marks field accesses as permitted within constructor analysis conditions.
- * A field access is excluded when the accessed field matches the {@code field} predicate.
- *
- * @author Kapralov Sergey
- */
-public class FieldAccessExclusion {
-    public final DescribedPredicate<JavaField> field;
-
-    /**
-     * Ctor.
-     *
-     * @param field predicate matching the fields whose access should be allowed
-     */
-    public FieldAccessExclusion(
-        DescribedPredicate<JavaField> field
-    ) {
-        this.field = field;
-    }
-}
+package com.pragmaticobjects.oo.guidelines.archunit.exclusions;

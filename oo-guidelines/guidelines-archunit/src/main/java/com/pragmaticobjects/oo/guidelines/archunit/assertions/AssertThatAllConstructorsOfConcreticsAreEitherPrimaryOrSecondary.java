@@ -23,18 +23,18 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.guidelines.archunit.archunit.assertions;
+package com.pragmaticobjects.oo.guidelines.archunit.assertions;
 
-import com.pragmaticobjects.oo.guidelines.archunit.archunit.conditions.BePrimaryConstructor;
-import com.pragmaticobjects.oo.guidelines.archunit.archunit.conditions.BeSecondaryConstructor;
-import com.pragmaticobjects.oo.guidelines.archunit.archunit.exclusions.ConstructorCallsExclusion;
-import com.pragmaticobjects.oo.guidelines.archunit.archunit.exclusions.FieldAccessExclusion;
+import com.pragmaticobjects.oo.guidelines.archunit.conditions.BePrimaryConstructor;
+import com.pragmaticobjects.oo.guidelines.archunit.conditions.BeSecondaryConstructor;
+import com.pragmaticobjects.oo.guidelines.archunit.exclusions.ConstructorCallsExclusion;
+import com.pragmaticobjects.oo.guidelines.archunit.exclusions.FieldAccessExclusion;
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import io.vavr.collection.List;
 
-import static com.pragmaticobjects.oo.guidelines.archunit.archunit.Items.ARCHITECTURAL_EXCLUSION;
+import static com.pragmaticobjects.oo.guidelines.archunit.Items.ARCHITECTURAL_EXCLUSION;
 import static com.tngtech.archunit.base.DescribedPredicate.and;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.*;

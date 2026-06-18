@@ -25,7 +25,7 @@
  */
 package com.pragmaticobjects.oo.guidelines.archunit.selftest;
 
-import com.pragmaticobjects.oo.guidelines.archunit.archunit.testsuite.GuidelinesTests;
+import com.pragmaticobjects.oo.guidelines.archunit.testsuite.GuidelinesTests;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 

@@ -23,4 +23,34 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.guidelines.archunit.archunit.assertions;
+package com.pragmaticobjects.oo.guidelines.archunit.exclusions;
+
+import com.tngtech.archunit.base.DescribedPredicate;
+import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaCodeUnit;
+
+/**
+ * Exclusion record that marks constructor or method calls as permitted within constructor
+ * analysis conditions. A call is excluded when both the owning class matches {@code owner}
+ * and the called code unit matches {@code target}.
+ *
+ * @author Kapralov Sergey
+ */
+public class ConstructorCallsExclusion {
+    public final DescribedPredicate<JavaClass> owner;
+    public final DescribedPredicate<JavaCodeUnit> target;
+
+    /**
+     * Ctor.
+     *
+     * @param owner  predicate matching the class that owns the called code unit
+     * @param target predicate matching the called code unit itself
+     */
+    public ConstructorCallsExclusion(
+        DescribedPredicate<JavaClass> owner,
+        DescribedPredicate<JavaCodeUnit> target
+    ) {
+        this.owner = owner;
+        this.target = target;
+    }
+}

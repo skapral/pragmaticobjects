@@ -23,4 +23,4 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.guidelines.archunit.archunit;
+package com.pragmaticobjects.oo.guidelines.archunit.testsuite;

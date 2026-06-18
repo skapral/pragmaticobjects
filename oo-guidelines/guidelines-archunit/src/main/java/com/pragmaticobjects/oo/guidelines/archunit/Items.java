@@ -23,9 +23,8 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.guidelines.archunit.archunit;
+package com.pragmaticobjects.oo.guidelines.archunit;
 
-import com.pragmaticobjects.oo.guidelines.archunit.ArchitecturalExclusion;
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaMethod;
@@ -102,29 +101,6 @@ public class Items {
         EQUIVALENCE_COMPLIANT_CLASS,
         EQUIVALENCE_COMPLIANT_SELFTESTING_SCOPE
     ).as("business logic");
-
-    /**
-     * Abstract interfaces
-     */
-    public static DescribedPredicate<JavaClass> ABSTRACTIONS = and(
-        BUSINESS_CODE,
-        INTERFACES
-    );
-
-
-    public static DescribedPredicate<JavaClass> SEMI_ABSTRATCIONS = and(
-        BUSINESS_CODE,
-        modifier(JavaModifier.ABSTRACT)
-    );
-
-    /**
-     * Concrete interface implementations
-     */
-    public static DescribedPredicate<JavaClass> CONCRETICS = and(
-        BUSINESS_CODE,
-        not(INTERFACES),
-        not(SEMI_ABSTRATCIONS)
-    );
 
     public static DescribedPredicate<JavaClass> INFERENCES = and(
         BUSINESS_CODE,

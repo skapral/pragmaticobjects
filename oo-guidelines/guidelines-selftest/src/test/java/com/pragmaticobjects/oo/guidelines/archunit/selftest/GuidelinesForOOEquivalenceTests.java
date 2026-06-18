@@ -25,8 +25,8 @@
  */
 package com.pragmaticobjects.oo.guidelines.archunit.selftest;
 
-import com.pragmaticobjects.oo.guidelines.archunit.archunit.exclusions.ConstructorCallsExclusion;
-import com.pragmaticobjects.oo.guidelines.archunit.archunit.testsuite.GuidelinesTests;
+import com.pragmaticobjects.oo.guidelines.archunit.exclusions.ConstructorCallsExclusion;
+import com.pragmaticobjects.oo.guidelines.archunit.testsuite.GuidelinesTests;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaCodeUnit;
 import com.tngtech.archunit.core.domain.JavaModifier;

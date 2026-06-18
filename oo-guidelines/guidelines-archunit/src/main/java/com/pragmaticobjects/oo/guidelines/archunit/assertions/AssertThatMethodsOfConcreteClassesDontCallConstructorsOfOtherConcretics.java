@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.guidelines.archunit.archunit.assertions;
+package com.pragmaticobjects.oo.guidelines.archunit.assertions;
 
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -31,7 +31,7 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaModifier;
 import com.tngtech.archunit.lang.ArchCondition;
 
-import static com.pragmaticobjects.oo.guidelines.archunit.archunit.Items.*;
+import static com.pragmaticobjects.oo.guidelines.archunit.Items.*;
 import static com.tngtech.archunit.base.DescribedPredicate.and;
 import static com.tngtech.archunit.base.DescribedPredicate.not;
 import static com.tngtech.archunit.core.domain.JavaAccess.Predicates.origin;

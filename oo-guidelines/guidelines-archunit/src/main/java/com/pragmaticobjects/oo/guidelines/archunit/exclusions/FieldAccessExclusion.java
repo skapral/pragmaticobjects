@@ -23,44 +23,28 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.guidelines.archunit.archunit.assertions;
+package com.pragmaticobjects.oo.guidelines.archunit.exclusions;
 
 import com.tngtech.archunit.base.DescribedPredicate;
-import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.domain.JavaClasses;
-
-import static com.pragmaticobjects.oo.guidelines.archunit.archunit.Items.ARCHITECTURAL_EXCLUSION;
-import static com.tngtech.archunit.base.DescribedPredicate.and;
-import static com.tngtech.archunit.base.DescribedPredicate.not;
-import static com.tngtech.archunit.core.domain.JavaClass.Predicates.ENUMS;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import com.tngtech.archunit.core.domain.JavaField;
 
 /**
- * Assertion that enforces the guideline that all fields of concrete classes must be declared
- * {@code final}, ensuring immutability.
+ * Exclusion record that marks field accesses as permitted within constructor analysis conditions.
+ * A field access is excluded when the accessed field matches the {@code field} predicate.
  *
  * @author Kapralov Sergey
  */
-public class AssertThatConcreteClassesDeclareOnlyFinalFields extends AssertThatClassesFollowProvidedArchunitGuidelines {
+public class FieldAccessExclusion {
+    public final DescribedPredicate<JavaField> field;
+
     /**
      * Ctor.
      *
-     * @param javaClasses classes to check
-     * @param concretics  predicate identifying the concrete classes to enforce the rule on
+     * @param field predicate matching the fields whose access should be allowed
      */
-    public AssertThatConcreteClassesDeclareOnlyFinalFields(
-        JavaClasses javaClasses,
-        DescribedPredicate<JavaClass> concretics
+    public FieldAccessExclusion(
+        DescribedPredicate<JavaField> field
     ) {
-        super(
-            classes().that(
-                and(
-                    concretics,
-                    not(ENUMS),
-                    not(ARCHITECTURAL_EXCLUSION)
-                )
-            ).should().haveOnlyFinalFields(),
-            javaClasses
-        );
+        this.field = field;
     }
 }

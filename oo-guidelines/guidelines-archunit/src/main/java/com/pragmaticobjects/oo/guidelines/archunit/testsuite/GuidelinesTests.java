@@ -23,12 +23,12 @@
  * THE SOFTWARE.
  * ============================================================================
  */
-package com.pragmaticobjects.oo.guidelines.archunit.archunit.testsuite;
+package com.pragmaticobjects.oo.guidelines.archunit.testsuite;
 
 import com.pragmaticobjects.oo.equivalence.base.EquivalenceCompliant;
-import com.pragmaticobjects.oo.guidelines.archunit.archunit.assertions.*;
-import com.pragmaticobjects.oo.guidelines.archunit.archunit.exclusions.ConstructorCallsExclusion;
-import com.pragmaticobjects.oo.guidelines.archunit.archunit.exclusions.FieldAccessExclusion;
+import com.pragmaticobjects.oo.guidelines.archunit.assertions.*;
+import com.pragmaticobjects.oo.guidelines.archunit.exclusions.ConstructorCallsExclusion;
+import com.pragmaticobjects.oo.guidelines.archunit.exclusions.FieldAccessExclusion;
 import com.pragmaticobjects.oo.tests.AssertIgnore;
 import com.pragmaticobjects.oo.tests.TestCase;
 import com.pragmaticobjects.oo.tests.junit5.TestsSuite;
